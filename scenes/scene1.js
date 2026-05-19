@@ -1,11 +1,19 @@
-class Scene1 extends Phaser.Scene {
+/*
+Have all scenes extend the custom engine for this project: "Engine"
+We will put all global variables and static functions into engine.js 
+to maintain code readability and neatness.
+*/
+
+class Scene1 extends Engine {
+
     constructor() {
+
         super("scene1");
-        this.SCREEN_WIDTH = 1080;
-        this.SCREEN_HEIGHT = 720;
+
     }
 
     preload() {}
+
     create() {
 
         let placeholder = this.add.text(
@@ -16,6 +24,7 @@ class Scene1 extends Phaser.Scene {
             .setOrigin(0.5, 0.5);
 
     }
+
     update() {}
 
 }
