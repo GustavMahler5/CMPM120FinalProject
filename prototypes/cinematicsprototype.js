@@ -4,11 +4,11 @@ We will put all global variables and static functions into engine.js
 to maintain code readability and neatness.
 */
 
-class Scene1 extends Engine {
+class CinematicsPrototype extends Engine {
 
     constructor() {
 
-        super("scene1");
+        super("cinematicsprototype");
 
     }
 
@@ -17,14 +17,13 @@ class Scene1 extends Engine {
     create() {
 
         let placeholder = this.add.text(
-            this.SCREEN_WIDTH * 0.5, 
-            this.SCREEN_HEIGHT * 0.5, 
-            "Game goes here")
+            this.SCREEN_WIDTH * 0.5,
+            this.SCREEN_HEIGHT * 0.5,
+            "Cinematic prototyping goes here")
             .setStyle({ fontSize: `32px`, color: '#FFFFFF' })
             .setOrigin(0.5, 0.5);
 
     }
 
     update() {}
-
 }

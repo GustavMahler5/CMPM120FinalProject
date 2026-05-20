@@ -29,35 +29,6 @@ const config = {
 
 }
 
-// Prototyping config. Add prototyping scenes for testing
-// Use this for TESTING ONLY
-const prototype1 = {
-
-    scale: {
-        mode: Phaser.Scale.FIT,
-        autoCenter: Phaser.Scale.CENTER_BOTH,
-        width: 1080,    // Change SCREEN_* upon editing aspect ratio
-        height: 720,
-    },
-
-    backgroundColor: "#000000",
-
-    physics: {
-        default: "arcade",
-        arcade: {
-            debug: true,
-            gravity: {
-                x: 0,
-                y: 980
-            }
-        }
-    },
- 
-    scene: [PrototypeScene],
-    title: "Prototype1"
-
-}
-
 // Switch to prototype1 to test prototyped scenes
 const game = new Phaser.Game(config);
 
