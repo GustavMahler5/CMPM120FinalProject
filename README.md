@@ -5,4 +5,4 @@ Authored by:
 - Beck Grah
 - Adam Top
 - Jayla Lackaff
-- Kajol Prasad
+- Kajol Prasad ~ Backup Technical Lead
