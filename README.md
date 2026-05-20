@@ -4,5 +4,5 @@ Authored by:
 - Jason Holtman
 - Beck Grah
 - Adam Top
-- Jayla Lackaff
+- Jayla Lackaff ~ Production Lead
 - Kajol Prasad ~ Backup Technical Lead
