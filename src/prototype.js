@@ -44,7 +44,6 @@ const config = {
         pixelArt: true,
         antialias: false
     },
-    parent: "root",
 
     // CinematicsMenuPrototype probably shouldn't go here, but I have no idea how to load multiple scenes using this setup otherwise
     scene: [StartScene, CinematicsMenuPrototype],
