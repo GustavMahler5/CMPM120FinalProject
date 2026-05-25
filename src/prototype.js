@@ -37,12 +37,14 @@ const config = {
         }
     },
 
+
     // configured to display pizel art for cinematic prototype correctly
     // when swapping to other styles, may need to be deleted
     render: {
         pixelArt: true,
         antialias: false
     },
+    parent: "root",
 
     // CinematicsMenuPrototype probably shouldn't go here, but I have no idea how to load multiple scenes using this setup otherwise
     scene: [StartScene, CinematicsMenuPrototype],
