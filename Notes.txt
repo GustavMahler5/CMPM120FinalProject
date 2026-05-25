@@ -1,7 +1,9 @@
 Log all questions and notes here.
 
 What genre is the game going to be about?
+Rhythm Game
 
 What is the scope of our game?
+3 Levels
 
 What aspect ratio are we going to use?
