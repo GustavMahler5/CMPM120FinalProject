@@ -10,7 +10,8 @@ class CinematicsMenuPrototype extends Engine {
     }
 
     preload() {
-        this.load.image("menu_button_prototype", "assets/images/menu_button_prototype.png");
+        this.load.setBaseURL('./');
+        this.load.image("menu_button_prototype", "../assets/images/menu_button_prototype.png");
     }
 
     create() {
