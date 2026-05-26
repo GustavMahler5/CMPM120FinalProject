@@ -46,7 +46,7 @@ const config = {
     },
 
     // CinematicsMenuPrototype probably shouldn't go here, but I have no idea how to load multiple scenes using this setup otherwise
-    scene: [StartScene, CinematicsMenuPrototype],
+    scene: [StartScene, CinematicsMenuPrototype, LogoScene],
     title: "Prototype"
 };
 
