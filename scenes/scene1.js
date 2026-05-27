@@ -14,7 +14,7 @@ class Scene1 extends BaseScene {
 
     preload() {}
 
-    create() {
+    onEnter() {
 
         let placeholder = this.add.text(
             this.SCREEN_WIDTH * 0.5, 

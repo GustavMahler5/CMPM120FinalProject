@@ -18,7 +18,7 @@ class GameplayPrototype extends BaseScene {
         // Error margins
         this.ERROR_MARGIN = 0.4;
         this.OK_ERROR = 0.3;
-        this.PERFECT_ERROR = 0.15;
+        this.PERFECT_ERROR = 0.2;
         this.SONG_DELAY = 0.27;
 
         // The open window of the upcoming judgement window. Not used at all for now
@@ -27,7 +27,7 @@ class GameplayPrototype extends BaseScene {
 
     }
 
-    init() {
+    init(data) {
 
         this.lastBeat = 0;                              // current beat of the measure
         this.targetBeatPosition = this.BEAT_DURATION;   // timestamp of the upcoming beat
@@ -42,6 +42,9 @@ class GameplayPrototype extends BaseScene {
         this.missCount = 0;
 
         this.initialized = false;
+
+        // Maybe delete me in the final iteration.... or don't
+        this.justAGlobalVariable = data.global ?? 0;
 
     }
 
@@ -197,7 +200,11 @@ class GameplayPrototype extends BaseScene {
         }
 
         // Set the next beat to be active upon entering the timing window 
-        if (Math.abs(this.currentBeatContinuous - this.targetBeat) <= this.ERROR_MARGIN) {
+        let error = Math.abs(this.currentBeatContinuous - this.targetBeat);
+        let wrapError = this.TIME_SIGNATURE - error;
+        let beatDistance = Math.min(error, wrapError);
+
+        if (beatDistance <= this.ERROR_MARGIN) {
 
             this.activeBeat = this.targetBeat;
 
@@ -212,6 +219,7 @@ class GameplayPrototype extends BaseScene {
         // If the player has missed the last beat without an attempted input
         if (this.currentBeatContinuous > this.targetBeat + this.ERROR_MARGIN) {
 
+            // this.getJudgement(1);
             this.targetBeat = this.getNextBeat();
 
         }
@@ -221,7 +229,7 @@ class GameplayPrototype extends BaseScene {
     }
 
 
-
+    // FIX LOGIC MAYBE
     getNextBeat() {
 
         return ((this.lastBeat + 1) % this.TIME_SIGNATURE + 1);
@@ -269,6 +277,7 @@ this.targetBeat (The next downbeat integer which has a note): ${this.targetBeat}
 
         if (error <= this.PERFECT_ERROR) {
 
+            this.perfectCount++;
             this.judgement.setText("perfect!");
             this.judgement.setStyle({ color: "#FFD700"});
             evaluation = "perfect!";
@@ -277,6 +286,7 @@ this.targetBeat (The next downbeat integer which has a note): ${this.targetBeat}
 
         else if (error <= this.OK_ERROR) {
 
+            this.okCount++;
             this.judgement.setText("ok");
             this.judgement.setStyle({ color: "#228B22"});
             evaluation = "ok";
@@ -285,6 +295,7 @@ this.targetBeat (The next downbeat integer which has a note): ${this.targetBeat}
 
         else {
 
+            this.missCount++;
             this.judgement.setText("miss");
             this.judgement.setStyle({ color: "#D2D2D2"});
             evaluation = "miss";
@@ -312,30 +323,6 @@ this.targetBeat (The next downbeat integer which has a note): ${this.targetBeat}
 
     handleInput(inputTime, comparedTime) {
 
-        // if (!this.music) return;
-
-        // // Click once to initialize the game. Used for synching purposes
-        // if (!this.initialized) {
-
-        //     this.initialized = true;
-        //     return;
-
-        // }
-
-        // if (!this.musicStarted) {
-
-        //     this.music.play({ 
-        //         loop: false, 
-        //         volume: 0.05,
-        //         rate: 1
-        //     });
-
-        //     this.startTween();
-        //     this.musicStarted = true;
-        //     return;
-
-        // }
-
         if (this.activeBeat === -1) {
 
             return;
@@ -362,19 +349,16 @@ this.targetBeat (The next downbeat integer which has a note): ${this.targetBeat}
 
             case("perfect!"):
 
-                this.perfectCount++;
                 this.perfectScore.setText(`Perfect: ${this.perfectCount}`);
                 break;
 
             case("ok"):
 
-                this.okCount++;
                 this.okScore.setText(`Ok: ${this.okCount}`);
                 break;
 
             case("miss"):
 
-                this.missCount++;
                 this.missScore.setText(`Miss: ${this.missCount}`);
                 break;
 

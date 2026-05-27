@@ -16,6 +16,13 @@ class BaseScene extends Phaser.Scene {
 
     FADE_DURATION = 200;
 
+    justAGlobalVariable = 0;
+
+    init(data) {
+
+        this.justAGlobalVariable = data.global ?? 0;
+
+    }
 
     create() {
 
@@ -51,9 +58,11 @@ class BaseScene extends Phaser.Scene {
 
         this.time.delayedCall(this.FADE_DURATION, () => {
 
-            this.scene.start(scene);
+            this.scene.start(scene, { global: this.justAGlobalVariable });
 
         });
+
+        console.log(`Don't mind me, I'm just a global variable. You have changed scenes ${this.justAGlobalVariable++} time(s)`);
 
     }
 
