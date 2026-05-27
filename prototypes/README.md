@@ -1,5 +1,8 @@
 Scene Flow Prototype
 --------------------------
+The source code for many of the scenes are present in cinematicsprototype.js and gameplayprototype.js.  
+However, the game is created in prototype.js and starts in sceneflowprototype.js.  
+Is it organized? No. But does it work? Yes!
 
 Scenes  
 --------------------------
