@@ -1,0 +1,10 @@
+{
+    "notes": [
+        { "beat": 10, "spawned": false },
+        { "beat": 15, "spawned": false },
+        { "beat": 20, "spawned": false },
+        { "beat": 25, "spawned": false },
+        { "beat": 30, "spawned": false },
+        { "beat": 35, "spawned": false }
+    ]
+}

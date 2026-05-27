@@ -8,6 +8,7 @@ const prototypeScenes = {
     cinematics: CinematicsPrototype,
     cinematicsMenu: CinematicsMenuPrototype,
     gameplay: GameplayPrototype,
+    gameplay2: GameplayPrototype2,
     sceneFlow: SceneFlowPrototype
 
 };
@@ -46,7 +47,7 @@ const config = {
     },
 
     // CinematicsMenuPrototype probably shouldn't go here, but I have no idea how to load multiple scenes using this setup otherwise
-    scene: [StartScene, CinematicsMenuPrototype, LogoScene],
+    scene: [StartScene, CinematicsMenuPrototype, LogoScene, GameplayPrototype, SettingsPrototype, CreditsPrototype],
     title: "Prototype"
 };
 

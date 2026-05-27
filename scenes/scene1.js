@@ -1,10 +1,10 @@
 /*
-Have all scenes extend the custom engine for this project: "Engine"
-We will put all global variables and static functions into engine.js 
+Have all scenes extend the custom engine for this project: "BaseScene"
+We will put all global variables and static functions into basescene.js 
 to maintain code readability and neatness.
 */
 
-class Scene1 extends Engine {
+class Scene1 extends BaseScene {
 
     constructor() {
 

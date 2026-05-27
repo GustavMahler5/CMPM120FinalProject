@@ -7,3 +7,33 @@ What is the scope of our game?
 3 Levels
 
 What aspect ratio are we going to use?
+
+
+{
+    "notes": [
+        { "beat": 5 },
+        { "beat": 10 },
+        { "beat": 15 },
+        { "beat": 20 },
+        { "beat": 25 },
+        { "beat": 30 }
+    ]
+}
+
+{
+    "notes": [
+        { "beat": 1 },
+        { "beat": 2 },
+        { "beat": 3 },
+        { "beat": 4 },
+        { "beat": 5 },
+        { "beat": 6 },
+        { "beat": 7 },
+        { "beat": 8 },
+        { "beat": 9 },
+        { "beat": 10 },
+        { "beat": 11 },
+        { "beat": 12 }
+
+    ]
+}
