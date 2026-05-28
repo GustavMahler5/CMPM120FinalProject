@@ -84,7 +84,7 @@ class GameplayPrototype extends BaseScene {
 
         this.lastInput = this.add.text(
             this.SCREEN_WIDTH * 0.5,
-            this.SCREEN_HEIGHT * 0.95,
+            this.SCREEN_HEIGHT * 0.9,
             "")
             .setStyle({ fontSize: `16px`, color: '#FFFFFF' })
             .setOrigin(0.5, 0.5);
