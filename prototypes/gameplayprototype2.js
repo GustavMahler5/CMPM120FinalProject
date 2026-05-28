@@ -375,12 +375,22 @@ this.currentBeatContinuous (Elapsed beats with decimals): ${this.currentBeatCont
 
         // }
 
+        let colors = {
+            dog: 0xFF0000,
+            rat: 0x00FF00,
+            cat: 0x0000FF
+        };
+
+        let entityColor = colors[note.type] ?? 0xFFFFFF;
+
         let entity = this.add.rectangle(
+
             this.SCREEN_WIDTH * 0.5,
             this.SCREEN_HEIGHT * 0.3,
             10,
             25,
-            0x00FF00
+            entityColor
+            
         );
 
         this.tweens.add({
