@@ -10,6 +10,12 @@ class GameplayPrototype2 extends BaseScene {
 
         super("gameplayprototype2");
 
+        /*
+            jubeatb2b = 0
+            paranoia = 1
+        */
+        this.SONG = 0;
+
         this.scrollSpeed = 1; // speed multiplier
 
         this.spawnIndex = 0;
@@ -24,7 +30,7 @@ class GameplayPrototype2 extends BaseScene {
         };
 
         // Error margins
-        this.ERROR_MARGIN = 0.4;
+        this.ERROR_MARGIN = 0.6;
         this.OK_ERROR = 0.3;
         this.PERFECT_ERROR = 0.15;
 
@@ -51,16 +57,16 @@ class GameplayPrototype2 extends BaseScene {
         this.songInfo = this.score.song;
         console.log(this.score);
 
-        this.BPM = this.songInfo[0].bpm;                    // BPM
+        this.BPM = this.songInfo[this.SONG].bpm;                    // BPM
         this.BEAT_DURATION = 60 / this.BPM;                 // how many seconds is 1 beat
         this.lastBeat = 0;                                  // current beat of the measure
         this.TIME_SIGNATURE = 4;                            // time signature
         this.currentBeatContinuous = 2;                     // elapsed beats with decimals
-        this.SONG_DELAY = this.songInfo[0].startdelay;      // the error between when the mp3 plays and the actual song starts
-        this.PICKUP_BEATS = this.songInfo[0].pickupbeats;   // how many pick up beats there are
+        this.SONG_DELAY = this.songInfo[this.SONG].startdelay;      // the error between when the mp3 plays and the actual song starts
+        this.PICKUP_BEATS = this.songInfo[this.SONG].pickupbeats;   // how many pick up beats there are
 
         // Add Music
-        this.music = this.sound.add(`${this.songInfo[0].name}`);
+        this.music = this.sound.add(`${this.songInfo[this.SONG].name}`);
 
         // Create text
         if (1) {
@@ -89,7 +95,7 @@ class GameplayPrototype2 extends BaseScene {
             this.SCREEN_WIDTH * 0.5,
             this.SCREEN_HEIGHT * 0.5,
             "")
-            .setStyle({ fontSize: `32px`, color: '#FFFFFF' })
+            .setStyle({ fontSize: `64px`, color: '#FFFFFF', fontStyle: 'bold'/*, fontFamily: "Helvetica"*/})
             .setOrigin(0.5, 0.5);
 
         this.perfectScore = this.add.text(
@@ -196,7 +202,7 @@ this.currentBeatContinuous (Elapsed beats with decimals): ${this.currentBeatCont
 
                 targets: this.judgement,
                 alpha: 0,
-                duration: 200,
+                duration: 500,
                 yoyo: false,
                 repeat: 0
 
@@ -212,7 +218,7 @@ this.currentBeatContinuous (Elapsed beats with decimals): ${this.currentBeatCont
 
         if (error <= this.PERFECT_ERROR) {
 
-            this.judgement.setText("perfect!");
+            this.judgement.setText("PERFECT!");
             this.judgement.setStyle({ color: "#FFD700"});
             evaluation = "perfect!";
 
@@ -220,7 +226,7 @@ this.currentBeatContinuous (Elapsed beats with decimals): ${this.currentBeatCont
 
         else if (error <= this.OK_ERROR) {
 
-            this.judgement.setText("ok");
+            this.judgement.setText("Ok");
             this.judgement.setStyle({ color: "#228B22"});
             evaluation = "ok";
 
@@ -440,6 +446,8 @@ this.currentBeatContinuous (Elapsed beats with decimals): ${this.currentBeatCont
 
                 this.activeEntities.splice(i, 1);
 
+                this.getJudgement();
+
                 this.applyScore("miss");
 
             }
@@ -453,7 +461,6 @@ this.currentBeatContinuous (Elapsed beats with decimals): ${this.currentBeatCont
         // Express this.musicPosition in terms of the current beat and BPM
         this.currentBeatContinuous = (this.musicPosition / this.BEAT_DURATION);
         this.lastBeat = Math.floor(this.currentBeatContinuous - this.PICKUP_BEATS) % this.TIME_SIGNATURE;
-        // this.targetBeatPosition = this.getNextBeat() * this.BEAT_DURATION;
 
     }
 
