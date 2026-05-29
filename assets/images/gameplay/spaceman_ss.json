@@ -1,0 +1,116 @@
+{
+    "frames": {
+        "pixil-frame-0-2.png": {
+            "frame": {
+                "x": 0,
+                "y": 0,
+                "w": 100,
+                "h": 130
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 100,
+                "h": 130
+            },
+            "sourceSize": {
+                "w": 100,
+                "h": 130
+            }
+        },
+        "pixil-frame-0-3.png": {
+            "frame": {
+                "x": 100,
+                "y": 0,
+                "w": 100,
+                "h": 130
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 100,
+                "h": 130
+            },
+            "sourceSize": {
+                "w": 100,
+                "h": 130
+            }
+        },
+        "pixil-frame-0-4.png": {
+            "frame": {
+                "x": 200,
+                "y": 0,
+                "w": 100,
+                "h": 130
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 100,
+                "h": 130
+            },
+            "sourceSize": {
+                "w": 100,
+                "h": 130
+            }
+        },
+        "pixil-frame-0-5.png": {
+            "frame": {
+                "x": 0,
+                "y": 130,
+                "w": 100,
+                "h": 130
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 100,
+                "h": 130
+            },
+            "sourceSize": {
+                "w": 100,
+                "h": 130
+            }
+        },
+        "pixil-frame-0.png": {
+            "frame": {
+                "x": 100,
+                "y": 130,
+                "w": 100,
+                "h": 130
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 100,
+                "h": 130
+            },
+            "sourceSize": {
+                "w": 100,
+                "h": 130
+            }
+        }
+    },
+    "meta": {
+        "app": "https://www.codeandweb.com/texturepacker",
+        "version": "1.0",
+        "image": "spritesheet.png",
+        "format": "RGBA8888",
+        "size": {
+            "w": 300,
+            "h": 260
+        },
+        "scale": "1",
+        "comment": "Created with TexturePacker Online (free version)\nhttps://www.codeandweb.com/texturepacker-online\n\nTexturePacker desktop offers better support for Pixi and Phaser with sprite trimming, better packing algorithms, hardware texture compression, and PNG optimization.\nTry TexturePacker desktop: https://www.codeandweb.com/texturepacker"
+    }
+}
