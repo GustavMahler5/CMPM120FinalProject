@@ -1,17 +1,22 @@
 {
     "song" : [
-        { "name": "jubeatb2b", "bpm": 140, "startdelay": -0.3 },
-        { "name": "paranoia", "bpm": 180, "startdelay": 0.25 }
+        { "name": "jubeatb2b", "bpm": 140, "startdelay": -0.3, "pickupbeats": 2 },
+        { "name": "paranoia", "bpm": 180, "startdelay": 0.25, "pickupbeats": 0 }
     ],
 
     "notes": [
         { "beat": 9, "type": "dog" },
+        { "beat": 10, "type": "rat" },
         { "beat": 13, "type": "cat" },
-        { "beat": 17, "type": "rat" },
-        { "beat": 21, "type": "dog" },
+        { "beat": 17, "type": "dog" },
+        { "beat": 18, "type": "rat" },
+        { "beat": 21, "type": "rat" },
+        { "beat": 22, "type": "rat" },
         { "beat": 25, "type": "cat" },
+        { "beat": 28, "type": "dog" },
         { "beat": 29, "type": "rat" },
-        { "beat": 33, "type": "dog" },
+        { "beat": 32, "type": "dog" },
+        { "beat": 33, "type": "rat" },
         { "beat": 37, "type": "cat" },
         { "beat": 41, "type": "rat" },
         { "beat": 45, "type": "dog" },

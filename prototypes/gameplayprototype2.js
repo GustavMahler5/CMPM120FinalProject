@@ -10,8 +10,7 @@ class GameplayPrototype2 extends BaseScene {
 
         super("gameplayprototype2");
 
-        this.scrollSpeed = 2000;                            // the time it takes for the note to reach the center of the hittable window in ms
-        this.NOTE_TRAVEL_TIME = this.scrollSpeed / 1000;
+        this.scrollSpeed = 1; // speed multiplier
 
         this.spawnIndex = 0;
         this.activeEntities = [];
@@ -52,13 +51,13 @@ class GameplayPrototype2 extends BaseScene {
         this.songInfo = this.score.song;
         console.log(this.score);
 
-        this.BPM = this.songInfo[0].bpm;                       // BPM
-        this.BEAT_DURATION = 60 / this.BPM;                 // 0.33 -> how many seconds is 1 beat
+        this.BPM = this.songInfo[0].bpm;                    // BPM
+        this.BEAT_DURATION = 60 / this.BPM;                 // how many seconds is 1 beat
         this.lastBeat = 0;                                  // current beat of the measure
-        this.nextBeatPosition = this.BEAT_DURATION;         // timestamp of the upcoming generic beat
         this.TIME_SIGNATURE = 4;                            // time signature
-        this.currentBeatContinuous = 0;                     // timestamp of the next beat that the judgement window will be based on
-        this.SONG_DELAY = this.songInfo[0].startdelay;
+        this.currentBeatContinuous = 2;                     // elapsed beats with decimals
+        this.SONG_DELAY = this.songInfo[0].startdelay;      // the error between when the mp3 plays and the actual song starts
+        this.PICKUP_BEATS = this.songInfo[0].pickupbeats;   // how many pick up beats there are
 
         // Add Music
         this.music = this.sound.add(`${this.songInfo[0].name}`);
@@ -394,7 +393,7 @@ this.currentBeatContinuous (Elapsed beats with decimals): ${this.currentBeatCont
 
         this.tweens.add({
             targets: entity,
-            duration: config.anticipationBeats * this.BEAT_DURATION * 1000,
+            duration: config.anticipationBeats * this.BEAT_DURATION * this.scrollSpeed * 1000,
             x: this.cursor.x,
         })
 
@@ -453,6 +452,7 @@ this.currentBeatContinuous (Elapsed beats with decimals): ${this.currentBeatCont
 
         // Express this.musicPosition in terms of the current beat and BPM
         this.currentBeatContinuous = (this.musicPosition / this.BEAT_DURATION);
+        this.lastBeat = Math.floor(this.currentBeatContinuous - this.PICKUP_BEATS) % this.TIME_SIGNATURE;
         // this.targetBeatPosition = this.getNextBeat() * this.BEAT_DURATION;
 
     }
