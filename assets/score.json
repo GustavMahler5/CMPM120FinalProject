@@ -1,4 +1,9 @@
 {
+    "song" : [
+        { "name": "jubeatb2b", "bpm": 140, "startdelay": -0.3 },
+        { "name": "paranoia", "bpm": 180, "startdelay": 0.25 }
+    ],
+
     "notes": [
         { "beat": 9, "type": "dog" },
         { "beat": 13, "type": "cat" },

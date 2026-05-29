@@ -10,12 +10,6 @@ class GameplayPrototype2 extends BaseScene {
 
         super("gameplayprototype2");
 
-        this.BPM = 180;                                     // BPM
-        this.BEAT_DURATION = 60 / this.BPM;                 // 0.33 -> how many seconds is 1 beat
-        this.lastBeat = 0;                                  // current beat of the measure
-        this.nextBeatPosition = this.BEAT_DURATION;         // timestamp of the upcoming generic beat
-        this.TIME_SIGNATURE = 4;                            // time signature
-        this.currentBeatContinuous = 0;                     // timestamp of the next beat that the judgement window will be based on
         this.scrollSpeed = 2000;                            // the time it takes for the note to reach the center of the hittable window in ms
         this.NOTE_TRAVEL_TIME = this.scrollSpeed / 1000;
 
@@ -34,7 +28,6 @@ class GameplayPrototype2 extends BaseScene {
         this.ERROR_MARGIN = 0.4;
         this.OK_ERROR = 0.3;
         this.PERFECT_ERROR = 0.15;
-        this.SONG_DELAY = 0.25;
 
         this.perfectCount = 0;
         this.okCount = 0;
@@ -47,22 +40,28 @@ class GameplayPrototype2 extends BaseScene {
     preload() {
 
         this.load.audio('paranoia', '../assets/audio/paranoia.mp3');
+        this.load.audio('jubeatb2b', '../assets/audio/jubeatb2b.mp3');
         this.load.json('score', '../assets/score.json');
 
     }
 
     onEnter() {
 
-        //TESTING DELETE
-        this.foo = this.add.text(this.SCREEN_WIDTH * 0.5, this.SCREEN_HEIGHT * 0.5, "");
-
-        // Add Music
-        this.music = this.sound.add('paranoia');
-        this.fade(false, 100);
-
         this.score = this.cache.json.get('score');
         this.notes = this.score.notes;
+        this.songInfo = this.score.song;
         console.log(this.score);
+
+        this.BPM = this.songInfo[0].bpm;                       // BPM
+        this.BEAT_DURATION = 60 / this.BPM;                 // 0.33 -> how many seconds is 1 beat
+        this.lastBeat = 0;                                  // current beat of the measure
+        this.nextBeatPosition = this.BEAT_DURATION;         // timestamp of the upcoming generic beat
+        this.TIME_SIGNATURE = 4;                            // time signature
+        this.currentBeatContinuous = 0;                     // timestamp of the next beat that the judgement window will be based on
+        this.SONG_DELAY = this.songInfo[0].startdelay;
+
+        // Add Music
+        this.music = this.sound.add(`${this.songInfo[0].name}`);
 
         // Create text
         if (1) {
@@ -384,13 +383,13 @@ this.currentBeatContinuous (Elapsed beats with decimals): ${this.currentBeatCont
         let entityColor = colors[note.type] ?? 0xFFFFFF;
 
         let entity = this.add.rectangle(
-
+            
             this.SCREEN_WIDTH * 0.5,
             this.SCREEN_HEIGHT * 0.3,
             10,
             25,
             entityColor
-            
+
         );
 
         this.tweens.add({
