@@ -32,7 +32,8 @@ to and from black.
 # Gameplay Prototype
 --------------------------
 The source code for gameplay logic is present in gameplayprototype3.js. 
-gameplayprototype2.s and gameplayprototype.js are earlier iterations.
+gameplayprototype2.s and gameplayprototype.js are earlier iterations.  
+Beatmaps and entities are entirely data driven found in score.json and assets.json
 
 Audio 
 --------------------------

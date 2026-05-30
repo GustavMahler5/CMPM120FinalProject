@@ -71,7 +71,7 @@ class GameplayPrototype extends BaseScene {
         let disclaimer = this.add.text(
             this.SCREEN_WIDTH * 0.5,
             this.SCREEN_HEIGHT * 0.05,
-            "Gameplay prototype v1")
+            "Gameplay prototype v0")
             .setStyle({ fontSize: `16px`, color: '#ff5757' })
             .setOrigin(0.5, 0.5);
 
