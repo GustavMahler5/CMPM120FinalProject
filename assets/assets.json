@@ -1,0 +1,35 @@
+{
+    "main": {
+        "files": [
+            {
+                "type": "spritesheet",
+                "key": "walking",
+                "url": "../assets/images/gameplay/walkingss.png",
+                "frameConfig": {
+                    "frameWidth": 144,
+                    "frameHeight": 144
+                }
+            },
+            {
+                "type": "image",
+                "key": "ufo",
+                "url": "../assets/images/gameplay/ufo.png"
+            },
+            {
+                "type": "image",
+                "key": "cow",
+                "url": "../assets/images/gameplay/cow.png"
+            },
+            {
+                "type": "image",
+                "key": "background",
+                "url": "../assets/images/gameplay/background.png"
+            },
+            {
+                "type": "image",
+                "key": "star",
+                "url": "../assets/images/gameplay/star.png"
+            }
+        ]
+    }
+}

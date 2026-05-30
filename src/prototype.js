@@ -9,6 +9,7 @@ let prototypeScenes = {
     cinematicsMenu: CinematicsMenuPrototype,
     gameplay: GameplayPrototype,
     gameplay2: GameplayPrototype2,
+    gameplay3: GameplayPrototype3,
     sceneFlow: SceneFlowPrototype,
     logo: LogoScene,
     settings: SettingsPrototype,
