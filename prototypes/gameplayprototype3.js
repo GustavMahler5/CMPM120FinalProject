@@ -16,8 +16,6 @@ class GameplayPrototype3 extends BaseScene {
         */
         this.SONG = 0;
 
-        this.scrollSpeed = 1; // speed multiplier
-
         this.spawnIndex = 0;
         this.activeEntities = [];
         
@@ -30,9 +28,9 @@ class GameplayPrototype3 extends BaseScene {
         };
 
         // Error margins
-        this.ERROR_MARGIN = 0.6;
-        this.OK_ERROR = 0.3;
-        this.PERFECT_ERROR = 0.15;
+        this.ERROR_MARGIN = 0.75;
+        this.OK_ERROR = 0.25;
+        this.PERFECT_ERROR = 0.1;
 
         this.perfectCount = 0;
         this.okCount = 0;
@@ -56,18 +54,53 @@ class GameplayPrototype3 extends BaseScene {
         this.score = this.cache.json.get('score');
         this.notes = this.score.notes;
         this.songInfo = this.score.song;
-        console.log(this.score);
 
-        this.BPM = this.songInfo[this.SONG].bpm;                    // BPM
-        this.BEAT_DURATION = 60 / this.BPM;                 // how many seconds is 1 beat
-        this.lastBeat = 0;                                  // current beat of the measure
-        this.TIME_SIGNATURE = 4;                            // time signature
-        this.currentBeatContinuous = 2;                     // elapsed beats with decimals
-        this.SONG_DELAY = this.songInfo[this.SONG].startdelay;      // the error between when the mp3 plays and the actual song starts
-        this.PICKUP_BEATS = this.songInfo[this.SONG].pickupbeats;   // how many pick up beats there are
+        this.BPM = this.songInfo[this.SONG].bpm;                     // BPM
+        this.BEAT_DURATION = 60 / this.BPM;                          // how many seconds is 1 beat
+        this.TIME_SIGNATURE = 4;                                     // time signature
+        this.SONG_DELAY = this.songInfo[this.SONG].startdelay;       // the error between when the mp3 plays and the actual song starts
+        this.PICKUP_BEATS = this.songInfo[this.SONG].pickupbeats;    // how many pick up beats there are
+        
+        this.lastBeat = 0;                  // current beat of the measure
+        this.currentBeatContinuous = 2;     // elapsed beats with decimals
+
+        this.createMusic();
+        this.createAnimations();
+        this.createScene();
+        
+        // On user input
+        this.input.on('pointerdown', () => {
+
+            this.handleInput();
+
+        });
+
+    }
+
+
+
+    update() {
+
+        this.updateTimestamps();
+        this.updateEntities();
+        this.spawnEntities();
+        this.updateStarShine();
+
+    }
+
+
+
+    createMusic() {
 
         // Add Music
         this.music = this.sound.add(`${this.songInfo[this.SONG].name}`);
+        this.musicStarted = false;
+
+    }
+
+
+
+    createAnimations() {
 
         this.anims.create({
 
@@ -81,59 +114,28 @@ class GameplayPrototype3 extends BaseScene {
                 
             });
 
-        this.background = this.add.sprite(
-            this.SCREEN_WIDTH * 0.5,
-            this.SCREEN_HEIGHT * 0.5,
-            "background")
-            .setOrigin(0.5, 0.5)
-            .setTint(0x777777);
+    }
+
+
+
+    createScene() {
+
         
-        this.ufo = this.add.sprite(
-            this.SCREEN_WIDTH * 0.5,
-            this.SCREEN_HEIGHT * 0.2,
-            "ufo")
-            .setOrigin(0.5, 0.5)
-            .setDepth(10);
-        
-        this.stars = this.add.group();
-        this.otherStars = this.add.group();
+        this.createBackground();
+        this.createUfo();
+        this.createStars();
+        this.createText();
 
-        const STAR_COUNT = 8;
+    }
 
-        for (let i = 1; i <= STAR_COUNT; i++) {
 
-            if (i % 2 === 0) {
 
-                let star = this.add.sprite(
-                    this.SCREEN_WIDTH * i * 0.09, 
-                    this.SCREEN_HEIGHT * 0.1, 
-                    "star")
-                    .setScale(0.5)
-                    .setAngle(Math.random() * 90);
-                this.stars.add(star);
+    createText() {
 
-            } 
-            else {
-
-                let star = this.add.sprite(
-                    this.SCREEN_WIDTH * i * 0.11, 
-                    this.SCREEN_HEIGHT * 0.25, 
-                    "star")
-                    .setScale(0.5)
-                    .setAngle(Math.random() * 90);
-                this.otherStars.add(star);
-
-            }
-        }
-
-        this.expandToBorder(this.background);
-
-        // Create text
-        if (1) {
         let disclaimer = this.add.text(
             this.SCREEN_WIDTH * 0.5,
             this.SCREEN_HEIGHT * 0.05,
-            "Gameplay prototype v2")
+            "Gameplay prototype v3")
             .setStyle({ fontSize: `16px`, color: '#ff5757' })
             .setOrigin(0.5, 0.5);
 
@@ -178,70 +180,107 @@ class GameplayPrototype3 extends BaseScene {
             `Miss: ${this.missCount}`)
             .setStyle({ fontSize: `16px`, color: '#D3D3D3' })
             .setOrigin(0.5, 0.5);
-        }
 
-        // Add Rectangles
-        this.cursor = this.add.rectangle(
-            this.SCREEN_WIDTH * 0.5, 
-            this.SCREEN_HEIGHT * 0.3, 
-            10, 
-            25,
-            "0xFFFFFF")
+    }
+
+
+
+    createUfo() {
+
+        this.ufo = this.add.sprite(
+            this.SCREEN_WIDTH * 0.5,
+            this.SCREEN_HEIGHT * 0.2,
+            "ufo")
             .setOrigin(0.5, 0.5)
-            .setDepth(-1);
+            .setDepth(10);
+
+        let ufofx1 = this.ufo.enableFilters().filters.external.addGlow(0xffff00, 4, 0, 1, false, 10, 32);
+        let ufofx2 = this.ufo.enableFilters().filters.external.addGlow(0xff0000, 4, 2);
 
         this.triangle = this.add.triangle(
-            this.SCREEN_WIDTH * 0.5,      // object x
-            this.SCREEN_HEIGHT * 0.5,     // object y
-            0, 0,                         // top vertex
-            -100, 375,                    // bottom left
-            100, 375,                     // bottom right
+            this.SCREEN_WIDTH * 0.5,        // object x
+            this.SCREEN_HEIGHT * 0.5,       // object y
+            0, 0,                           // top vertex
+            -50, 375,                      // bottom left
+            50, 375,                       // bottom right
             0xFFFF00,
         ).setOrigin(0, 0.5);
 
         this.triangle.setAlpha(0);
 
-        // this.add.rectangle(
-        //     this.SCREEN_WIDTH * 0.5,
-        //     this.SCREEN_HEIGHT * 0.3,
-        //     10,
-        //     100,
-        //     0xae97ff)
-        //     .setOrigin(0.5, 0.5)
-        //     .setDepth(2);
-        
-        // On user input
-        this.input.on('pointerdown', () => {
+    }
 
-            this.handleInput();
 
-        });
 
-        this.musicStarted = false;
+    createBackground() {
+
+        this.background = this.add.sprite(
+            this.SCREEN_WIDTH * 0.5,
+            this.SCREEN_HEIGHT * 0.5,
+            "background")
+            .setOrigin(0.5, 0.5)
+            .setTint(0x777777);
+
+        this.expandToBorder(this.background);
 
     }
 
 
 
-    update() {
+    createStars() {
 
-        this.updateTimestamps();
-        this.updateEntities();
-        this.spawnEntities();
-        //this.updateDebugText();
-        this.updateStarShine();
+        this.stars = this.add.group();
+        this.otherStars = this.add.group();
+
+        const STAR_COUNT = 8;
+
+        for (let i = 1; i <= STAR_COUNT; i++) {
+
+            if (i % 2 === 0) {
+
+                let star = this.add.sprite(
+                    this.SCREEN_WIDTH * i * 0.09, 
+                    this.SCREEN_HEIGHT * 0.1, 
+                    "star")
+                    .setScale(0.5)
+                    .setAngle(Math.random() * 90);
+
+                star.enableFilters();
+                star.glow = star.filters.internal.addGlow(0xFFFFFF, 0);
+                this.stars.add(star);
+
+            } 
+            else {
+
+                let star = this.add.sprite(
+                    this.SCREEN_WIDTH * i * 0.11, 
+                    this.SCREEN_HEIGHT * 0.25, 
+                    "star")
+                    .setScale(0.5)
+                    .setAngle(Math.random() * 90);
+
+                star.enableFilters();
+                star.glow = star.filters.internal.addGlow(0xFFFFFF, 0);
+                this.otherStars.add(star);
+
+            }
+        }
 
     }
+
 
 
     updateDebugText() {
-
+        
         this.debugText.setText(
 `Beat: ${this.lastBeat + 1}\n
 this.musicPosition (Elapsed time of music in seconds): ${this.musicPosition.toFixed(2)}\n
 this.currentBeatContinuous (Elapsed beats with decimals): ${this.currentBeatContinuous.toFixed(2)}\n`);
 
+        // this.updateDebugText(); Put this function call in update
+
     }
+
 
 
     playUfoAnimation(rating) {
@@ -277,12 +316,12 @@ this.currentBeatContinuous (Elapsed beats with decimals): ${this.currentBeatCont
             duration: 300,
             alpha: 0,
             yoyo: false,
-            color: colorRating,
             repeat: 0
 
         })
 
     }
+
 
 
     playAbductionAnimation(rating, entity) {
@@ -294,12 +333,14 @@ this.currentBeatContinuous (Elapsed beats with decimals): ${this.currentBeatCont
                 this.tweens.killTweensOf(entity);
 
                 this.tweens.add({
+
                     targets: entity,
                     duration: 300,
                     x: this.ufo.x,
                     y: this.ufo.y,
                     scale: 0,
                     onComplete: () => entity.destroy()
+
                 })
 
                 break;
@@ -320,10 +361,15 @@ this.currentBeatContinuous (Elapsed beats with decimals): ${this.currentBeatCont
 
                 break;
 
+            // Implement animation for miss **************************************************
+            case("miss"):
+                break;
+
         }
         
 
     }
+
 
 
     flashJudgement() {
@@ -380,6 +426,7 @@ this.currentBeatContinuous (Elapsed beats with decimals): ${this.currentBeatCont
     }
 
 
+
     applyScore(rating) {
 
         switch(rating) {
@@ -426,18 +473,7 @@ this.currentBeatContinuous (Elapsed beats with decimals): ${this.currentBeatCont
 
         }
 
-        if (!this.musicStarted) {
-
-            this.music.play({ 
-                loop: false, 
-                volume: 0.05,
-                rate: 1
-            });
-
-            this.musicStarted = true;
-            return;
-
-        }
+        this.startMusic();
         }
 
         let entity = this.getClosestEntity();
@@ -449,6 +485,7 @@ this.currentBeatContinuous (Elapsed beats with decimals): ${this.currentBeatCont
 
         let error = Math.abs(this.currentBeatContinuous - entity.targetBeat);
 
+        // If the play clicks when no judgement window is open
         if (error > this.ERROR_MARGIN) {
 
             this.playUfoAnimation("perfect!");
@@ -461,17 +498,34 @@ this.currentBeatContinuous (Elapsed beats with decimals): ${this.currentBeatCont
         this.lastInput.setText(`most recent input on beat ${this.currentBeatContinuous.toFixed(2)}`);
 
         this.applyScore(rating);
-
         this.playUfoAnimation(rating);
         this.playAbductionAnimation(rating, entity);
 
-        // entity.destroy();
         this.activeEntities = this.activeEntities.filter(e => e !== entity);
 
     }
 
 
-    // Add scrolling notes
+
+    startMusic() {
+
+        if (!this.musicStarted) {
+
+            this.music.play({ 
+                loop: false, 
+                volume: 0.05,
+                rate: 1
+            });
+
+            this.musicStarted = true;
+            return;
+
+        }
+
+    }
+
+
+
     spawnEntities() {
 
         while (this.spawnIndex < this.notes.length) {
@@ -499,26 +553,9 @@ this.currentBeatContinuous (Elapsed beats with decimals): ${this.currentBeatCont
 
     }
 
-    //********************************************************************************
-    //********************************************************************************
-    // FIX ENTITY SCROLLING CONFIGURATIONS !!!!!!!!!!!!!!!!!**************************
-    //********************************************************************************
-    //********************************************************************************
+
+
     spawnEntity(note, config) {
-
-        //eventually replace with:
-    //     switch(note.type) {
-
-    //     case "cat":
-    //         return new CatEnemy(this, note);
-
-    //     case "rat":
-    //         return new RatEnemy(this, note);
-
-    //     case "dog":
-    //         return new DogEnemy(this, note);
-
-        // }
 
         let sprites = {
             dog: "walking",
@@ -536,31 +573,34 @@ this.currentBeatContinuous (Elapsed beats with decimals): ${this.currentBeatCont
 
         ).setScale(0.5);
 
-        const startX = this.SCREEN_WIDTH;
-        const judgeX = this.cursor.x;              // judgement zone / UFO line
-        const endX = this.SCREEN_WIDTH * 0.2;     // house position
+        let spawn = this.SCREEN_WIDTH;
+        let judgementZone = this.ufo.x;            // judgement zone / UFO line
+        let endingZone = this.SCREEN_WIDTH * 0.2;     // house position
 
-        const totalDistance = Math.abs(startX - endX);
-        const judgeDistance = Math.abs(startX - judgeX);
+        let totalDistance = Math.abs(spawn - endingZone);
+        let judgeDistance = Math.abs(spawn - judgementZone);
 
-        const timeToJudge =
-            config.anticipationBeats * this.BEAT_DURATION * 1000;
+        let timeToJudge = config.anticipationBeats * this.BEAT_DURATION * 1000;
+        let totalDuration = timeToJudge * (totalDistance / judgeDistance);
 
-        const totalDuration =
-            timeToJudge * (totalDistance / judgeDistance);
-
-        entity.x = startX;
+        entity.x = spawn;
 
         this.tweens.add({
+
             targets: entity,
-            x: endX,
+            x: endingZone,
             duration: totalDuration,
             ease: "Linear",
             onComplete: () => {
+
                 if (entity.active) {
+
                     entity.destroy();
+
                 }
+
             }
+
         });
 
         entity.noteType = note.type;
@@ -577,6 +617,7 @@ this.currentBeatContinuous (Elapsed beats with decimals): ${this.currentBeatCont
     }
 
 
+
     getClosestEntity() {
 
         let closest = null;
@@ -584,9 +625,7 @@ this.currentBeatContinuous (Elapsed beats with decimals): ${this.currentBeatCont
 
         for (let entity of this.activeEntities) {
 
-            let error = Math.abs(
-                this.currentBeatContinuous - entity.targetBeat
-            );
+            let error = Math.abs(this.currentBeatContinuous - entity.targetBeat);
 
             if (closestError === null || error < closestError) {
 
@@ -594,9 +633,12 @@ this.currentBeatContinuous (Elapsed beats with decimals): ${this.currentBeatCont
                 closestError = error;
 
             }
+
         }
+
         return closest;
     }
+
 
 
     updateEntities() {
@@ -611,13 +653,14 @@ this.currentBeatContinuous (Elapsed beats with decimals): ${this.currentBeatCont
 
                 this.activeEntities.splice(i, 1);
 
-                this.getJudgement();
+                this.getJudgement(999);
 
                 this.applyScore("miss");
 
             }
         }
     }
+
 
 
     updateTimestamps() {
@@ -631,25 +674,27 @@ this.currentBeatContinuous (Elapsed beats with decimals): ${this.currentBeatCont
     }
 
 
+
     updateStarShine() {
 
-        const beat = Math.floor(this.currentBeatContinuous);
-
-        if (beat === this.lastStarBeat) return;
-
-        this.lastStarBeat = beat;
-
-        const evenBeat = beat % 2 === 0;
+        let evenBeat = (this.lastBeat % 2 == 0);
 
         this.stars.getChildren().forEach(star => {
+
             star.setAlpha(evenBeat ? 1 : 0.3);
             star.setScale(evenBeat ? 0.7 : 0.5);
+            star.glow.outerStrength = evenBeat ? 4 : 0;
+
         });
 
         this.otherStars.getChildren().forEach(star => {
+
             star.setAlpha(evenBeat ? 0.3 : 1);
             star.setScale(evenBeat ? 0.5 : 0.7);
+            star.glow.outerStrength = evenBeat ? 0 : 4;
+
         });
+        
     }
 
 }
