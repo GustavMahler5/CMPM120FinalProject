@@ -40,8 +40,10 @@ class GameplayPrototype3 extends BaseScene {
         this.load.image('planet1', '../assets/images/gameplay/planet1.png');
         this.load.image('planet2', '../assets/images/gameplay/planet2.png');
         this.load.image('planet3', '../assets/images/gameplay/planet3.png');
-        this.load.image('sun', '../assets/images/gameplay/sun.png');        this.load.spritesheet('star', '../assets/images/gameplay/twinkling_star.png', { frameWidth: 9, frameHeight: 9 });
-
+        this.load.image('sun', '../assets/images/gameplay/sun.png');
+        this.load.spritesheet('star', '../assets/images/gameplay/twinkling_star.png', { frameWidth: 9, frameHeight: 9 });
+        this.load.image('angry_alien', '../assets/images/gameplay/angry_alien.png');
+        this.load.image('friendly_alien', '../assets/images/gameplay/friendly_alien.png');
     }
 
     onEnter() {
@@ -115,6 +117,25 @@ class GameplayPrototype3 extends BaseScene {
             .setOrigin(0.5, 0.5);
         }
 
+        // Add Rectangles
+        this.cursor = this.add.rectangle(
+            this.SCREEN_WIDTH * 0.2, 
+            this.SCREEN_HEIGHT * 0.3, 
+            10, 
+            25,
+            "0xFFFFFF")
+            .setOrigin(0.5, 0.5)
+            .setDepth(-1);
+
+        this.add.rectangle(
+            this.SCREEN_WIDTH * 0.5,
+            this.SCREEN_HEIGHT * 0.3,
+            10,
+            100,
+            0xae97ff)
+            .setOrigin(0.5, 0.5)
+            .setDepth(2);
+
         // On user input
         this.input.on('pointerdown', () => {
 
@@ -153,13 +174,190 @@ class GameplayPrototype3 extends BaseScene {
             this.spawnSun();
             this.nextSunDelay = Phaser.Math.Between(10000, 15000);
         }
+
+        this.updateTimestamps();
+        this.updateEntities();
+        this.spawnEntities();
+    }
+
+    handleInput() {
+
+        // Configuration
+        if (1) {
+        if (!this.music) return;
+
+        // Click once to initialize the game. Used for synching purposes
+        if (!this.initialized) {
+
+            this.initialized = true;
+            return;
+
+        }
+
+        if (!this.musicStarted) {
+
+            this.music.play({ 
+                loop: false, 
+                volume: 0.05,
+                rate: 1
+            });
+
+            this.musicStarted = true;
+            return;
+
+        }
+        }
+
+        let entity = this.getClosestEntity();
+        if (!entity) {
+
+            return;
+
+        }
+
+        let error = Math.abs(this.currentBeatContinuous - entity.targetBeat);
+
+        if (error > this.ERROR_MARGIN) {
+
+            return;
+
+        }
+
+        let rating = this.getJudgement(error, entity);
+
+        this.lastInput.setText(`most recent input on beat ${this.currentBeatContinuous.toFixed(2)}`);
+
+        this.applyScore(rating);
+
+        entity.destroy();
+        this.activeEntities = this.activeEntities.filter(e => e !== entity);
+
+    }
+
+    getClosestEntity() {
+
+        let closest = null;
+        let closestError = null;
+
+        for (let entity of this.activeEntities) {
+
+            let error = Math.abs(
+                this.currentBeatContinuous - entity.targetBeat
+            );
+
+            if (closestError === null || error < closestError) {
+
+                closest = entity;
+                closestError = error;
+
+            }
+        }
+        return closest;
+    }
+
+    startTween() {
+
+        this.time.delayedCall( 
+
+            this.SONG_DELAY * 1000,
+
+            () =>   this.tweens.add({
+
+                        targets: this.cursor,
+                        x: this.SCREEN_WIDTH * 0.9,
+                        duration: this.BEAT_DURATION * this.TIME_SIGNATURE * 1000,
+                        yoyo: false,
+                        repeat: -1
+
+                    })
+        )
+
+    }
+
+    flashJudgement() {
+
+        this.tweens.killTweensOf(this.judgement);
+        this.judgement.setAlpha(1);
+
+        this.tweens.add({
+
+                targets: this.judgement,
+                alpha: 0,
+                duration: 500,
+                yoyo: false,
+                repeat: 0
+
+            });
+
+    }
+
+    getJudgement(error, entity) {
+
+        let evaluation = "";
+
+        if ((error <= this.PERFECT_ERROR && entity.enemy == 0) || (error == null && entity.enemy == 1)) {
+
+            this.judgement.setText("PERFECT!");
+            this.judgement.setStyle({ color: "#FFD700"});
+            evaluation = "perfect!";
+
+        } 
+
+        else if (error <= this.OK_ERROR && entity.enemy == 0) {
+
+            this.judgement.setText("Ok");
+            this.judgement.setStyle({ color: "#228B22"});
+            evaluation = "ok";
+
+        } 
+
+        else {
+
+            this.judgement.setText("miss");
+            this.judgement.setStyle({ color: "#D2D2D2"});
+            evaluation = "miss";
+
+        }
+
+        this.flashJudgement();
+
+        return evaluation;
+
+    }
+
+    // Add scrolling notes
+    spawnEntities() {
+
+        while (this.spawnIndex < this.notes.length) {
+
+            let note = this.notes[this.spawnIndex];
+            let config = this.ENTITY_TIMING_CONFIG[note.type];
+
+            let spawnBeat = note.beat - config.anticipationBeats;
+
+            if (this.currentBeatContinuous >= spawnBeat) {
+
+                let entity = this.spawnEntity(note, config);
+
+                this.activeEntities.push(entity);
+
+                this.spawnIndex++;
+
+            } else {
+
+                break;
+
+            }
+
+        }
+
     }
 
     spawnPlanet() {
         const planet = this.add.sprite(-100, Phaser.Math.Between(0, this.SCREEN_HEIGHT), Phaser.Utils.Array.GetRandom(this.planet_array));
         planet.scaleFactor = Phaser.Math.FloatBetween(1, this.scaleFactor);
         planet.setScale(planet.scaleFactor);
-        planet.setDepth(-1);
+        planet.setDepth(-2);
         const fx = planet.enableFilters().filters.internal.addColorMatrix().colorMatrix;
         fx.hue(Phaser.Math.Between(10, 350));
         //further planets should be darker
@@ -179,7 +377,7 @@ class GameplayPrototype3 extends BaseScene {
         const star = this.add.sprite(-50, Phaser.Math.Between(0, this.SCREEN_HEIGHT), 'star');
         star.scaleFactor = Phaser.Math.FloatBetween(.5, 1.5);
         star.setScale(star.scaleFactor);
-        star.setDepth(-2);
+        star.setDepth(-3);
         star.play('star');
         star.setAlpha(1);
         this.tweens.add({
@@ -201,7 +399,7 @@ class GameplayPrototype3 extends BaseScene {
         const sun = this.add.sprite(-100, Phaser.Math.Between(0, this.SCREEN_HEIGHT), 'sun');
         sun.scaleFactor = Phaser.Math.FloatBetween(.5, this.scaleFactor);
         sun.setScale(sun.scaleFactor);
-        sun.setDepth(-1);
+        sun.setDepth(-2);
 
         const sunHues = [
             { min: 0,   max: 0   },  // natural orange (no shift)
@@ -228,5 +426,106 @@ class GameplayPrototype3 extends BaseScene {
                 sun.destroy();
             }
         })
+    }
+
+    updateEntities() {
+
+        for (let i = this.activeEntities.length - 1; i >= 0; i--) {
+
+            let entity = this.activeEntities[i];
+
+            if (this.currentBeatContinuous > entity.targetBeat + this.ERROR_MARGIN) {
+
+                entity.destroy();
+
+                this.activeEntities.splice(i, 1);
+
+                this.getJudgement(null, entity);
+
+                if (entity.enemy = 0) {
+                    this.applyScore("miss");
+                }
+                if (entity.enemy = 1) {
+                    this.applyScore("perfect!")
+                }
+
+            }
+        }
+    }
+
+    updateTimestamps() {
+
+        this.musicPosition = this.music.seek - this.SONG_DELAY;
+
+        // Express this.musicPosition in terms of the current beat and BPM
+        this.currentBeatContinuous = (this.musicPosition / this.BEAT_DURATION);
+        this.lastBeat = Math.floor(this.currentBeatContinuous - this.PICKUP_BEATS) % this.TIME_SIGNATURE;
+
+    }
+
+    spawnEntity(note, config) {
+
+        let colors = {
+            dog: 0xFF0000,
+            rat: 0x00FF00,
+            cat: 0x0000FF
+        };
+
+        let entityColor = colors[note.type] ?? 0xFFFFFF;
+        const rand = Phaser.Math.Between(0, 4);
+        const entityList = ["angry_alien", "friendly_alien"];
+        let index = 0
+        if (rand == 4 ) {
+            index = 1;
+        }
+        let entity = this.add.image(
+            this.SCREEN_WIDTH * 0.5,
+            this.SCREEN_HEIGHT * 0.3,
+            entityList[index]
+        ).setScale(this.scaleFactor);
+        entity.enemy = index;
+
+        this.tweens.add({
+            targets: entity,
+            duration: config.anticipationBeats * this.BEAT_DURATION * this.scrollSpeed * 1000,
+            x: this.cursor.x
+        })
+
+        entity.noteType = note.type;
+        entity.targetBeat = note.beat;
+        entity.judged = false;
+
+        return entity;
+
+    }
+
+    applyScore(rating) {
+
+        switch(rating) {
+
+            case("perfect!"):
+
+                this.perfectCount++;
+                this.perfectScore.setText(`Perfect: ${this.perfectCount}`);
+                break;
+
+            case("ok"):
+
+                this.okCount++;
+                this.okScore.setText(`Ok: ${this.okCount}`);
+                break;
+
+            case("miss"):
+
+                this.missCount++;
+                this.missScore.setText(`Miss: ${this.missCount}`);
+                break;
+
+            default:
+
+                return;
+
+        }
+
     }
 }
