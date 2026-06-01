@@ -50,18 +50,6 @@ class GameplayPrototype2 extends BaseScene {
 
     onEnter() {
 
-
-
-            // this.fade(true, this.FADE_DURATION);
-            // this.time.delayedCall(this.FADE_DURATION, () => {
-
-            //     this.scene.start('evaluationscene', { score: this.totalScorescore });
-
-            // });
-            
-
-
-
         this.score = this.cache.json.get('score');
         this.notes = this.score.notes;
         this.totalNotes = this.notes.length;
@@ -97,6 +85,18 @@ class GameplayPrototype2 extends BaseScene {
         this.createMusic();
         this.createAnimations();
         this.createScene();
+
+        this.backButton = this.add.text(
+            this.SCREEN_WIDTH * 0.1,
+            this.SCREEN_HEIGHT * 0.1,
+            `<- Back`)
+            .setStyle({ fontSize: `32px`, color: '#FFFFFF' })
+            .setOrigin(0, 0)
+            .setInteractive({useHandCursor: true})
+            .on('pointerdown', () => {
+                this.game.sound.stopAll();
+                this.changeScene('CinematicsMenuPrototype');
+            })
         
         // On user input
         this.input.removeAllListeners('pointerdown');
