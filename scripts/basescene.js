@@ -16,13 +16,12 @@ class BaseScene extends Phaser.Scene {
 
     FADE_DURATION = 200;
 
-    justAGlobalVariable = 0;
+    MAXIMUM_SCORE = 1800;
 
-    init(data) {
+    static justAGlobalVariable = 0;
 
-        this.justAGlobalVariable = data.global ?? 0;
-
-    }
+    static bestScore = 0;
+    static masterVolume = 0.05;
 
     create() {
 
@@ -58,11 +57,11 @@ class BaseScene extends Phaser.Scene {
 
         this.time.delayedCall(this.FADE_DURATION, () => {
 
-            this.scene.start(scene, { global: this.justAGlobalVariable });
+            this.scene.start(scene);
 
         });
 
-        console.log(`Don't mind me, I'm just a global variable. You have changed scenes ${this.justAGlobalVariable++} time(s)`);
+        console.log(`Don't mind me, I'm just a global variable. You have changed scenes ${BaseScene.justAGlobalVariable++} time(s)`);
 
     }
 

@@ -6,6 +6,8 @@ to maintain code readability and neatness.
 
 class GameplayPrototype2 extends BaseScene {
 
+
+
     constructor() {
 
         super("gameplayprototype2");
@@ -15,9 +17,6 @@ class GameplayPrototype2 extends BaseScene {
             paranoia = 1
         */
         this.SONG = 0;
-
-        this.spawnIndex = 0;
-        this.activeEntities = [];
         
         this.ENTITY_TIMING_CONFIG =  {
 
@@ -32,13 +31,11 @@ class GameplayPrototype2 extends BaseScene {
         this.OK_ERROR = 0.25;
         this.PERFECT_ERROR = 0.1;
 
-        this.perfectCount = 0;
-        this.okCount = 0;
-        this.missCount = 0;
-
-        this.initialized = false;
+        this.MOON_SCALE = 0.2
 
     }
+
+
 
     preload() {
 
@@ -49,11 +46,28 @@ class GameplayPrototype2 extends BaseScene {
 
     }
 
+
+
     onEnter() {
+
+
+
+            // this.fade(true, this.FADE_DURATION);
+            // this.time.delayedCall(this.FADE_DURATION, () => {
+
+            //     this.scene.start('evaluationscene', { score: this.totalScorescore });
+
+            // });
+            
+
+
 
         this.score = this.cache.json.get('score');
         this.notes = this.score.notes;
+        this.totalNotes = this.notes.length;
         this.songInfo = this.score.song;
+        this.perfectPoints = this.MAXIMUM_SCORE / this.totalNotes;
+        this.okPoints = (this.MAXIMUM_SCORE * 0.75) / this.totalNotes;
 
         this.BPM = this.songInfo[this.SONG].bpm;                     // BPM
         this.BEAT_DURATION = 60 / this.BPM;                          // how many seconds is 1 beat
@@ -64,11 +78,28 @@ class GameplayPrototype2 extends BaseScene {
         this.lastBeat = 0;                  // current beat of the measure
         this.currentBeatContinuous = 2;     // elapsed beats with decimals
 
+        this.perfectCount = 0;
+        this.okCount = 0;
+        this.missCount = 0;
+        this.totalScore = 0;
+
+        this.spawnIndex = 0;
+        this.activeEntities = [];
+
+        this.notes.forEach(note => {
+
+            note.spawned = false;
+
+        });
+
+        this.initialized = false;
+
         this.createMusic();
         this.createAnimations();
         this.createScene();
         
         // On user input
+        this.input.removeAllListeners('pointerdown');
         this.input.on('pointerdown', () => {
 
             this.handleInput();
@@ -84,7 +115,7 @@ class GameplayPrototype2 extends BaseScene {
         this.updateTimestamps();
         this.updateEntities();
         this.spawnEntities();
-        this.updateStarShine();
+        this.playBeatEvents();
 
     }
 
@@ -96,23 +127,71 @@ class GameplayPrototype2 extends BaseScene {
         this.music = this.sound.add(`${this.songInfo[this.SONG].name}`);
         this.musicStarted = false;
 
+        this.music.once('complete', () => {
+
+            this.fade(true, this.FADE_DURATION);
+            this.time.delayedCall(this.FADE_DURATION, () => {
+
+                this.scene.start('evaluationscene', { score: this.totalScore });
+
+            });
+            
+
+        });
+
     }
 
 
 
     createAnimations() {
 
-        this.anims.create({
+        if (!this.anims.exists("walk")) {
 
-                key: "walking",
+            this.anims.create({
+
+                key: "walk",
                 frames: this.anims.generateFrameNumbers("walking", {
                     start: 0,
-                    end: 1
+                    end: 4
                 }),
-                frameRate: this.BPM / 60,
+                frameRate: this.BPM / 20,
+                repeat: -1,
+                    
+            });
+
+        }
+
+        if (!this.anims.exists("spin")) {
+
+            this.anims.create({
+
+                key: "spin",
+                frames: this.anims.generateFrameNumbers("belt", {
+                    start: 0,
+                    end: 3
+                }),
+                frameRate: this.BPM / 20,
                 repeat: -1,
                 
             });
+
+        }
+
+        if (!this.anims.exists("ghostwalk")) {
+
+            this.anims.create({
+
+                key: "ghostwalk",
+                frames: this.anims.generateFrameNumbers("ghostwalk", {
+                    start: 0,
+                    end: 1
+                }),
+                frameRate: this.BPM / 10,
+                repeat: -1,
+                
+            });
+
+        }
 
     }
 
@@ -181,6 +260,13 @@ class GameplayPrototype2 extends BaseScene {
             .setStyle({ fontSize: `16px`, color: '#D3D3D3' })
             .setOrigin(0.5, 0.5);
 
+        this.numericScore = this.add.text(
+            this.SCREEN_WIDTH * 0.9,
+            this.SCREEN_HEIGHT * 0.13,
+            `Score: ${this.totalScore}`)
+            .setStyle({ fontSize: `16px`, color: '#D3D3D3' })
+            .setOrigin(0.5, 0.5);
+
     }
 
 
@@ -192,17 +278,18 @@ class GameplayPrototype2 extends BaseScene {
             this.SCREEN_HEIGHT * 0.2,
             "ufo")
             .setOrigin(0.5, 0.5)
-            .setDepth(10);
+            .setDepth(10)
+            .setScale(0.18);
 
-        let ufofx1 = this.ufo.enableFilters().filters.external.addGlow(0xffff00, 4, 0, 1, false, 10, 32);
-        let ufofx2 = this.ufo.enableFilters().filters.external.addGlow(0xff0000, 4, 2);
+        let ufofx1 = this.ufo.enableFilters().filters.external.addGlow(0xffff00, 2, 0, 1, false, 10, 32);
+        let ufofx2 = this.ufo.enableFilters().filters.external.addGlow(0xff0000, 2, 2);
 
         this.triangle = this.add.triangle(
-            this.SCREEN_WIDTH * 0.5,        // object x
+            this.ufo.x,        // object x
             this.SCREEN_HEIGHT * 0.5,       // object y
             0, 0,                           // top vertex
-            -50, 375,                      // bottom left
-            50, 375,                       // bottom right
+            -50, 500,                      // bottom left
+            50, 500,                       // bottom right
             0xFFFF00,
         ).setOrigin(0, 0.5);
 
@@ -218,10 +305,52 @@ class GameplayPrototype2 extends BaseScene {
             this.SCREEN_WIDTH * 0.5,
             this.SCREEN_HEIGHT * 0.5,
             "background")
-            .setOrigin(0.5, 0.5)
-            .setTint(0x777777);
+            .setOrigin(0.5, 0.5);
+            // .setTint(0x777777);
 
         this.expandToBorder(this.background);
+
+        this.moon = this.add.sprite(
+            this.SCREEN_WIDTH,
+            0,
+            "moon")
+            .setOrigin(0.5, 0.5)
+            .setScale(0.2)
+            .setDepth(10);
+
+        this.house = this.add.sprite(
+            this.SCREEN_WIDTH * 0.2,
+            this.SCREEN_HEIGHT * 0.9,
+            "house")
+            .setOrigin(0.5, 1)
+            .setScale(0.2)
+            .setDepth(11);
+
+        this.fence = this.add.sprite(
+            this.SCREEN_WIDTH,
+            this.SCREEN_HEIGHT * 0.87,
+            "fence")
+            .setOrigin(1, 1)
+            .setScale(0.35)
+            .setDepth(100);
+
+        this.otherFence = this.add.sprite(
+            this.SCREEN_WIDTH - this.fence.width,
+            this.SCREEN_HEIGHT * 0.87,
+            "fence")
+            .setOrigin(1, 1)
+            .setScale(0.35)
+            .setDepth(100);
+
+        // this.conveyor = this.add.sprite(
+        //     this.SCREEN_WIDTH * 0.55,
+        //     this.SCREEN_HEIGHT * 0.85,
+        //     "belt")
+        //     .setDepth(10)
+        //     .setScale(0.2)
+        //     .setOrigin(0.5, 1);
+
+        // this.conveyor.play("spin");
 
     }
 
@@ -232,35 +361,35 @@ class GameplayPrototype2 extends BaseScene {
         this.stars = this.add.group();
         this.otherStars = this.add.group();
 
-        const STAR_COUNT = 8;
+        const STAR_COUNT = 24;
 
         for (let i = 1; i <= STAR_COUNT; i++) {
 
             if (i % 2 === 0) {
 
                 let star = this.add.sprite(
-                    this.SCREEN_WIDTH * i * 0.09, 
-                    this.SCREEN_HEIGHT * 0.1, 
+                    this.SCREEN_WIDTH * Math.random(), 
+                    (this.SCREEN_HEIGHT * 0.45 * Math.random()), 
                     "star")
-                    .setScale(0.5)
+                    .setScale(0.001)
                     .setAngle(Math.random() * 90);
 
-                star.enableFilters();
-                star.glow = star.filters.internal.addGlow(0xFFFFFF, 0);
+                // star.enableFilters();
+                // star.glow = star.filters.internal.addGlow(0xFFFFFF, 0);
                 this.stars.add(star);
 
             } 
             else {
 
                 let star = this.add.sprite(
-                    this.SCREEN_WIDTH * i * 0.11, 
-                    this.SCREEN_HEIGHT * 0.25, 
+                    this.SCREEN_WIDTH * Math.random(), 
+                    (this.SCREEN_HEIGHT * 0.45 * Math.random()),
                     "star")
-                    .setScale(0.5)
+                    .setScale(0.001)
                     .setAngle(Math.random() * 90);
 
-                star.enableFilters();
-                star.glow = star.filters.internal.addGlow(0xFFFFFF, 0);
+                // star.enableFilters();
+                // star.glow = star.filters.internal.addGlow(0xFFFFFF, 0);
                 this.otherStars.add(star);
 
             }
@@ -434,13 +563,19 @@ this.currentBeatContinuous (Elapsed beats with decimals): ${this.currentBeatCont
             case("perfect!"):
 
                 this.perfectCount++;
+                this.totalScore += this.perfectPoints;
+
                 this.perfectScore.setText(`Perfect: ${this.perfectCount}`);
+                this.numericScore.setText(`Score: ${Math.ceil(this.totalScore)}`);
                 break;
 
             case("ok"):
 
                 this.okCount++;
+                this.totalScore += this.okPoints;
+
                 this.okScore.setText(`Ok: ${this.okCount}`);
+                this.numericScore.setText(`Score: ${Math.ceil(this.totalScore)}`);
                 break;
 
             case("miss"):
@@ -476,6 +611,8 @@ this.currentBeatContinuous (Elapsed beats with decimals): ${this.currentBeatCont
         this.startMusic();
         }
 
+        this.lastInput.setText(`most recent input on beat ${this.currentBeatContinuous.toFixed(2)}`);
+
         let entity = this.getClosestEntity();
         if (!entity) {
 
@@ -495,8 +632,6 @@ this.currentBeatContinuous (Elapsed beats with decimals): ${this.currentBeatCont
 
         let rating = this.getJudgement(error);
 
-        this.lastInput.setText(`most recent input on beat ${this.currentBeatContinuous.toFixed(2)}`);
-
         this.applyScore(rating);
         this.playUfoAnimation(rating);
         this.playAbductionAnimation(rating, entity);
@@ -513,7 +648,7 @@ this.currentBeatContinuous (Elapsed beats with decimals): ${this.currentBeatCont
 
             this.music.play({ 
                 loop: false, 
-                volume: 0.05,
+                volume: BaseScene.masterVolume,
                 rate: 1
             });
 
@@ -533,7 +668,9 @@ this.currentBeatContinuous (Elapsed beats with decimals): ${this.currentBeatCont
             let note = this.notes[this.spawnIndex];
             let config = this.ENTITY_TIMING_CONFIG[note.type];
 
-            let spawnBeat = note.beat - config.anticipationBeats;
+            let targetBeat = ((note.measure - 1) * this.TIME_SIGNATURE) + note.beat;
+
+            let spawnBeat = targetBeat - config.anticipationBeats;
 
             if (this.currentBeatContinuous >= spawnBeat) {
 
@@ -559,8 +696,8 @@ this.currentBeatContinuous (Elapsed beats with decimals): ${this.currentBeatCont
 
         let sprites = {
             dog: "walking",
-            rat: "star",
-            cat: "cow"
+            rat: "walking",
+            cat: "ghost"
         };
 
         let sprite = sprites[note.type] ?? null;
@@ -568,10 +705,10 @@ this.currentBeatContinuous (Elapsed beats with decimals): ${this.currentBeatCont
         let entity = this.add.sprite(
             
             this.SCREEN_WIDTH,
-            this.SCREEN_HEIGHT * 0.7,
-            sprite
-
-        ).setScale(0.5);
+            this.SCREEN_HEIGHT * 0.84,
+            sprite)
+            .setOrigin(0.5, 1)
+            .setScale(0.05);
 
         let spawn = this.SCREEN_WIDTH;
         let judgementZone = this.ufo.x;            // judgement zone / UFO line
@@ -604,13 +741,21 @@ this.currentBeatContinuous (Elapsed beats with decimals): ${this.currentBeatCont
         });
 
         entity.noteType = note.type;
-        entity.targetBeat = note.beat;
+        entity.targetBeat = ((note.measure - 1) * this.TIME_SIGNATURE) + note.beat;
         entity.judged = false;
 
         switch(note.type) {
+
             case("dog") :
-                entity.play("walking");
+                entity.play("walk");
+                break;
+
+            case("cat") :
+                entity.play("ghostwalk");
+                break;
         }
+
+        console.log(`Measure ${note.measure}, Beat ${note.beat}`)
 
         return entity;
 
@@ -669,32 +814,93 @@ this.currentBeatContinuous (Elapsed beats with decimals): ${this.currentBeatCont
 
         // Express this.musicPosition in terms of the current beat and BPM
         this.currentBeatContinuous = (this.musicPosition / this.BEAT_DURATION);
-        this.lastBeat = Math.floor(this.currentBeatContinuous - this.PICKUP_BEATS) % this.TIME_SIGNATURE;
+        this.lastBeat = (Math.floor(this.currentBeatContinuous - this.PICKUP_BEATS) % this.TIME_SIGNATURE + this.TIME_SIGNATURE) % this.TIME_SIGNATURE;
 
     }
 
 
 
-    updateStarShine() {
+    playBeatEvents() {
+
+        if (this.lastBeat === this.lastBeatEvent) {
+
+            return;
+
+        }
+
+        this.lastBeatEvent = this.lastBeat;
 
         let evenBeat = (this.lastBeat % 2 == 0);
+
+        this.updateStarShine(evenBeat);
+        this.updateMoonShine(evenBeat);
+        this.updateBounces();
+
+    }
+
+
+
+    updateMoonShine(evenBeat) {
+
+        this.moon.setTint(evenBeat ? 0x777777 : 0xFFFFFF);
+        this.moon.setScale(evenBeat ? this.MOON_SCALE - 0.01 : this.MOON_SCALE);
+
+    }
+
+
+
+    updateBounces() {
+
+        this.tweens.add({
+
+            targets: this.ufo,
+            scale: this.ufo.scale * 0.95,
+            duration: 50,
+            yoyo: true
+
+        });
+
+        for (let entity of this.activeEntities) {
+
+            if (entity) {
+
+                this.tweens.add({
+
+                    targets: entity,
+                    scale: entity.scale * 0.8,
+                    duration: 50,
+                    yoyo: true
+
+                });
+
+            }
+
+        }
+
+    }
+
+
+
+    updateStarShine(evenBeat) {
 
         this.stars.getChildren().forEach(star => {
 
             star.setAlpha(evenBeat ? 1 : 0.3);
-            star.setScale(evenBeat ? 0.7 : 0.5);
-            star.glow.outerStrength = evenBeat ? 4 : 0;
+            star.setScale(evenBeat ? 0.02 : 0.01);
+            // star.glow.outerStrength = evenBeat ? 4 : 0;
 
         });
 
         this.otherStars.getChildren().forEach(star => {
 
             star.setAlpha(evenBeat ? 0.3 : 1);
-            star.setScale(evenBeat ? 0.5 : 0.7);
-            star.glow.outerStrength = evenBeat ? 0 : 4;
+            star.setScale(evenBeat ? 0.01 : 0.02);
+            // star.glow.outerStrength = evenBeat ? 0 : 4;
 
         });
         
     }
+
+
 
 }
