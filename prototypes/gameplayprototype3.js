@@ -35,7 +35,7 @@ class GameplayPrototype3 extends BaseScene {
 
         this.load.audio('paranoia', '../assets/audio/paranoia.mp3');
         this.load.audio('jubeatb2b', '../assets/audio/jubeatb2b.mp3');
-        this.load.json('score', '../assets/score.json');
+        this.load.json('score', '../assets/score_old.json');
 
         this.load.image('planet1', '../assets/images/gameplay/planet1.png');
         this.load.image('planet2', '../assets/images/gameplay/planet2.png');
