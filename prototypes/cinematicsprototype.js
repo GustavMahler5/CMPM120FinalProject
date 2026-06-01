@@ -286,7 +286,7 @@ class CinematicsMenuPrototype extends BaseScene {
         // not fully implemented yet, so button clicks will be disabled until then
         switch(label) {
             case "Start":    
-                this.changeScene("gameplayprototype");
+                this.changeScene("gameplayprototype2");
                 break;
 
             case "Settings": 
