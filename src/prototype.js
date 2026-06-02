@@ -15,7 +15,8 @@ let prototypeScenes = {
     gameplay3: GameplayPrototype3,
     logo: LogoScene,
     settings: SettingsPrototype,
-    credits: CreditsPrototype
+    credits: CreditsPrototype,
+    levelSelect: LevelSelect
 
 };
 
