@@ -11,11 +11,11 @@ class GameplayPrototype3 extends BaseScene {
         this.activeEntities = [];
         
         this.ENTITY_TIMING_CONFIG =  {
-
-            cat: { anticipationBeats: 2 },
-            rat: { anticipationBeats: 1.5 },
-            dog: { anticipationBeats: 3 }
-
+            small: { anticipationBeats: 1.5 },
+            medium: { anticipationBeats: 2 },
+            large: { anticipationBeats: 3 },
+            xlarge: { anticipationBeats: 4 },
+            xxlarge: { anticipationBeats: 5 }
         };
 
         // Error margins
@@ -29,12 +29,23 @@ class GameplayPrototype3 extends BaseScene {
 
         this.initialized = false;
 
+        this.sunHues = [
+            { min: 0,   max: 0   },  // natural orange (no shift)
+            { min: -20, max: -10 },  // shift toward red-orange
+            { min: 10,  max: 20  },  // shift toward yellow
+            { min: 20,  max: 40  },  // shift toward pure yellow
+            { min: 320, max: 340 },  // shift toward red
+            { min: 180, max: 220 },  // shift toward blue
+        ];
+
     }
 
     preload() {
 
         this.load.audio('paranoia', '../assets/audio/paranoia.mp3');
         this.load.audio('jubeatb2b', '../assets/audio/jubeatb2b.mp3');
+        this.load.audio('enemySpawnSoundEffect', '../assets/audio/enemySpawn.wav');
+        this.load.audio('laser', '../assets/audio/laser.wav');
         this.load.json('score', '../assets/score_old.json');
 
         this.load.image('planet1', '../assets/images/gameplay/planet1.png');
@@ -44,10 +55,22 @@ class GameplayPrototype3 extends BaseScene {
         this.load.spritesheet('star', '../assets/images/gameplay/twinkling_star.png', { frameWidth: 9, frameHeight: 9 });
         this.load.image('angry_alien', '../assets/images/gameplay/angry_alien.png');
         this.load.image('friendly_alien', '../assets/images/gameplay/friendly_alien.png');
+        this.load.image('crosshair', '../assets/images/gameplay/crosshair.png')
     }
 
     onEnter() {
-        this.scaleFactor = 2;
+        this.planets = this.add.group();
+        this.stars = this.add.group();
+        this.suns = this.add.group();
+
+        this.judgement = Object.freeze({
+            PERFECT: 0,
+            OK: 1,
+            MISS: 2,
+            FRIENDLY_FIRE: 3
+        });
+
+        this.scaleFactor = 3;
         this.planet_array = ['planet1', 'planet2', 'planet3'];
         this.score = this.cache.json.get('score');
         this.notes = this.score.notes;
@@ -87,13 +110,6 @@ class GameplayPrototype3 extends BaseScene {
             "")
             .setStyle({ fontSize: `32px`, color: '#FFFFFF' })
             .setOrigin(0.5, 0.5);
-            
-        this.judgement = this.add.text(
-            this.SCREEN_WIDTH * 0.5,
-            this.SCREEN_HEIGHT * 0.5,
-            "")
-            .setStyle({ fontSize: `64px`, color: '#FFFFFF', fontStyle: 'bold'/*, fontFamily: "Helvetica"*/})
-            .setOrigin(0.5, 0.5);
 
         this.perfectScore = this.add.text(
             this.SCREEN_WIDTH * 0.9,
@@ -118,23 +134,26 @@ class GameplayPrototype3 extends BaseScene {
         }
 
         // Add Rectangles
-        this.cursor = this.add.rectangle(
-            this.SCREEN_WIDTH * 0.2, 
-            this.SCREEN_HEIGHT * 0.3, 
-            10, 
-            25,
-            "0xFFFFFF")
+        this.cursor = this.add.image(
+            this.SCREEN_WIDTH * 0.5, 
+            this.SCREEN_HEIGHT * 0.5, 
+            'crosshair')
             .setOrigin(0.5, 0.5)
-            .setDepth(-1);
+            .setDepth(1)
+            .setScale(7);
 
-        this.add.rectangle(
-            this.SCREEN_WIDTH * 0.5,
-            this.SCREEN_HEIGHT * 0.3,
-            10,
-            100,
-            0xae97ff)
-            .setOrigin(0.5, 0.5)
-            .setDepth(2);
+        this.spawnPoints = this.add.group();
+        this.spawnPoints.add(this.add.container(-20, this.SCREEN_HEIGHT * .3));
+        this.spawnPoints.add(this.add.container(this.SCREEN_WIDTH + 20, this.SCREEN_HEIGHT * .3));
+        this.spawnPoints.add(this.add.container(-20, this.SCREEN_HEIGHT * .5));
+        this.spawnPoints.add(this.add.container(this.SCREEN_WIDTH + 20, this.SCREEN_HEIGHT * .5));
+        this.spawnPoints.add(this.add.container(-20, this.SCREEN_HEIGHT * .7));
+        this.spawnPoints.add(this.add.container(this.SCREEN_WIDTH + 20, this.SCREEN_HEIGHT * .7));
+        this.currSpawn = 0;
+
+        this.laserSpawnLeft = this.add.container(this.SCREEN_WIDTH * .25, this.SCREEN_HEIGHT);
+        this.laserSpawnRight = this.add.container(this.SCREEN_WIDTH * .75, this.SCREEN_HEIGHT);
+
 
         // On user input
         this.input.on('pointerdown', () => {
@@ -178,7 +197,72 @@ class GameplayPrototype3 extends BaseScene {
         this.updateTimestamps();
         this.updateEntities();
         this.spawnEntities();
+        this.playBeatEvents();
     }
+
+    playBeatEvents() {
+
+        if (this.lastBeat === this.lastBeatEvent) {
+
+            return;
+
+        }
+
+        this.lastBeatEvent = this.lastBeat;
+
+        let evenBeat = (this.lastBeat % 2 == 0);
+
+        this.updateColors(evenBeat);
+        this.updateBounces();
+    }
+
+    updateColors() {
+        this.planets.getChildren().forEach(planet => {
+            planet.fx.hue(Phaser.Math.Between(10, 350));
+        });
+        this.suns.getChildren().forEach(sun => {
+            const chosen = Phaser.Utils.Array.GetRandom(this.sunHues);
+            const hue = Phaser.Math.Between(chosen.min, chosen.max);
+            sun.fx.hue(hue);
+        })
+    }
+
+    updateBounces() {
+        this.planets.getChildren().forEach(planet => {
+            this.tweens.add({
+                targets: planet,
+                scale: planet.scale * 0.8,
+                duration: 50,
+                yoyo: true
+            });
+        });
+        this.suns.getChildren().forEach(sun => {
+            this.tweens.add({
+                targets: sun,
+                scale: sun.scale * 0.8,
+                duration: 50,
+                yoyo: true
+            });
+        });
+        this.stars.getChildren().forEach(star => {
+            this.tweens.add({
+                targets: star,
+                scale: star.scale * 0.8,
+                duration: 50,
+                yoyo: true
+            });
+        });
+        for (let entity of this.activeEntities) {
+            this.tweens.add({
+                targets: entity,
+                scale: entity.scale * 0.8,
+                duration: 50,
+                yoyo: true
+            });
+        };
+
+    }
+
 
     handleInput() {
 
@@ -229,9 +313,6 @@ class GameplayPrototype3 extends BaseScene {
 
         this.applyScore(rating);
 
-        entity.destroy();
-        this.activeEntities = this.activeEntities.filter(e => e !== entity);
-
     }
 
     getClosestEntity() {
@@ -274,19 +355,39 @@ class GameplayPrototype3 extends BaseScene {
 
     }
 
-    flashJudgement() {
-
-        this.tweens.killTweensOf(this.judgement);
-        this.judgement.setAlpha(1);
-
-        this.tweens.add({
-
-                targets: this.judgement,
+    flashJudgement(judgement) {
+        let judgementText = this.add.text(this.SCREEN_WIDTH * 0.5, this.SCREEN_HEIGHT * 0.5, "")
+        .setStyle({ fontSize: `64px`, color: '#FFFFFF', fontStyle: 'bold'/*, fontFamily: "Helvetica"*/})
+        .setOrigin(0.5, 0.5)
+        .setDepth(2);
+        switch (judgement) {
+            case 0:
+                judgementText.setText("PERFECT!");
+                judgementText.setStyle({ color: "#FFD700"});
+                break;
+            case 1:
+                judgementText.setText("Ok");
+                judgementText.setStyle({ color: "#228B22"});
+                break;
+            case 2: 
+                judgementText.setText("miss");
+                judgementText.setStyle({ color: "#D2D2D2"});
+                break;
+            case 3:
+                judgementText.setText("Friendly Fire!");
+                judgementText.setStyle({ color: "#c46d1c"});
+                break;
+        }
+            this.tweens.add({
+                targets: judgementText,
                 alpha: 0,
+                scale: 0,
+                x: judgementText.x - 10,
                 duration: 500,
                 yoyo: false,
-                repeat: 0
-
+                onComplete: () => {
+                    judgementText.destroy();
+                }
             });
 
     }
@@ -294,35 +395,108 @@ class GameplayPrototype3 extends BaseScene {
     getJudgement(error, entity) {
 
         let evaluation = "";
-
-        if ((error <= this.PERFECT_ERROR && entity.enemy == 0) || (error == null && entity.enemy == 1)) {
-
-            this.judgement.setText("PERFECT!");
-            this.judgement.setStyle({ color: "#FFD700"});
+        console.log(error);
+        console.log(entity.enemy);
+        if (error === null && entity.enemy === 0) {
+            this.flashJudgement(this.judgement.MISS);
+            evaluation = "miss";
+        }
+        else if (error <= this.PERFECT_ERROR && entity.enemy === 0) {
+            this.flashJudgement(this.judgement.PERFECT);
+            this.shootLaser(this.judgement.PERFECT, entity);
             evaluation = "perfect!";
 
         } 
-
+        else if (error == null && entity.enemy === 1) {
+            this.flashJudgement(this.judgement.PERFECT);
+            evaluation = "perfect!";
+        }
+        else if ((error != null && error <= this.OK_ERROR) && entity.enemy === 1) {
+            this.flashJudgement(this.judgement.FRIENDLY_FIRE);
+            this.shootLaser(this.judgement.FRIENDLY_FIRE, entity);
+            evaluation = "miss";
+        }
         else if (error <= this.OK_ERROR && entity.enemy == 0) {
-
-            this.judgement.setText("Ok");
-            this.judgement.setStyle({ color: "#228B22"});
+            this.flashJudgement(this.judgement.OK);
+            this.shootLaser(this.judgement.OK, entity);
             evaluation = "ok";
 
         } 
-
         else {
-
-            this.judgement.setText("miss");
-            this.judgement.setStyle({ color: "#D2D2D2"});
+            this.flashJudgement(this.judgement.MISS);
+            this.shootLaser(this.judgement.MISS, entity);
             evaluation = "miss";
-
         }
-
-        this.flashJudgement();
 
         return evaluation;
 
+    }
+
+    shootLaser(judgement, entity) {
+        let laser = this.add.graphics();
+        laser.lineStyle(3, 0xd02b14, 1);
+        laser.beginPath();
+
+        this.sound.play('laser');
+        this.cameras.main.shake(100, .003);
+
+        switch (judgement) {
+            case 0:
+                if (entity.spawnedFromLeft) {
+                    laser.moveTo(this.laserSpawnLeft.x, this.laserSpawnLeft.y);
+                    laser.lineTo(entity.x, entity.y);
+                } else {
+                    laser.moveTo(this.laserSpawnRight.x, this.laserSpawnRight.y);
+                    laser.lineTo(entity.x, entity.y);
+                }
+                entity.destroy();
+                break;
+            case 1:
+                if (entity.spawnedFromLeft) {
+                    laser.moveTo(this.laserSpawnLeft.x, this.laserSpawnLeft.y);
+                    laser.lineTo(entity.x, entity.y);
+                } else {
+                    laser.moveTo(this.laserSpawnRight.x, this.laserSpawnRight.y);
+                    laser.lineTo(entity.x, entity.y);
+                }
+                entity.destroy();
+                break;
+            case 2:
+                if (entity.spawnedFromLeft) {
+                    laser.moveTo(this.laserSpawnLeft.x, this.laserSpawnLeft.y);
+                    laser.lineTo(this.cursor.x, entity.y);
+                } 
+                else {
+                    laser.moveTo(this.laserSpawnRight.x, this.laserSpawnRight.y);
+                    laser.lineTo(this.cursor.x, entity.y);
+                }
+                break;
+            case 3:
+                if (entity.spawnedFromLeft) {
+                    laser.moveTo(this.laserSpawnLeft.x, this.laserSpawnLeft.y);
+                    laser.lineTo(entity.x, entity.y);
+                    entity.destroy();
+                } 
+                else {
+                    laser.moveTo(this.laserSpawnRight.x, this.laserSpawnRight.y);
+                    laser.lineTo(entity.x, entity.y);
+                    entity.destroy();
+                }
+
+        }
+
+        laser.strokePath();
+
+        this.tweens.add({
+            targets: laser,
+            alpha: 0,
+            duration: 500,
+            onComplete: () => {
+                laser.destroy();
+            }
+        });
+
+        this.activeEntities = this.activeEntities.filter(e => e !== entity);
     }
 
     // Add scrolling notes
@@ -358,20 +532,23 @@ class GameplayPrototype3 extends BaseScene {
         planet.scaleFactor = Phaser.Math.FloatBetween(1, this.scaleFactor);
         planet.setScale(planet.scaleFactor);
         planet.setDepth(-2);
-        const fx = planet.enableFilters().filters.internal.addColorMatrix().colorMatrix;
-        fx.hue(Phaser.Math.Between(10, 350));
+        planet.fx = planet.enableFilters().filters.internal.addColorMatrix().colorMatrix;
+        planet.fx.hue(Phaser.Math.Between(10, 350));
         //further planets should be darker
         const brightness = planet.scaleFactor / (this.scaleFactor + 1);
-        fx.brightness(brightness, true);
+        planet.fx.brightness(brightness, true);
 
         this.tweens.add({
             targets: planet,
             x: this.SCREEN_WIDTH + planet.width / 2,
             duration: 30000 / planet.scaleFactor,
             onComplete: () => {
+                this.planets.remove(planet);
                 planet.destroy();
             }
         })
+
+        this.planets.add(planet);
     }
     spawnStar() {
         const star = this.add.sprite(-50, Phaser.Math.Between(0, this.SCREEN_HEIGHT), 'star');
@@ -385,6 +562,7 @@ class GameplayPrototype3 extends BaseScene {
             x: this.SCREEN_WIDTH + star.width / 2,
             duration: 50000 / star.scaleFactor,
             onComplete: () => {
+                this.stars.remove(star);
                 star.destroy();
             }
         })
@@ -393,6 +571,8 @@ class GameplayPrototype3 extends BaseScene {
         star.on('animationupdate', (anim, frame) => {
             star.setAlpha(alphaMap[frame.textureFrame]);
         });
+
+        this.stars.add(star);
     }
 
     spawnSun() {
@@ -401,31 +581,25 @@ class GameplayPrototype3 extends BaseScene {
         sun.setScale(sun.scaleFactor);
         sun.setDepth(-2);
 
-        const sunHues = [
-            { min: 0,   max: 0   },  // natural orange (no shift)
-            { min: -20, max: -10 },  // shift toward red-orange
-            { min: 10,  max: 20  },  // shift toward yellow
-            { min: 20,  max: 40  },  // shift toward pure yellow
-            { min: 320, max: 340 },  // shift toward red
-            { min: 180, max: 220 },  // shift toward blue
-        ];
-
-        const fx = sun.enableFilters().filters.internal.addColorMatrix().colorMatrix;
-        const chosen = Phaser.Utils.Array.GetRandom(sunHues);
+        sun.fx = sun.enableFilters().filters.internal.addColorMatrix().colorMatrix;
+        const chosen = Phaser.Utils.Array.GetRandom(this.sunHues);
         const hue = Phaser.Math.Between(chosen.min, chosen.max);
-        fx.hue(hue);
+        sun.fx.hue(hue);
         //further suns should be darker, but not too dark
         const brightness = Phaser.Math.Linear(0.4, 0.7, sun.scaleFactor / this.scaleFactor);
-        fx.brightness(brightness, true);
+        sun.fx.brightness(brightness, true);
 
         this.tweens.add({
             targets: sun,
             x: this.SCREEN_WIDTH + sun.width / 2,
             duration: 30000 / sun.scaleFactor,
             onComplete: () => {
+                this.suns.remove(sun);
                 sun.destroy();
             }
         })
+
+        this.suns.add(sun);
     }
 
     updateEntities() {
@@ -435,17 +609,14 @@ class GameplayPrototype3 extends BaseScene {
             let entity = this.activeEntities[i];
 
             if (this.currentBeatContinuous > entity.targetBeat + this.ERROR_MARGIN) {
-
-                entity.destroy();
-
                 this.activeEntities.splice(i, 1);
 
                 this.getJudgement(null, entity);
 
-                if (entity.enemy = 0) {
+                if (entity.enemy === 0) {
                     this.applyScore("miss");
                 }
-                if (entity.enemy = 1) {
+                if (entity.enemy === 1) {
                     this.applyScore("perfect!")
                 }
 
@@ -464,14 +635,11 @@ class GameplayPrototype3 extends BaseScene {
     }
 
     spawnEntity(note, config) {
+        const spawn = this.spawnPoints.getChildren()[this.currSpawn];
+        if (this.currSpawn % 2 === 0) {
+            spawn.spawnedFromLeft = true;
+        }
 
-        let colors = {
-            dog: 0xFF0000,
-            rat: 0x00FF00,
-            cat: 0x0000FF
-        };
-
-        let entityColor = colors[note.type] ?? 0xFFFFFF;
         const rand = Phaser.Math.Between(0, 4);
         const entityList = ["angry_alien", "friendly_alien"];
         let index = 0
@@ -479,21 +647,75 @@ class GameplayPrototype3 extends BaseScene {
             index = 1;
         }
         let entity = this.add.image(
-            this.SCREEN_WIDTH * 0.5,
-            this.SCREEN_HEIGHT * 0.3,
+            spawn.x,
+            spawn.y,
             entityList[index]
-        ).setScale(this.scaleFactor);
+        ).setScale(this.scaleFactor).setOrigin(.5, .5);
         entity.enemy = index;
+        // left spawn
+        this.sound.play('enemySpawnSoundEffect');
+        if (this.currSpawn % 2 == 0) {
+            this.tweens.add({
+                targets: entity,
+                duration: 50,
+                x: 10 + entity.width / 2,
+                ease: 'Sine.Out',
+                onComplete: () => {
+                    this.tweens.add({
+                        targets: entity,
+                        duration: config.anticipationBeats * this.BEAT_DURATION * this.scrollSpeed * 1000 * 2 - 50, // x2 because they're gonna cross the entire screen
+                        x: this.SCREEN_WIDTH - 10 - entity.width / 2,
+                        onComplete: () => {
+                            this.tweens.add({
+                                targets: entity,
+                                x: this.SCREEN_WIDTH + 20,
+                                duration: 50,
+                                ease: 'Sine.In',
+                                onComplete: () => {
+                                    entity.destroy();
+                                }
 
-        this.tweens.add({
-            targets: entity,
-            duration: config.anticipationBeats * this.BEAT_DURATION * this.scrollSpeed * 1000,
-            x: this.cursor.x
-        })
+                            })
+                        }
+                    })
+                }
+            })
+        }
+        else {
+            this.tweens.add({
+                targets: entity,
+                duration: 50,
+                x: this.SCREEN_WIDTH - 10 + entity.width / 2,
+                ease: 'Sine.Out',
+                onComplete: () => {
+                    this.tweens.add({
+                        targets: entity,
+                        duration: config.anticipationBeats * this.BEAT_DURATION * this.scrollSpeed * 1000 * 2, // x2 because they're gonna cross the entire screen
+                        x: 10 + entity.width / 2,
+                        onComplete: () => {
+                            this.tweens.add({
+                                targets: entity,
+                                x:  -20,
+                                duration: 50,
+                                ease: 'Sine.In',
+                                onComplete: () => {
+                                    entity.destroy();
+                                }
+
+                            })
+                        }
+                    })
+                }
+            })
+        }
 
         entity.noteType = note.type;
         entity.targetBeat = note.beat;
         entity.judged = false;
+        this.currSpawn++;
+        if (this.currSpawn >= this.spawnPoints.getChildren().length) {
+            this.currSpawn = 0;
+        }
 
         return entity;
 
