@@ -70,7 +70,7 @@ class GameplayPrototype3 extends BaseScene {
             FRIENDLY_FIRE: 3
         });
 
-        this.scaleFactor = 3;
+        this.scaleFactor = 4;
         this.planet_array = ['planet1', 'planet2', 'planet3'];
         this.score = this.cache.json.get('score');
         this.notes = this.score.notes;
@@ -93,7 +93,7 @@ class GameplayPrototype3 extends BaseScene {
         let disclaimer = this.add.text(
             this.SCREEN_WIDTH * 0.5,
             this.SCREEN_HEIGHT * 0.05,
-            "Gameplay prototype v4")
+            "Gameplay prototype v3")
             .setStyle({ fontSize: `16px`, color: '#ff5757' })
             .setOrigin(0.5, 0.5);
 
@@ -182,12 +182,14 @@ class GameplayPrototype3 extends BaseScene {
         this.nextSunDelay = 1000
         this.cameras.main.setBackgroundColor('#010B19');
 
-        this.anims.create({
-            key: 'star',
-            frames: this.anims.generateFrameNumbers('star', {start: 0, end: 5}),
-            frameRate: 3,
-            repeat: -1
-        })
+        if (!this.anims.exists('star')) {
+            this.anims.create({
+                key: 'star',
+                frames: this.anims.generateFrameNumbers('star', {start: 0, end: 5}),
+                frameRate: 3,
+                repeat: -1
+            });
+        }
     }
 
     update(time, delta) {
@@ -451,7 +453,7 @@ class GameplayPrototype3 extends BaseScene {
         laser.beginPath();
 
         this.sound.play('laser');
-        this.cameras.main.shake(100, .003);
+        this.cameras.main.shake(100, .005);
 
         switch (judgement) {
             case 0:
@@ -649,9 +651,6 @@ class GameplayPrototype3 extends BaseScene {
 
     spawnEntity(note, config) {
         const spawn = this.spawnPoints.getChildren()[this.currSpawn];
-        if (this.currSpawn % 2 === 0) {
-            spawn.spawnedFromLeft = true;
-        }
 
         const rand = Phaser.Math.Between(0, 4);
         const entityList = ["angry_alien", "friendly_alien"];
@@ -668,6 +667,7 @@ class GameplayPrototype3 extends BaseScene {
         // left spawn
         this.sound.play('enemySpawnSoundEffect');
         if (this.currSpawn % 2 == 0) {
+            entity.spawnedFromLeft = true;
             this.tweens.add({
                 targets: entity,
                 duration: 50,
@@ -676,14 +676,13 @@ class GameplayPrototype3 extends BaseScene {
                 onComplete: () => {
                     this.tweens.add({
                         targets: entity,
-                        duration: config.anticipationBeats * this.BEAT_DURATION * this.scrollSpeed * 1000 * 2 - 50, // x2 because they're gonna cross the entire screen
-                        x: this.SCREEN_WIDTH - 10 - entity.width / 2,
+                        duration: config.anticipationBeats * this.BEAT_DURATION * this.scrollSpeed * 1000 - 50,
+                        x: this.SCREEN_WIDTH / 2,
                         onComplete: () => {
                             this.tweens.add({
                                 targets: entity,
                                 x: this.SCREEN_WIDTH + 20,
-                                duration: 50,
-                                ease: 'Sine.In',
+                                duration: config.anticipationBeats * this.BEAT_DURATION * this.scrollSpeed * 1000,
                                 onComplete: () => {
                                     entity.destroy();
                                 }
@@ -703,14 +702,13 @@ class GameplayPrototype3 extends BaseScene {
                 onComplete: () => {
                     this.tweens.add({
                         targets: entity,
-                        duration: config.anticipationBeats * this.BEAT_DURATION * this.scrollSpeed * 1000 * 2, // x2 because they're gonna cross the entire screen
-                        x: 10 + entity.width / 2,
+                        duration: config.anticipationBeats * this.BEAT_DURATION * this.scrollSpeed * 1000 - 50 , // x2 because they're gonna cross the entire screen
+                        x: this.SCREEN_WIDTH / 2,
                         onComplete: () => {
                             this.tweens.add({
                                 targets: entity,
                                 x:  -20,
-                                duration: 50,
-                                ease: 'Sine.In',
+                                duration: config.anticipationBeats * this.BEAT_DURATION * this.scrollSpeed * 1000,
                                 onComplete: () => {
                                     entity.destroy();
                                 }
