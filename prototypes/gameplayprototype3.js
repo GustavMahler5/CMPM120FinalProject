@@ -194,11 +194,11 @@ class GameplayPrototype3 extends BaseScene {
             });
         }
 
-        const explosionEmitter = this.add.particles(0, 0, 'explosion', {
+        this.explosionEmitter = this.add.particles(0, 0, 'explosion', {
             lifespan: 500,
             anim: 'explosion',
             scale: 3,
-            alpha: { start: 1, end: .4},
+            alpha: { start: 1, end: .7},
             emitting: false
         });
 
@@ -206,7 +206,6 @@ class GameplayPrototype3 extends BaseScene {
         this.input.on('pointerdown', () => {
 
             this.handleInput();
-            explosionEmitter.explode(1, 100, 200);
         });
     }
 
@@ -471,7 +470,7 @@ class GameplayPrototype3 extends BaseScene {
         laser.beginPath();
 
         this.sound.play('laser');
-        this.cameras.main.shake(100, .005);
+        this.cameras.main.shake(200, .005);
 
         switch (judgement) {
             case 0:
@@ -482,7 +481,7 @@ class GameplayPrototype3 extends BaseScene {
                     laser.moveTo(this.laserSpawnRight.x, this.laserSpawnRight.y);
                     laser.lineTo(entity.x, entity.y);
                 }
-                entity.destroy();
+                this.explode(entity);
                 break;
             case 1:
                 if (entity.spawnedFromLeft) {
@@ -492,7 +491,7 @@ class GameplayPrototype3 extends BaseScene {
                     laser.moveTo(this.laserSpawnRight.x, this.laserSpawnRight.y);
                     laser.lineTo(entity.x, entity.y);
                 }
-                entity.destroy();
+                this.explode(entity);
                 break;
             case 2:
                 if (entity.spawnedFromLeft) {
@@ -508,12 +507,12 @@ class GameplayPrototype3 extends BaseScene {
                 if (entity.spawnedFromLeft) {
                     laser.moveTo(this.laserSpawnLeft.x, this.laserSpawnLeft.y);
                     laser.lineTo(entity.x, entity.y);
-                    entity.destroy();
+                    this.explode(entity);
                 } 
                 else {
                     laser.moveTo(this.laserSpawnRight.x, this.laserSpawnRight.y);
                     laser.lineTo(entity.x, entity.y);
-                    entity.destroy();
+                    this.explode(entity);
                 }
 
         }
@@ -751,7 +750,20 @@ class GameplayPrototype3 extends BaseScene {
     }
 
     explode(entity) {
-
+        this.explosionEmitter.explode(1, entity.x, entity.y);
+        if (entity.enemy === 1) {
+            this.tweens.add({
+                targets: entity,
+                y: this.SCREEN_HEIGHT + 50,
+                ease: 'Sine.In',
+                onComplete: () => {
+                    entity.destroy();
+                }
+            })
+        }
+        else {
+            entity.destroy();
+        }
     }
 
     applyScore(rating) {
