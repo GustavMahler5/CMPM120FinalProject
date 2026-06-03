@@ -43,7 +43,7 @@ class GameplayPrototype5 extends BaseScene {
     }
 
     preload() {
-        this.load.audio('suspicious', '../assets/audio/suspicous.mp3');
+        this.load.audio('suspicious', '../assets/audio/suspicious.mp3');
         this.load.audio('enemySpawnSoundEffect', '../assets/audio/enemySpawn.wav');
         this.load.audio('laser', '../assets/audio/laser.wav');
         this.load.json('score', '../assets/score_suspicious.json');
