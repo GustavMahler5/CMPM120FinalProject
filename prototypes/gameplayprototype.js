@@ -57,6 +57,8 @@ class GameplayPrototype extends BaseScene {
 
     onEnter() {
 
+        this.sound.removeAll();
+
         // Add Music
         this.music = this.sound.add('paranoia');
 

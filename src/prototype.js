@@ -14,6 +14,7 @@ let prototypeScenes = {
     evaluation: EvaluationScene,
     sceneFlow: SceneFlowPrototype,
     gameplay3: GameplayPrototype3,
+    gameplay5: GameplayPrototype5,
     logo: LogoScene,
     settings: SettingsPrototype,
     credits: CreditsPrototype,

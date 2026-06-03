@@ -53,12 +53,16 @@ class GameplayPrototype3 extends BaseScene {
         this.load.image('planet3', '../assets/images/gameplay/planet3.png');
         this.load.image('sun', '../assets/images/gameplay/sun.png');
         this.load.spritesheet('star', '../assets/images/gameplay/twinkling_star.png', { frameWidth: 9, frameHeight: 9 });
+        this.load.spritesheet('explosion', "../assets/images/gameplay/explosion_particle.png", { frameWidth: 32, frameHeight: 32});
         this.load.image('angry_alien', '../assets/images/gameplay/angry_alien.png');
         this.load.image('friendly_alien', '../assets/images/gameplay/friendly_alien.png');
         this.load.image('crosshair', '../assets/images/gameplay/crosshair.png')
     }
 
     onEnter() {
+
+        this.sound.removeAll();
+        
         this.planets = this.add.group();
         this.stars = this.add.group();
         this.suns = this.add.group();
@@ -167,14 +171,6 @@ class GameplayPrototype3 extends BaseScene {
         this.laserSpawnLeft = this.add.container(this.SCREEN_WIDTH * .25, this.SCREEN_HEIGHT);
         this.laserSpawnRight = this.add.container(this.SCREEN_WIDTH * .75, this.SCREEN_HEIGHT);
 
-
-        // On user input
-        this.input.on('pointerdown', () => {
-
-            this.handleInput();
-
-        });
-
         this.musicStarted = false;
 
         this.nextPlanetDelay = 100;
@@ -190,6 +186,27 @@ class GameplayPrototype3 extends BaseScene {
                 repeat: -1
             });
         }
+        if (!this.anims.exists('explosion')) {
+            this.anims.create({
+                key: 'explosion',
+                frames: this.anims.generateFrameNumbers('explosion', {start: 0, end: 2}),
+                frameRate: 6,
+            });
+        }
+
+        this.explosionEmitter = this.add.particles(0, 0, 'explosion', {
+            lifespan: 500,
+            anim: 'explosion',
+            scale: 3,
+            alpha: { start: 1, end: .7},
+            emitting: false
+        });
+
+        // On user input
+        this.input.on('pointerdown', () => {
+
+            this.handleInput();
+        });
     }
 
     update(time, delta) {
@@ -453,7 +470,7 @@ class GameplayPrototype3 extends BaseScene {
         laser.beginPath();
 
         this.sound.play('laser');
-        this.cameras.main.shake(100, .005);
+        this.cameras.main.shake(200, .005);
 
         switch (judgement) {
             case 0:
@@ -464,7 +481,7 @@ class GameplayPrototype3 extends BaseScene {
                     laser.moveTo(this.laserSpawnRight.x, this.laserSpawnRight.y);
                     laser.lineTo(entity.x, entity.y);
                 }
-                entity.destroy();
+                this.explode(entity);
                 break;
             case 1:
                 if (entity.spawnedFromLeft) {
@@ -474,7 +491,7 @@ class GameplayPrototype3 extends BaseScene {
                     laser.moveTo(this.laserSpawnRight.x, this.laserSpawnRight.y);
                     laser.lineTo(entity.x, entity.y);
                 }
-                entity.destroy();
+                this.explode(entity);
                 break;
             case 2:
                 if (entity.spawnedFromLeft) {
@@ -490,12 +507,12 @@ class GameplayPrototype3 extends BaseScene {
                 if (entity.spawnedFromLeft) {
                     laser.moveTo(this.laserSpawnLeft.x, this.laserSpawnLeft.y);
                     laser.lineTo(entity.x, entity.y);
-                    entity.destroy();
+                    this.explode(entity);
                 } 
                 else {
                     laser.moveTo(this.laserSpawnRight.x, this.laserSpawnRight.y);
                     laser.lineTo(entity.x, entity.y);
-                    entity.destroy();
+                    this.explode(entity);
                 }
 
         }
@@ -730,6 +747,23 @@ class GameplayPrototype3 extends BaseScene {
 
         return entity;
 
+    }
+
+    explode(entity) {
+        this.explosionEmitter.explode(1, entity.x, entity.y);
+        if (entity.enemy === 1) {
+            this.tweens.add({
+                targets: entity,
+                y: this.SCREEN_HEIGHT + 50,
+                ease: 'Sine.In',
+                onComplete: () => {
+                    entity.destroy();
+                }
+            })
+        }
+        else {
+            entity.destroy();
+        }
     }
 
     applyScore(rating) {
