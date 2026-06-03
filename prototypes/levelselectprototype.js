@@ -5,10 +5,18 @@ class LevelSelect extends BaseScene{
     
     preload() {
         this.load.image("menu_button_prototype", "../assets/images/menu_button_prototype.png");
+        this.load.audio("menu", "../assets/audio/menu.wav");
     }
 
     create() {
         this.cameras.main.setBackgroundColor(0xE0C6AD);
+
+        //bgm
+        let music = this.sound.add("menu", {
+            volume: BaseScene.masterVolume,
+            loop: true
+        });
+        music.play();
 
         // add scene here to create button
         const scenes = [
@@ -137,6 +145,6 @@ class LevelSelect extends BaseScene{
     }
 
     handleButtonClick(key) {
-        this.scene.start(key);
+        this.changeScene(key);
     }
 }
