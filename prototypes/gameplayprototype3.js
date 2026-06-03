@@ -53,6 +53,7 @@ class GameplayPrototype3 extends BaseScene {
         this.load.image('planet3', '../assets/images/gameplay/planet3.png');
         this.load.image('sun', '../assets/images/gameplay/sun.png');
         this.load.spritesheet('star', '../assets/images/gameplay/twinkling_star.png', { frameWidth: 9, frameHeight: 9 });
+        this.load.spritesheet('explosion', "../assets/images/gameplay/explosion_particle.png", { frameWidth: 32, frameHeight: 32});
         this.load.image('angry_alien', '../assets/images/gameplay/angry_alien.png');
         this.load.image('friendly_alien', '../assets/images/gameplay/friendly_alien.png');
         this.load.image('crosshair', '../assets/images/gameplay/crosshair.png')
@@ -167,14 +168,6 @@ class GameplayPrototype3 extends BaseScene {
         this.laserSpawnLeft = this.add.container(this.SCREEN_WIDTH * .25, this.SCREEN_HEIGHT);
         this.laserSpawnRight = this.add.container(this.SCREEN_WIDTH * .75, this.SCREEN_HEIGHT);
 
-
-        // On user input
-        this.input.on('pointerdown', () => {
-
-            this.handleInput();
-
-        });
-
         this.musicStarted = false;
 
         this.nextPlanetDelay = 100;
@@ -190,6 +183,28 @@ class GameplayPrototype3 extends BaseScene {
                 repeat: -1
             });
         }
+        if (!this.anims.exists('explosion')) {
+            this.anims.create({
+                key: 'explosion',
+                frames: this.anims.generateFrameNumbers('explosion', {start: 0, end: 2}),
+                frameRate: 6,
+            });
+        }
+
+        const explosionEmitter = this.add.particles(0, 0, 'explosion', {
+            lifespan: 500,
+            anim: 'explosion',
+            scale: 3,
+            alpha: { start: 1, end: .4},
+            emitting: false
+        });
+
+        // On user input
+        this.input.on('pointerdown', () => {
+
+            this.handleInput();
+            explosionEmitter.explode(1, 100, 200);
+        });
     }
 
     update(time, delta) {
@@ -729,6 +744,10 @@ class GameplayPrototype3 extends BaseScene {
         }
 
         return entity;
+
+    }
+
+    explode(entity) {
 
     }
 
