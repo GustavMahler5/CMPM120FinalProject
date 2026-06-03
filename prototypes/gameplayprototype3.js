@@ -142,6 +142,19 @@ class GameplayPrototype3 extends BaseScene {
             .setDepth(1)
             .setScale(7);
 
+        // back button
+        this.backButton = this.add.text(
+        this.SCREEN_WIDTH * 0.1,
+        this.SCREEN_HEIGHT * 0.1,
+        `<- Back`)
+        .setStyle({ fontSize: `32px`, color: '#FFFFFF' })
+        .setOrigin(0, 0)
+        .setInteractive({useHandCursor: true})
+        .on('pointerdown', () => {
+            this.game.sound.stopAll();
+            this.changeScene('cinematicsmenuprototype1');
+        });
+
         this.spawnPoints = this.add.group();
         this.spawnPoints.add(this.add.container(-20, this.SCREEN_HEIGHT * .3));
         this.spawnPoints.add(this.add.container(this.SCREEN_WIDTH + 20, this.SCREEN_HEIGHT * .3));

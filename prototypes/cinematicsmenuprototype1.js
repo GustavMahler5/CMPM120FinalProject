@@ -1,24 +1,20 @@
-class LevelSelect extends BaseScene{
+class CinematicsMenuPrototype1 extends BaseScene {
+
+
     constructor() {
-        super("levelselectprototype");
+        super({ key: "cinematicsmenuprototype1" });
     }
-    
+
     preload() {
+        this.load.setBaseURL('./');
         this.load.image("menu_button_prototype", "../assets/images/menu_button_prototype.png");
     }
 
-    create() {
+    onEnter() {
         this.cameras.main.setBackgroundColor(0xE0C6AD);
 
-        // add scene here to create button
-        const scenes = [
-            { key: "gameplayprototype",  label: "Prototype\n0" },
-            { key: "gameplayprototype1", label: "Prototype\n1" },
-            { key: "gameplayprototype2", label: "Prototype\n2" },
-            { key: "gameplayprototype3", label: "Prototype\n3" },
-            { key: "cinematicsmenuprototype1", label: "Back" }
-        ]
-
+        
+        const buttonLabels = ["Start", "Levels", "Settings", "Credits", "Exit"];
         const buttonBackground = this.add.rectangle(-200, this.SCREEN_HEIGHT / 2, this.SCREEN_WIDTH / 4, this.SCREEN_HEIGHT, 0xC1B2A2);
         const startX = -200;                           // where buttons should start x wise
         const endX = buttonBackground.width / 2;       // where buttons should end up on the screen
@@ -26,17 +22,17 @@ class LevelSelect extends BaseScene{
         const flyInDuration = 1000;                    // how long it should take buttons to fly in
         const buttonStartTime = 150;                  // how long the buttons should wait before starting their tweens
 
-        const title = this.add.text(buttonBackground.width + ((this.SCREEN_WIDTH - buttonBackground.width) / 2), -25, "Level Select",  {
+        const title = this.add.text(buttonBackground.width + ((this.SCREEN_WIDTH - buttonBackground.width) / 2), -25, "Game Name",  {
                 fontSize: '64px',
                 fontStyle: 'bold',
                 fill: '#A3B2A4',
         }).setOrigin(.5, .5);
-        let buttonHeight = this.SCREEN_HEIGHT / scenes.length;
+        let buttonHeight = this.SCREEN_HEIGHT / buttonLabels.length;
         const buttonWidth = Phaser.Math.Clamp(buttonHeight * 2.375, 0, buttonBackground.width - 20); // 2.375 is the aspect ratio of the button image, clamp is used to make sure buttons don't get too big for the background
         buttonHeight = buttonWidth / 2.375;
 
         const buttonScale = buttonWidth / 76; // 76 is the original width of the button image, this calculates the scale needed to make the button the right width for the background
-        const buttonSpacing = this.SCREEN_HEIGHT / scenes.length;
+        const buttonSpacing = this.SCREEN_HEIGHT / buttonLabels.length;
         const startY = buttonSpacing / 2;
         this.timeline = this.add.timeline();
 
@@ -51,12 +47,12 @@ class LevelSelect extends BaseScene{
             }
         });
 
-        scenes.forEach((scene, i) => {
+        buttonLabels.forEach((label, i) => {
             const x = startX;
             const y = (startY) + (buttonSpacing * i);
 
             const button = this.add.image(0, 0, "menu_button_prototype").setScale(buttonScale);
-            const text = this.add.text(0, 0, scene.label, {
+            const text = this.add.text(0, 0, label, {
                 fontSize: '32px', 
                 fill: '#fff',
                 align: 'center'
@@ -67,7 +63,6 @@ class LevelSelect extends BaseScene{
 
             // buttons + text are grouped into containers for easier use
             const container = this.add.container(x, y, [button, text]);
-            container.scene = scene;
             container.setSize(button.displayWidth, button.displayHeight);
             button.setInteractive();
 
@@ -94,7 +89,7 @@ class LevelSelect extends BaseScene{
             button.on("pointerup", () => {
                 button.clearTint();
                 // removed, as scenes haven't been made yet
-                this.handleButtonClick(container.scene.key);
+                this.handleButtonClick(label);
             });
 
             // add to timeline
@@ -112,7 +107,7 @@ class LevelSelect extends BaseScene{
 
         // title tweens
         this.timeline.add({
-            at: buttonStartTime + ((scenes.length + 1) * timeBetweenTweens),
+            at: buttonStartTime + ((buttonLabels.length + 1) * timeBetweenTweens),
             tween: {
                 targets: title,
                 y: 50,
@@ -121,7 +116,7 @@ class LevelSelect extends BaseScene{
             }
         })
         this.timeline.add({
-            at: buttonStartTime + ((scenes.length + 1) * timeBetweenTweens) + flyInDuration,
+            at: buttonStartTime + ((buttonLabels.length + 1) * timeBetweenTweens) + flyInDuration,
             tween: {
                 targets: title,
                 y: 60,
@@ -136,7 +131,29 @@ class LevelSelect extends BaseScene{
 
     }
 
-    handleButtonClick(key) {
-        this.scene.start(key);
+    handleButtonClick(label) {
+        // not fully implemented yet, so button clicks will be disabled until then
+        switch(label) {
+            case "Start":    
+                this.changeScene("gameplayprototype2");
+                break;
+            
+            case "Levels":
+                this.changeScene("levelselectprototype");
+                break;
+
+            case "Settings": 
+                this.changeScene("settingsprototype");
+                break;
+
+            case "Credits":  
+                this.changeScene("creditsprototype");
+                break;
+
+            case "Exit":
+                this.changeScene("LogoScene");
+                break;
+
+        }
     }
 }

@@ -144,7 +144,7 @@ class LogoScene extends BaseScene {
                     duration: 1000,
                     hold: 2000,
                     onComplete: () => {
-                        this.changeScene("CinematicsMenuPrototype");
+                        this.changeScene("cinematicsmenuprototype1");
                     }
                 },
             ]
@@ -154,6 +154,7 @@ class LogoScene extends BaseScene {
     }
 }
 
+// old, go to cinematicsmenuprototype1 for the new menu prototype
 class CinematicsMenuPrototype extends BaseScene {
 
 
@@ -173,14 +174,14 @@ class CinematicsMenuPrototype extends BaseScene {
         const buttonBackground = this.add.rectangle(-200, this.SCREEN_HEIGHT / 2, this.SCREEN_WIDTH / 4, this.SCREEN_HEIGHT, 0xC1B2A2);
 
         const buttonSpacing = 120;                     // vertical gap between buttons
-        const startY = 200;                            // y position of the first button
         const startX = -200;                           // where buttons should start x wise
         const endX = buttonBackground.width / 2;       // where buttons should end up on the screen
         const timeBetweenTweens = 150;                 // all buttons fly in one after the other, after this duration
         const flyInDuration = 1000;                    // how long it should take buttons to fly in
         const buttonStartTime = 150;                  // how long the buttons should wait before starting their tweens
 
-        const buttonLabels = ["Start", "Settings", "Credits", "Exit"];
+        const buttonLabels = ["Start", "Levels", "Settings", "Credits", "Exit"];
+        const startY = this.SCREEN_HEIGHT / buttonLabels.length; // calculates the y position of the first button based on how many buttons there are
         const title = this.add.text(buttonBackground.width + ((this.SCREEN_WIDTH - buttonBackground.width) / 2), -25, "Game Name",  {
                 fontSize: '64px',
                 fontStyle: 'bold',
@@ -287,6 +288,10 @@ class CinematicsMenuPrototype extends BaseScene {
         switch(label) {
             case "Start":    
                 this.changeScene("gameplayprototype2");
+                break;
+            
+            case "Levels":
+                this.changeScene("levelselectprototype");
                 break;
 
             case "Settings": 
