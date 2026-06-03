@@ -120,6 +120,18 @@ class GameplayPrototype1 extends BaseScene {
             .setOrigin(0.5, 0.5);
         }
 
+        this.backButton = this.add.text(
+        this.SCREEN_WIDTH * 0.1,
+        this.SCREEN_HEIGHT * 0.1,
+        `<- Back`)
+        .setStyle({ fontSize: `32px`, color: '#FFFFFF' })
+        .setOrigin(0, 0)
+        .setInteractive({useHandCursor: true})
+        .on('pointerdown', () => {
+            this.game.sound.stopAll();
+            this.changeScene('levelselectprototype');
+        });
+
         // Add Rectangles
         this.cursor = this.add.rectangle(
             this.SCREEN_WIDTH * 0.2, 

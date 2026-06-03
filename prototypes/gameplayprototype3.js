@@ -152,7 +152,7 @@ class GameplayPrototype3 extends BaseScene {
         .setInteractive({useHandCursor: true})
         .on('pointerdown', () => {
             this.game.sound.stopAll();
-            this.changeScene('cinematicsmenuprototype1');
+            this.changeScene('levelselectprototype');
         });
 
         this.spawnPoints = this.add.group();

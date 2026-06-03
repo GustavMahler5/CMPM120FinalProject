@@ -126,7 +126,7 @@ class GameplayPrototype extends BaseScene {
             .setInteractive({useHandCursor: true})
             .on('pointerdown', () => {
                 this.game.sound.stopAll();
-                this.changeScene('CinematicsMenuPrototype');
+                this.changeScene('levelselectprototype');
             })
 
         this.startText = this.add.text(
