@@ -59,6 +59,9 @@ class GameplayPrototype3 extends BaseScene {
     }
 
     onEnter() {
+
+        this.sound.removeAll();
+        
         this.planets = this.add.group();
         this.stars = this.add.group();
         this.suns = this.add.group();

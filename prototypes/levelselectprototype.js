@@ -13,7 +13,7 @@ class LevelSelect extends BaseScene{
 
         //bgm
         let music = this.sound.add("menu", {
-            volume: 1,
+            volume: BaseScene.masterVolume,
             loop: true
         });
         music.play();
@@ -145,6 +145,6 @@ class LevelSelect extends BaseScene{
     }
 
     handleButtonClick(key) {
-        this.scene.start(key);
+        this.changeScene(key);
     }
 }

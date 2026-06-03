@@ -52,6 +52,8 @@ class GameplayPrototype1 extends BaseScene {
 
     onEnter() {
 
+        this.sound.removeAll();
+
         this.score = this.cache.json.get('score');
         this.notes = this.score.notes;
         this.songInfo = this.score.song;
