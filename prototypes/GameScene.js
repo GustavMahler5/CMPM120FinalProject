@@ -1,4 +1,4 @@
-export class GameScene extends Phaser.Scene {
+class GameScene extends BaseScene {
 
     constructor() {
         super('GameScene');
@@ -6,18 +6,18 @@ export class GameScene extends Phaser.Scene {
 
     preload() {
 
-        this.load.audio('tick', 'assets/tick.wav');
+        this.load.audio('tick', '../assets/audio/tick.wav');
 
-        this.load.image('catDefault', 'assets/catDefault.png');
+        this.load.image('catDefault', '../assets/images/gameplay/catDefault.png');
 
-        this.load.image('ball', 'assets/ball.png');
-        this.load.image('ballWin', 'assets/ballWin.png');
+        this.load.image('ball', '../assets/images/gameplay/ball.png');
+        this.load.image('ballWin', '../assets/images/gameplay/ballWin.png');
 
-        this.load.image('catTreat', 'assets/catTreat.png');
-        this.load.image('treatWin', 'assets/treatWin.png');
+        this.load.image('catTreat', '../assets/images/gameplay/catTreat.png');
+        this.load.image('treatWin', '../assets/images/gameplay/treatWin.png');
 
-        this.load.image('sprayBottle', 'assets/sprayBottle.png');
-        this.load.image('sprayBottleWin', 'assets/sprayBottleWin.png');
+        this.load.image('sprayBottle', '../assets/images/gameplay/sprayBottle.png');
+        this.load.image('sprayBottleWin', '../assets/images/gameplay/sprayBottleWin.png');
     }
 
     create() {

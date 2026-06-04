@@ -18,7 +18,9 @@ let prototypeScenes = {
     logo: LogoScene,
     settings: SettingsPrototype,
     credits: CreditsPrototype,
-    levelSelect: LevelSelect
+    levelSelect: LevelSelect,
+    jaylalevelstart: Start,
+    jaylalevelscene: GameScene
 
 };
 
