@@ -164,7 +164,7 @@ class CinematicsMenuPrototype extends BaseScene {
 
     preload() {
         this.load.setBaseURL('./');
-        this.load.image("menu_button_prototype", "../assets/images/menu_button_prototype.png");
+        this.load.image("menu_button", "../assets/images/menu_button.png");
     }
 
     onEnter() {
@@ -205,7 +205,7 @@ class CinematicsMenuPrototype extends BaseScene {
             const x = startX;
             const y = startY + i * buttonSpacing;
 
-            const button = this.add.image(0, 0, "menu_button_prototype").setScale(buttonScale);
+            const button = this.add.image(0, 0, "menu_button").setScale(buttonScale);
             const text = this.add.text(0, 0, label, {
                 fontSize: '32px', 
                 fill: '#fff'
@@ -318,7 +318,7 @@ class SettingsPrototype extends BaseScene {
 
     preload() {
         this.load.setBaseURL('./');
-        this.load.image("menu_button_prototype", "../assets/images/menu_button_prototype.png");
+        this.load.image("menu_button", "../assets/images/menu_button.png");
     }
 
     onEnter() {
@@ -359,7 +359,7 @@ class SettingsPrototype extends BaseScene {
             const x = startX;
             const y = startY + i * buttonSpacing;
 
-            const button = this.add.image(0, 0, "menu_button_prototype").setScale(buttonScale);
+            const button = this.add.image(0, 0, "menu_button").setScale(buttonScale);
             const text = this.add.text(0, 0, label, {
                 fontSize: '24px', 
                 fill: '#fff'
@@ -463,7 +463,7 @@ class CreditsPrototype extends BaseScene {
 
     preload() {
         this.load.setBaseURL('./');
-        this.load.image("menu_button_prototype", "../assets/images/menu_button_prototype.png");
+        this.load.image("menu_button", "../assets/images/menu_button.png");
     }
 
     onEnter() {
@@ -504,7 +504,7 @@ class CreditsPrototype extends BaseScene {
             const x = startX;
             const y = startY + i * buttonSpacing;
 
-            const button = this.add.image(0, 0, "menu_button_prototype").setScale(buttonScale);
+            const button = this.add.image(0, 0, "menu_button").setScale(buttonScale);
             const text = this.add.text(0, 0, label, {
                 fontSize: '24px', 
                 fill: '#fff'
