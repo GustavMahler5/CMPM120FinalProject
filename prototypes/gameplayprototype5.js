@@ -538,8 +538,9 @@ class GameplayPrototype5 extends BaseScene {
 
             let note = this.notes[this.spawnIndex];
             let config = this.ENTITY_TIMING_CONFIG[note.type];
+            let targetBeat = ((note.measure - 1) * this.TIME_SIGNATURE) + note.beat;
 
-            let spawnBeat = note.beat - config.anticipationBeats;
+            let spawnBeat = targetBeat - config.anticipationBeats;
 
             if (this.currentBeatContinuous >= spawnBeat) {
 
@@ -738,7 +739,7 @@ class GameplayPrototype5 extends BaseScene {
         }
 
         entity.noteType = note.type;
-        entity.targetBeat = note.beat;
+        entity.targetBeat = ((note.measure - 1) * this.TIME_SIGNATURE) + note.beat;
         entity.judged = false;
         this.currSpawn++;
         if (this.currSpawn >= this.spawnPoints.getChildren().length) {
