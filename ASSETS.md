@@ -5,7 +5,7 @@
         /laser.wav
         /menu.wav -- Adam Top, Bonnie Montgomery
         /paranoia.mp3
-        /suspicious.mp3
+        /suspicious.mp3 - Jason Holtman, Orbweaver
         /tick.wav
     /images
         /menu_button_prototype.png
@@ -24,20 +24,20 @@
             /toastPerspective.png
         /gameplay
             /angry_alien.png
-            /background.png
+            /background.png - Jason Holtman
             /ball.png
             /ballWin.png
-            /beltss.png
+            /beltss.png - Jason Holtman
             /catDefault.png
             /catTreat.png
             /crosshair.png
             /explosion_particle.png
-            /fence.png
+            /fence.png - Jason Holtman
             /friendly_alien.png
-            /ghostss.png
-            /house.png
+            /ghostss.png - Jason Holtman
+            /house.png - Jason Holtman
             /meteor.png
-            /moon.png
+            /moon.png - Jason Holtman
             /phaser.png
             /planet1.png
             /planet2.png
@@ -46,13 +46,13 @@
             /spaceman_ss.json -- Adam Top; Pixilart
             /sprayBottle.png
             /sprayBottleWin.png
-            /star.png
+            /star.png - Jason Holtman
             /sun.png
             /treatWin.png
             /twinkling_star.png
-            /ufo.png
-            /walkingss.png
+            /ufo.png - Jason Holtman
+            /walkingss.png - Jason Holtman
         /assets.json
         /score_old.json
         /score_suspicious.json
-        /score.json
+        /score.json - Jason Holtman
