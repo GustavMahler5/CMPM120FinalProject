@@ -11,14 +11,16 @@ let prototypeScenes = {
     gameplay: GameplayPrototype,
     gameplay1: GameplayPrototype1,
     gameplay2: GameplayPrototype2,
+    gameplay3: GameplayPrototype3,
+    gameplay4: GameplayPrototype4,
+    gameplay5: GameplayPrototype5,
     evaluation: EvaluationScene,
     sceneFlow: SceneFlowPrototype,
-    gameplay3: GameplayPrototype3,
-    gameplay5: GameplayPrototype5,
     logo: LogoScene,
     settings: SettingsPrototype,
     credits: CreditsPrototype,
-    levelSelect: LevelSelect
+    levelSelect: LevelSelect,
+    jaylalevelstart: Start
 
 };
 

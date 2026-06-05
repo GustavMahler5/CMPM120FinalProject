@@ -1,6 +1,3 @@
-import { Start } from './scenes/Start.js';
-import { GameScene } from './scenes/GameScene.js';
-
 const config = {
     type: Phaser.AUTO,
     title: 'Overlord Rising',
@@ -13,7 +10,8 @@ const config = {
 
     scene: [
         Start,
-        GameScene
+        GameScene,
+        BaseScene
     ],
 
     scale: {
