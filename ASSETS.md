@@ -2,9 +2,9 @@ VIEW AS CODE (NOT PREVIEW) TO VISUALIZE PATHS
 ---------------------------------------------
 /assets
     /audio
-        /enemySpawn.wav
+        /enemySpawn.wav -- Beck Grah; BFXR
         /jubeatb2b.mp3
-        /laser.wav
+        /laser.wav -- Beck Grah; BFXR
         /menu.wav -- Adam Top, Bonnie Montgomery
         /paranoia.mp3
         /suspicious.mp3
@@ -25,7 +25,7 @@ VIEW AS CODE (NOT PREVIEW) TO VISUALIZE PATHS
             /jPan.png
             /toastPerspective.png
         /gameplay
-            /angry_alien.png
+            /angry_alien.png -- Beck Grah; Pixelorama
             /background.png
             /ball.png
             /ballWin.png
@@ -35,23 +35,23 @@ VIEW AS CODE (NOT PREVIEW) TO VISUALIZE PATHS
             /crosshair.png
             /explosion_particle.png
             /fence.png
-            /friendly_alien.png
+            /friendly_alien.png -- Beck Grah; Pixelorama
             /ghostss.png
             /house.png
             /meteor.png
             /moon.png
             /phaser.png
-            /planet1.png
-            /planet2.png
-            /planet3.png
+            /planet1.png -- Beck Grah; Pixelorama
+            /planet2.png -- Beck Grah; Pixelorama
+            /planet3.png -- Beck Grah; Pixelorama
             /space.png
             /spaceman_ss.json -- Adam Top; Pixilart
             /sprayBottle.png
             /sprayBottleWin.png
             /star.png
-            /sun.png
+            /sun.png -- Beck Grah; Pixelorama
             /treatWin.png
-            /twinkling_star.png
+            /twinkling_star.png -- Beck Grah; Pixelorama
             /ufo.png
             /walkingss.png
         /assets.json
