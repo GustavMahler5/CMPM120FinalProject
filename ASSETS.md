@@ -1,3 +1,5 @@
+VIEW AS CODE (NOT PREVIEW) TO VISUALIZE PATHS
+---------------------------------------------
 /assets
     /audio
         /enemySpawn.wav
