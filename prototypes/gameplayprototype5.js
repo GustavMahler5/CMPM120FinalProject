@@ -46,7 +46,7 @@ class GameplayPrototype5 extends BaseScene {
         this.load.audio('suspicious', '../assets/audio/suspicious.mp3');
         this.load.audio('enemySpawnSoundEffect', '../assets/audio/enemySpawn.wav');
         this.load.audio('laser', '../assets/audio/laser.wav');
-        this.load.json('score', '../assets/score_suspicious.json');
+        this.load.json('score_suspicious', '../assets/score_suspicious.json');
 
         this.load.image('planet1', '../assets/images/gameplay/planet1.png');
         this.load.image('planet2', '../assets/images/gameplay/planet2.png');
@@ -76,7 +76,7 @@ class GameplayPrototype5 extends BaseScene {
 
         this.scaleFactor = 4;
         this.planet_array = ['planet1', 'planet2', 'planet3'];
-        this.score = this.cache.json.get('score');
+        this.score = this.cache.json.get('score_suspicious');
         this.notes = this.score.notes;
         this.songInfo = this.score.song;
         console.log(this.score);
