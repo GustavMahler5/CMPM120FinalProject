@@ -241,7 +241,7 @@ class GameplayPrototype3 extends BaseScene {
         }
 
         this.lastBeatEvent = this.lastBeat;
-
+    
         let evenBeat = (this.lastBeat % 2 == 0);
 
         this.updateColors(evenBeat);
