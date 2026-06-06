@@ -6,6 +6,7 @@
         /menu.wav -- Adam Top, Bonnie Montgomery
         /paranoia.mp3
         /suspicious.mp3 - Jason Holtman, Orbweaver
+        /bossa.mp3 - Jason Holtman, Orbweaver
         /tick.wav
     /images
         /menu_button_prototype.png

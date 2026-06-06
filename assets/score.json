@@ -1,155 +1,156 @@
 {
     "song" : [
         { "name": "jubeatb2b", "bpm": 140, "startdelay": -0.3, "pickupbeats": 2 },
-        { "name": "paranoia", "bpm": 180, "startdelay": 0.25, "pickupbeats": 0 }
+        { "name": "paranoia", "bpm": 180, "startdelay": 0.25, "pickupbeats": 0 },
+        { "name": "bossa", "bpm": 130, "startdelay": 0, "pickupbeats": 0 }
     ],
 
     "notes": [
-        { "measure": 3, "beat": 1, "type": "dog" },
-        { "measure": 3, "beat": 2, "type": "rat" },
+        { "measure": 3, "beat": 1, "type": "cow" },
+        { "measure": 3, "beat": 2, "type": "ghost" },
 
-        { "measure": 4, "beat": 1, "type": "cat" },
+        { "measure": 4, "beat": 1, "type": "human" },
 
-        { "measure": 5, "beat": 1, "type": "dog" },
-        { "measure": 5, "beat": 2, "type": "cat" },
-        { "measure": 5, "beat": 4.5, "type": "cat" },
+        { "measure": 5, "beat": 1, "type": "cow" },
+        { "measure": 5, "beat": 2, "type": "human" },
+        { "measure": 5, "beat": 4.5, "type": "human" },
 
-        { "measure": 6, "beat": 1, "type": "rat" },
+        { "measure": 6, "beat": 1, "type": "ghost" },
 
-        { "measure": 7, "beat": 1, "type": "cat" },
-        { "measure": 7, "beat": 4, "type": "dog" },
+        { "measure": 7, "beat": 1, "type": "human" },
+        { "measure": 7, "beat": 4, "type": "cow" },
 
-        { "measure": 8, "beat": 1, "type": "rat" },
-        { "measure": 8, "beat": 4, "type": "dog" },
+        { "measure": 8, "beat": 1, "type": "ghost" },
+        { "measure": 8, "beat": 4, "type": "cow" },
 
-        { "measure": 9, "beat": 1, "type": "rat" },
+        { "measure": 9, "beat": 1, "type": "ghost" },
 
-        { "measure": 10, "beat": 1, "type": "cat" },
-        { "measure": 10, "beat": 2, "type": "rat" },
+        { "measure": 10, "beat": 1, "type": "human" },
+        { "measure": 10, "beat": 2, "type": "ghost" },
 
-        { "measure": 11, "beat": 1, "type": "rat" },
+        { "measure": 11, "beat": 1, "type": "ghost" },
 
-        { "measure": 12, "beat": 1, "type": "dog" },
+        { "measure": 12, "beat": 1, "type": "cow" },
 
-        { "measure": 13, "beat": 1, "type": "cat" },
-        { "measure": 13, "beat": 4, "type": "dog" },
+        { "measure": 13, "beat": 1, "type": "human" },
+        { "measure": 13, "beat": 4, "type": "cow" },
 
-        { "measure": 14, "beat": 1, "type": "rat" },
+        { "measure": 14, "beat": 1, "type": "ghost" },
 
-        { "measure": 15, "beat": 1, "type": "dog" },
+        { "measure": 15, "beat": 1, "type": "cow" },
 
-        { "measure": 16, "beat": 1, "type": "cat" },
+        { "measure": 16, "beat": 1, "type": "human" },
 
-        { "measure": 17, "beat": 1, "type": "dog" },
+        { "measure": 17, "beat": 1, "type": "cow" },
 
-        { "measure": 18, "beat": 1, "type": "cat" },
-        { "measure": 18, "beat": 2, "type": "rat" },
-        { "measure": 18, "beat": 3, "type": "rat" },
-        { "measure": 18, "beat": 4, "type": "rat" },
+        { "measure": 18, "beat": 1, "type": "human" },
+        { "measure": 18, "beat": 2, "type": "ghost" },
+        { "measure": 18, "beat": 3, "type": "ghost" },
+        { "measure": 18, "beat": 4, "type": "ghost" },
 
-        { "measure": 19, "beat": 1, "type": "cat" },
-        { "measure": 19, "beat": 2, "type": "rat" },
-        { "measure": 19, "beat": 3, "type": "rat" },
-        { "measure": 19, "beat": 4, "type": "rat" },
+        { "measure": 19, "beat": 1, "type": "human" },
+        { "measure": 19, "beat": 2, "type": "ghost" },
+        { "measure": 19, "beat": 3, "type": "ghost" },
+        { "measure": 19, "beat": 4, "type": "ghost" },
 
-        { "measure": 20, "beat": 1, "type": "cat" },
+        { "measure": 20, "beat": 1, "type": "human" },
 
-        { "measure": 21, "beat": 1, "type": "dog" },
-        { "measure": 21, "beat": 2, "type": "rat" },
+        { "measure": 21, "beat": 1, "type": "cow" },
+        { "measure": 21, "beat": 2, "type": "ghost" },
 
-        { "measure": 22, "beat": 1, "type": "cat" },
+        { "measure": 22, "beat": 1, "type": "human" },
 
-        { "measure": 23, "beat": 1, "type": "dog" },
-        { "measure": 23, "beat": 2, "type": "cat" },
-        { "measure": 23, "beat": 4.5, "type": "cat" },
+        { "measure": 23, "beat": 1, "type": "cow" },
+        { "measure": 23, "beat": 2, "type": "human" },
+        { "measure": 23, "beat": 4.5, "type": "human" },
 
-        { "measure": 24, "beat": 1, "type": "rat" },
+        { "measure": 24, "beat": 1, "type": "ghost" },
 
-        { "measure": 25, "beat": 1, "type": "cat" },
-        { "measure": 25, "beat": 4, "type": "dog" },
+        { "measure": 25, "beat": 1, "type": "human" },
+        { "measure": 25, "beat": 4, "type": "cow" },
 
-        { "measure": 26, "beat": 1, "type": "rat" },
-        { "measure": 26, "beat": 4, "type": "dog" },
+        { "measure": 26, "beat": 1, "type": "ghost" },
+        { "measure": 26, "beat": 4, "type": "cow" },
 
-        { "measure": 27, "beat": 1, "type": "rat" },
+        { "measure": 27, "beat": 1, "type": "ghost" },
 
-        { "measure": 28, "beat": 1, "type": "cat" },
-        { "measure": 28, "beat": 2, "type": "rat" },
+        { "measure": 28, "beat": 1, "type": "human" },
+        { "measure": 28, "beat": 2, "type": "ghost" },
 
-        { "measure": 29, "beat": 1, "type": "dog" },
+        { "measure": 29, "beat": 1, "type": "cow" },
 
-        { "measure": 30, "beat": 1, "type": "cat" },
+        { "measure": 30, "beat": 1, "type": "human" },
 
-        { "measure": 31, "beat": 1, "type": "rat" },
+        { "measure": 31, "beat": 1, "type": "ghost" },
 
-        { "measure": 32, "beat": 1, "type": "cat" },
+        { "measure": 32, "beat": 1, "type": "human" },
 
-        { "measure": 33, "beat": 1, "type": "rat" },
+        { "measure": 33, "beat": 1, "type": "ghost" },
 
-        { "measure": 34, "beat": 1, "type": "dog" },
+        { "measure": 34, "beat": 1, "type": "cow" },
 
-        { "measure": 35, "beat": 1, "type": "cat" },
+        { "measure": 35, "beat": 1, "type": "human" },
 
-        { "measure": 36, "beat": 1, "type": "cat" },
-        { "measure": 36, "beat": 2, "type": "rat" },
-        { "measure": 36, "beat": 3, "type": "rat" },
-        { "measure": 36, "beat": 4, "type": "rat" },
+        { "measure": 36, "beat": 1, "type": "human" },
+        { "measure": 36, "beat": 2, "type": "ghost" },
+        { "measure": 36, "beat": 3, "type": "ghost" },
+        { "measure": 36, "beat": 4, "type": "ghost" },
 
-        { "measure": 37, "beat": 1, "type": "cat" },
-        { "measure": 37, "beat": 2, "type": "rat" },
-        { "measure": 37, "beat": 3, "type": "rat" },
-        { "measure": 37, "beat": 4, "type": "rat" },
+        { "measure": 37, "beat": 1, "type": "human" },
+        { "measure": 37, "beat": 2, "type": "ghost" },
+        { "measure": 37, "beat": 3, "type": "ghost" },
+        { "measure": 37, "beat": 4, "type": "ghost" },
 
-        { "measure": 38, "beat": 1, "type": "cat" },
-        { "measure": 38, "beat": 2, "type": "dog" },
+        { "measure": 38, "beat": 1, "type": "human" },
+        { "measure": 38, "beat": 2, "type": "cow" },
 
-        { "measure": 39, "beat": 1, "type": "cat" },
-        { "measure": 39, "beat": 2, "type": "dog" },
+        { "measure": 39, "beat": 1, "type": "human" },
+        { "measure": 39, "beat": 2, "type": "cow" },
 
-        { "measure": 40, "beat": 1, "type": "cat" },
-        { "measure": 40, "beat": 2, "type": "dog" },
+        { "measure": 40, "beat": 1, "type": "human" },
+        { "measure": 40, "beat": 2, "type": "cow" },
 
-        { "measure": 41, "beat": 1, "type": "cat" },
-        { "measure": 41, "beat": 2, "type": "dog" },
+        { "measure": 41, "beat": 1, "type": "human" },
+        { "measure": 41, "beat": 2, "type": "cow" },
 
-        { "measure": 42, "beat": 2, "type": "cat" },
+        { "measure": 42, "beat": 2, "type": "human" },
 
-        { "measure": 43, "beat": 1, "type": "dog" },
-        { "measure": 43, "beat": 2, "type": "cat" },
+        { "measure": 43, "beat": 1, "type": "cow" },
+        { "measure": 43, "beat": 2, "type": "human" },
 
-        { "measure": 44, "beat": 1, "type": "cat" },
-        { "measure": 44, "beat": 2, "type": "dog" },
+        { "measure": 44, "beat": 1, "type": "human" },
+        { "measure": 44, "beat": 2, "type": "cow" },
 
-        { "measure": 45, "beat": 1, "type": "cat" },
-        { "measure": 45, "beat": 2, "type": "dog" },
+        { "measure": 45, "beat": 1, "type": "human" },
+        { "measure": 45, "beat": 2, "type": "cow" },
 
 
 
-        { "measure": 46, "beat": 2.5, "type": "rat" },
-        { "measure": 46, "beat": 3.5, "type": "rat" },
-        { "measure": 46, "beat": 4.5, "type": "rat" },
+        { "measure": 46, "beat": 2.5, "type": "ghost" },
+        { "measure": 46, "beat": 3.5, "type": "ghost" },
+        { "measure": 46, "beat": 4.5, "type": "ghost" },
 
-        { "measure": 47, "beat": 1.5, "type": "rat" },
-        { "measure": 47, "beat": 2, "type": "rat" },
+        { "measure": 47, "beat": 1.5, "type": "ghost" },
+        { "measure": 47, "beat": 2, "type": "ghost" },
 
-        { "measure": 48, "beat": 1, "type": "rat" },
-        { "measure": 48, "beat": 2, "type": "cat" },
+        { "measure": 48, "beat": 1, "type": "ghost" },
+        { "measure": 48, "beat": 2, "type": "human" },
 
-        { "measure": 49, "beat": 2, "type": "dog" },
+        { "measure": 49, "beat": 2, "type": "cow" },
 
-        { "measure": 50, "beat": 3.5, "type": "cat" },
-        { "measure": 50, "beat": 4.5, "type": "rat" },
+        { "measure": 50, "beat": 3.5, "type": "human" },
+        { "measure": 50, "beat": 4.5, "type": "ghost" },
 
-        { "measure": 51, "beat": 2, "type": "dog" },
+        { "measure": 51, "beat": 2, "type": "cow" },
 
-        { "measure": 52, "beat": 1, "type": "cat" },
-        { "measure": 52, "beat": 2, "type": "rat" },
+        { "measure": 52, "beat": 1, "type": "human" },
+        { "measure": 52, "beat": 2, "type": "ghost" },
 
-        { "measure": 53, "beat": 2, "type": "dog" },
+        { "measure": 53, "beat": 2, "type": "cow" },
 
-        { "measure": 54, "beat": 1, "type": "cat" },
-        { "measure": 54, "beat": 2, "type": "rat" },
+        { "measure": 54, "beat": 1, "type": "human" },
+        { "measure": 54, "beat": 2, "type": "ghost" },
 
-        { "measure": 55, "beat": 1.5, "type": "rat" }
+        { "measure": 55, "beat": 1.5, "type": "ghost" }
     ]
 }

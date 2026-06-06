@@ -15,14 +15,15 @@ class GameplayPrototype2 extends BaseScene {
         /*
             jubeatb2b = 0
             paranoia = 1
+            bossa = 2
         */
-        this.SONG = 0;
+        this.SONG = 2;
         
         this.ENTITY_TIMING_CONFIG =  {
 
-            cat: { anticipationBeats: 2 },
-            rat: { anticipationBeats: 1.5 },
-            dog: { anticipationBeats: 3 }
+            human: { anticipationBeats: 2 },
+            ghost: { anticipationBeats: 1.5 },
+            cow: { anticipationBeats: 3 }
 
         };
 
@@ -41,6 +42,7 @@ class GameplayPrototype2 extends BaseScene {
 
         this.load.audio('paranoia', '../assets/audio/paranoia.mp3');
         this.load.audio('jubeatb2b', '../assets/audio/jubeatb2b.mp3');
+        this.load.audio('bossa', '../assets/audio/bossa.mp3');
         this.load.json('score', '../assets/score.json');
         this.load.pack("main", "../assets/assets.json");
 
@@ -89,8 +91,8 @@ class GameplayPrototype2 extends BaseScene {
         this.createScene();
 
         this.backButton = this.add.text(
-            this.SCREEN_WIDTH * 0.1,
-            this.SCREEN_HEIGHT * 0.1,
+            this.SCREEN_WIDTH * 0.05,
+            this.SCREEN_HEIGHT * 0.05,
             `<- Back`)
             .setStyle({ fontSize: `32px`, color: '#FFFFFF' })
             .setOrigin(0, 0)
@@ -281,17 +283,17 @@ class GameplayPrototype2 extends BaseScene {
             "ufo")
             .setOrigin(0.5, 0.5)
             .setDepth(10)
-            .setScale(0.18);
+            .setScale(0.25);
 
         let ufofx1 = this.ufo.enableFilters().filters.external.addGlow(0xffff00, 2, 0, 1, false, 10, 32);
         let ufofx2 = this.ufo.enableFilters().filters.external.addGlow(0xff0000, 2, 2);
 
         this.triangle = this.add.triangle(
             this.ufo.x,        // object x
-            this.SCREEN_HEIGHT * 0.5,       // object y
+            this.SCREEN_HEIGHT * 0.55,       // object y
             0, 0,                           // top vertex
-            -50, 500,                      // bottom left
-            50, 500,                       // bottom right
+            -50, 475,                      // bottom left
+            50, 475,                       // bottom right
             0xFFFF00,
         ).setOrigin(0, 0.5);
 
@@ -317,32 +319,32 @@ class GameplayPrototype2 extends BaseScene {
             0,
             "moon")
             .setOrigin(0.5, 0.5)
-            .setScale(0.2)
+            .setScale(0.25)
             .setDepth(10);
 
         this.house = this.add.sprite(
-            this.SCREEN_WIDTH * 0.2,
-            this.SCREEN_HEIGHT * 0.9,
+            this.SCREEN_WIDTH * 0.1,
+            this.SCREEN_HEIGHT * 0.95,
             "house")
             .setOrigin(0.5, 1)
-            .setScale(0.2)
+            .setScale(0.3)
             .setDepth(11);
 
         this.fence = this.add.sprite(
             this.SCREEN_WIDTH,
-            this.SCREEN_HEIGHT * 0.87,
+            this.SCREEN_HEIGHT * 0.9,
             "fence")
             .setOrigin(1, 1)
-            .setScale(0.35)
+            .setScale(0.45)
             .setDepth(100);
 
-        this.otherFence = this.add.sprite(
-            this.SCREEN_WIDTH - this.fence.width,
-            this.SCREEN_HEIGHT * 0.87,
-            "fence")
-            .setOrigin(1, 1)
-            .setScale(0.35)
-            .setDepth(100);
+        // this.otherFence = this.add.sprite(
+        //     this.SCREEN_WIDTH - this.fence.width,
+        //     this.SCREEN_HEIGHT * 0.9,
+        //     "fence")
+        //     .setOrigin(0.5, 1)
+        //     .setScale(0.4)
+        //     .setDepth(100);
 
         // this.conveyor = this.add.sprite(
         //     this.SCREEN_WIDTH * 0.55,
@@ -363,7 +365,7 @@ class GameplayPrototype2 extends BaseScene {
         this.stars = this.add.group();
         this.otherStars = this.add.group();
 
-        const STAR_COUNT = 24;
+        const STAR_COUNT = 32;
 
         for (let i = 1; i <= STAR_COUNT; i++) {
 
@@ -371,7 +373,7 @@ class GameplayPrototype2 extends BaseScene {
 
                 let star = this.add.sprite(
                     this.SCREEN_WIDTH * Math.random(), 
-                    (this.SCREEN_HEIGHT * 0.45 * Math.random()), 
+                    (this.SCREEN_HEIGHT * 0.5 * Math.random()), 
                     "star")
                     .setScale(0.001)
                     .setAngle(Math.random() * 90);
@@ -697,9 +699,9 @@ this.currentBeatContinuous (Elapsed beats with decimals): ${this.currentBeatCont
     spawnEntity(note, config) {
 
         let sprites = {
-            dog: "walking",
-            rat: "walking",
-            cat: "ghost"
+            cow: "walking",
+            ghost: "ghost",
+            human: "walking"
         };
 
         let sprite = sprites[note.type] ?? null;
@@ -710,7 +712,7 @@ this.currentBeatContinuous (Elapsed beats with decimals): ${this.currentBeatCont
             this.SCREEN_HEIGHT * 0.84,
             sprite)
             .setOrigin(0.5, 1)
-            .setScale(0.05);
+            .setScale(0.075);
 
         let spawn = this.SCREEN_WIDTH;
         let judgementZone = this.ufo.x;            // judgement zone / UFO line
@@ -889,7 +891,15 @@ this.currentBeatContinuous (Elapsed beats with decimals): ${this.currentBeatCont
 
             star.setAlpha(evenBeat ? 1 : 0.3);
             star.setScale(evenBeat ? 0.02 : 0.01);
-            // star.glow.outerStrength = evenBeat ? 4 : 0;
+            // this.tweens.add({
+
+            //         targets: star,
+            //         scale: (evenBeat ? 0.02 : 0.01),
+            //         duration: 50,
+            //         alpha: (evenBeat ? 1 : 0.3),
+            //         yoyo: false
+
+            //     });
 
         });
 
@@ -897,7 +907,15 @@ this.currentBeatContinuous (Elapsed beats with decimals): ${this.currentBeatCont
 
             star.setAlpha(evenBeat ? 0.3 : 1);
             star.setScale(evenBeat ? 0.01 : 0.02);
-            // star.glow.outerStrength = evenBeat ? 0 : 4;
+            // this.tweens.add({
+
+            //         targets: star,
+            //         scale: (evenBeat ? 0.3 : 1),
+            //         duration: 50,
+            //         alpha: (evenBeat ? 0.01 : 0.02),
+            //         yoyo: false
+
+            //     });
 
         });
         
