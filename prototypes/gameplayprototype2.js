@@ -17,7 +17,7 @@ class GameplayPrototype2 extends BaseScene {
             paranoia = 1
             bossa = 2
         */
-        this.SONG = 2;
+        this.SONG = 0;
         
         this.ENTITY_TIMING_CONFIG =  {
 
@@ -26,6 +26,8 @@ class GameplayPrototype2 extends BaseScene {
             cow: { anticipationBeats: 3 }
 
         };
+
+        this.ENTITY_SPAWN_LOCATION = 0.7
 
         // Error margins
         this.ERROR_MARGIN = 0.75;
@@ -330,11 +332,19 @@ class GameplayPrototype2 extends BaseScene {
             .setScale(0.3)
             .setDepth(11);
 
+        this.barn = this.add.sprite(
+            this.SCREEN_WIDTH * 0.9,
+            this.SCREEN_HEIGHT * 0.9,
+            "barn")
+            .setOrigin(0.5, 1)
+            .setScale(0.3)
+            .setDepth(11);
+
         this.fence = this.add.sprite(
-            this.SCREEN_WIDTH,
+            this.SCREEN_WIDTH * 0.5,
             this.SCREEN_HEIGHT * 0.9,
             "fence")
-            .setOrigin(1, 1)
+            .setOrigin(0.5, 1)
             .setScale(0.45)
             .setDepth(100);
 
@@ -708,13 +718,13 @@ this.currentBeatContinuous (Elapsed beats with decimals): ${this.currentBeatCont
 
         let entity = this.add.sprite(
             
-            this.SCREEN_WIDTH,
+            this.SCREEN_WIDTH * this.ENTITY_SPAWN_LOCATION,
             this.SCREEN_HEIGHT * 0.84,
             sprite)
             .setOrigin(0.5, 1)
             .setScale(0.075);
 
-        let spawn = this.SCREEN_WIDTH;
+        let spawn = this.SCREEN_WIDTH * this.ENTITY_SPAWN_LOCATION;
         let judgementZone = this.ufo.x;            // judgement zone / UFO line
         let endingZone = this.SCREEN_WIDTH * 0.2;     // house position
 
@@ -750,11 +760,11 @@ this.currentBeatContinuous (Elapsed beats with decimals): ${this.currentBeatCont
 
         switch(note.type) {
 
-            case("dog") :
+            case("human") :
                 entity.play("walk");
                 break;
 
-            case("cat") :
+            case("ghost") :
                 entity.play("ghostwalk");
                 break;
         }

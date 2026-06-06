@@ -35,6 +35,11 @@
             },
             {
                 "type": "image",
+                "key": "barn",
+                "url": "../assets/images/gameplay/barn.png"
+            },
+            {
+                "type": "image",
                 "key": "moon",
                 "url": "../assets/images/gameplay/moon.png"
             },
