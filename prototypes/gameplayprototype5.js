@@ -329,7 +329,8 @@ class GameplayPrototype5 extends BaseScene {
             this.music.play({ 
                 loop: false, 
                 volume: 0.05,
-                rate: 1
+                rate: 1,
+                seek: 19
             });
 
             this.musicStarted = true;
@@ -693,7 +694,7 @@ class GameplayPrototype5 extends BaseScene {
         ).setScale(this.scaleFactor).setOrigin(.5, .5);
         entity.enemy = type;
         // left spawn
-        // this.sound.play('enemySpawnSoundEffect');
+        this.sound.play('enemySpawnSoundEffect');
         if (spawn % 2 == 0) {
             entity.spawnedFromLeft = true;
             this.tweens.add({
