@@ -14,6 +14,12 @@ class LevelSelect extends BaseScene{
 
         this.hoverSFX = this.sound.add('hover');
         this.selectionSFX = this.sound.add('selection');
+        //bgm
+        let music = this.sound.add("menu", {
+            volume: BaseScene.masterVolume,
+            loop: true
+        });
+        music.play();
 
         // add scene here to create button
         const scenes = [
