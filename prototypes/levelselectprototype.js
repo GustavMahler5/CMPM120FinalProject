@@ -6,9 +6,11 @@ class LevelSelect extends BaseScene{
     preload() {
         this.load.image("menu_button_prototype", "../assets/images/menu_button_prototype.png");
         this.load.audio("menu", "../assets/audio/menu.wav");
+        this.load.audio('hover', '../assets/audio/hoverSelection.mp3');
+        this.load.audio('selection', '../assets/audio/selection.mp3');
     }
 
-    create() {
+    onEnter() {
         this.cameras.main.setBackgroundColor(0xE0C6AD);
 
         //bgm
@@ -18,11 +20,14 @@ class LevelSelect extends BaseScene{
         });
         music.play();
 
+        this.hoverSFX = this.sound.add('hover');
+        this.selectionSFX = this.sound.add('selection');
+
         // add scene here to create button
         const scenes = [
             { key: "gameplayprototype",  label: "Prototype\n0" },
             { key: "gameplayprototype1", label: "Prototype\n1" },
-            { key: "gameplayprototype2", label: "Prototype\n2" },
+            { key: "tutorial", label: "Prototype\n2" },
             { key: "gameplayprototype3", label: "Prototype\n3" },
             { key: "gameplayprototype4", label: "Prototype\n4" },
             { key: "gameplayprototype5", label: "Prototype\n5" },
@@ -89,6 +94,10 @@ class LevelSelect extends BaseScene{
                     duration: 200,
                     ease: 'Sine.InOut'
                 });
+                this.hoverSFX.play({
+                    loop: false,
+                    volume: BaseScene.masterVolume * 1.5,
+                });
             });
             button.on("pointerout",  () => {
                 this.add.tween({
@@ -104,6 +113,10 @@ class LevelSelect extends BaseScene{
             button.on("pointerup", () => {
                 button.clearTint();
                 // removed, as scenes haven't been made yet
+                this.selectionSFX.play({
+                    loop: false,
+                    volume: BaseScene.masterVolume * 1.5,
+                });
                 this.handleButtonClick(container.scene.key);
             });
 

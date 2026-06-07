@@ -14,7 +14,7 @@ class BaseScene extends Phaser.Scene {
     SCREEN_WIDTH = 1080;
     SCREEN_HEIGHT = 720;
 
-    FADE_DURATION = 200;
+    FADE_DURATION = 500;
 
     MAXIMUM_SCORE = 1800;
 

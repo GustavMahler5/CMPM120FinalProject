@@ -17,13 +17,38 @@ class GameplayPrototype2 extends BaseScene {
             paranoia = 1
             bossa = 2
         */
-        this.SONG = 0;
+        this.SONG = 2;
         
-        this.ENTITY_TIMING_CONFIG =  {
+        this.ENTITY_TIMING_CONFIG = {
 
-            human: { anticipationBeats: 2 },
-            ghost: { anticipationBeats: 1.5 },
-            cow: { anticipationBeats: 3 }
+            human: {
+
+                anticipationBeats: 2,
+                cues: [
+                    { leadBeats: 1, sfx: "human"},
+                ]
+
+            },
+
+            cow: {
+
+                anticipationBeats: 3,
+                cues: [
+                    { leadBeats: 2, sfx: "cow"},
+                    { leadBeats: 1, sfx: "human"}
+                ]
+
+            },
+
+            ghost: {
+
+                anticipationBeats: 2,
+                cues: [
+                    { leadBeats: 1.5, sfx: "ghost"},
+                    { leadBeats: 0.5, sfx: "human"}
+                ]
+
+            }
 
         };
 
@@ -45,7 +70,12 @@ class GameplayPrototype2 extends BaseScene {
         this.load.audio('paranoia', '../assets/audio/paranoia.mp3');
         this.load.audio('jubeatb2b', '../assets/audio/jubeatb2b.mp3');
         this.load.audio('bossa', '../assets/audio/bossa.mp3');
-        this.load.json('score', '../assets/score.json');
+        this.load.audio('perfectok', '../assets/audio/perfectOk.mp3');
+        this.load.audio('miss', '../assets/audio/miss.mp3');
+        this.load.audio('cow', '../assets/audio/cow.mp3');
+        this.load.audio('ghost', '../assets/audio/laser.wav');
+        this.load.audio('human', '../assets/audio/miss.mp3');
+        this.load.json('score', '../assets/score2.json');
         this.load.pack("main", "../assets/assets.json");
 
     }
@@ -58,6 +88,7 @@ class GameplayPrototype2 extends BaseScene {
 
         this.score = this.cache.json.get('score');
         this.notes = this.score.notes;
+
         this.totalNotes = this.notes.length;
         this.songInfo = this.score.song;
         this.perfectPoints = this.MAXIMUM_SCORE / this.totalNotes;
@@ -79,6 +110,7 @@ class GameplayPrototype2 extends BaseScene {
 
         this.spawnIndex = 0;
         this.activeEntities = [];
+        this.scheduledCueBeats = [];
 
         this.notes.forEach(note => {
 
@@ -122,6 +154,7 @@ class GameplayPrototype2 extends BaseScene {
         this.updateEntities();
         this.spawnEntities();
         this.playBeatEvents();
+        this.playCueEvents();
 
     }
 
@@ -131,6 +164,17 @@ class GameplayPrototype2 extends BaseScene {
 
         // Add Music
         this.music = this.sound.add(`${this.songInfo[this.SONG].name}`);
+        this.perfectOkSFX = this.sound.add('perfectok');
+        this.missSFX = this.sound.add('miss');
+        
+        this.entityCueSFX = {
+
+            cow: this.sound.add("cow"),
+            human: this.sound.add("human"),
+            ghost: this.sound.add("ghost")
+
+        };
+
         this.musicStarted = false;
 
         this.music.once('complete', () => {
@@ -543,6 +587,11 @@ this.currentBeatContinuous (Elapsed beats with decimals): ${this.currentBeatCont
             this.judgement.setText("PERFECT!");
             this.judgement.setStyle({ color: "#FFD700"});
             evaluation = "perfect!";
+            this.perfectOkSFX.play({
+                loop: false,
+                // volume: BaseScene.masterVolume,
+                volume: 0.5
+            });
 
         } 
 
@@ -551,6 +600,11 @@ this.currentBeatContinuous (Elapsed beats with decimals): ${this.currentBeatCont
             this.judgement.setText("Ok");
             this.judgement.setStyle({ color: "#228B22"});
             evaluation = "ok";
+            this.perfectOkSFX.play({
+                loop: false,
+                // volume: BaseScene.masterVolume,
+                volume: 0.5
+            });
 
         } 
 
@@ -559,6 +613,11 @@ this.currentBeatContinuous (Elapsed beats with decimals): ${this.currentBeatCont
             this.judgement.setText("miss");
             this.judgement.setStyle({ color: "#D2D2D2"});
             evaluation = "miss";
+            this.missSFX.play({
+                loop: false,
+                // volume: BaseScene.masterVolume,
+                volume: 0.5
+            });
 
         }
 
@@ -663,6 +722,7 @@ this.currentBeatContinuous (Elapsed beats with decimals): ${this.currentBeatCont
             this.music.play({ 
                 loop: false, 
                 volume: BaseScene.masterVolume,
+                // seek: 30,
                 rate: 1
             });
 
@@ -683,7 +743,6 @@ this.currentBeatContinuous (Elapsed beats with decimals): ${this.currentBeatCont
             let config = this.ENTITY_TIMING_CONFIG[note.type];
 
             let targetBeat = ((note.measure - 1) * this.TIME_SIGNATURE) + note.beat;
-
             let spawnBeat = targetBeat - config.anticipationBeats;
 
             if (this.currentBeatContinuous >= spawnBeat) {
@@ -691,6 +750,13 @@ this.currentBeatContinuous (Elapsed beats with decimals): ${this.currentBeatCont
                 let entity = this.spawnEntity(note, config);
 
                 this.activeEntities.push(entity);
+
+                for (let cue of config.cues) {
+                    this.scheduledCueBeats.push({
+                        beat: targetBeat - cue.leadBeats,
+                        sfx: cue.sfx,
+                    });
+                }
 
                 this.spawnIndex++;
 
@@ -714,7 +780,7 @@ this.currentBeatContinuous (Elapsed beats with decimals): ${this.currentBeatCont
             human: "walking"
         };
 
-        let sprite = sprites[note.type] ?? null;
+        let sprite = sprites[note.type];
 
         let entity = this.add.sprite(
             
@@ -734,7 +800,7 @@ this.currentBeatContinuous (Elapsed beats with decimals): ${this.currentBeatCont
         let timeToJudge = config.anticipationBeats * this.BEAT_DURATION * 1000;
         let totalDuration = timeToJudge * (totalDistance / judgeDistance);
 
-        entity.x = spawn;
+        // entity.x = spawn;
 
         this.tweens.add({
 
@@ -756,7 +822,7 @@ this.currentBeatContinuous (Elapsed beats with decimals): ${this.currentBeatCont
 
         entity.noteType = note.type;
         entity.targetBeat = ((note.measure - 1) * this.TIME_SIGNATURE) + note.beat;
-        entity.judged = false;
+        // entity.judged = false;
 
         switch(note.type) {
 
@@ -849,6 +915,33 @@ this.currentBeatContinuous (Elapsed beats with decimals): ${this.currentBeatCont
         this.updateStarShine(evenBeat);
         this.updateMoonShine(evenBeat);
         this.updateBounces();
+
+    }
+
+
+
+    playCueEvents() {
+
+        if (!this.musicStarted) return;
+
+        for (let i = this.scheduledCueBeats.length - 1; i >= 0; i--) {
+
+            let cue = this.scheduledCueBeats[i];
+
+            if (this.currentBeatContinuous >= cue.beat) {
+
+                this.entityCueSFX[cue.sfx].play({
+                    loop: false,
+                    // volume: BaseScene.masterVolume,
+                    volume: 0.35,
+                    rate: 2
+                });
+
+                this.scheduledCueBeats.splice(i, 1);
+
+            }
+
+        }
 
     }
 
