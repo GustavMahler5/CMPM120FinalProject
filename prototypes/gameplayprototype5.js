@@ -13,12 +13,23 @@ class GameplayPrototype5 extends BaseScene {
         this.activeEntities = [];
         
         this.ENTITY_TIMING_CONFIG =  {
-            small: { anticipationBeats: 1.5 },
-            medium: { anticipationBeats: 2 },
-            large: { anticipationBeats: 3 },
-            xlarge: { anticipationBeats: 4 },
+            small: { anticipationBeats: 4 },
             xxlarge: { anticipationBeats: 5 }
         };
+
+        this.ENTITY_SPAWN_CONFIG = {
+            left_high: 0,
+            right_high: 1,
+            left_mid: 2,
+            right_mid: 3,
+            left_low: 4,
+            right_low: 5
+        }
+
+        this.ENTITY_TYPE_CONFIG = {
+            friendly: 1,
+            enemy: 0
+        }
 
         // Error margins
         this.ERROR_MARGIN = 0.6;
@@ -166,8 +177,6 @@ class GameplayPrototype5 extends BaseScene {
         this.spawnPoints.add(this.add.container(this.SCREEN_WIDTH + 20, this.SCREEN_HEIGHT * .5));
         this.spawnPoints.add(this.add.container(-20, this.SCREEN_HEIGHT * .7));
         this.spawnPoints.add(this.add.container(this.SCREEN_WIDTH + 20, this.SCREEN_HEIGHT * .7));
-        this.currSpawn = 0;
-
         this.laserSpawnLeft = this.add.container(this.SCREEN_WIDTH * .25, this.SCREEN_HEIGHT);
         this.laserSpawnRight = this.add.container(this.SCREEN_WIDTH * .75, this.SCREEN_HEIGHT);
 
@@ -204,6 +213,11 @@ class GameplayPrototype5 extends BaseScene {
 
         // On user input
         this.input.on('pointerdown', () => {
+
+            this.handleInput();
+        });
+
+        this.input.keyboard.on('keydown-SPACE', () => {
 
             this.handleInput();
         });
@@ -469,7 +483,7 @@ class GameplayPrototype5 extends BaseScene {
         laser.lineStyle(3, 0xd02b14, 1);
         laser.beginPath();
 
-        this.sound.play('laser');
+        this.sound.play('laser', { volume: 0.1 });
         this.cameras.main.shake(200, .005);
 
         switch (judgement) {
@@ -668,23 +682,19 @@ class GameplayPrototype5 extends BaseScene {
     }
 
     spawnEntity(note, config) {
-        const spawn = this.spawnPoints.getChildren()[this.currSpawn];
+        const spawn = this.ENTITY_SPAWN_CONFIG[note.spawn];
+        const type = this.ENTITY_TYPE_CONFIG[note.entity];
 
-        const rand = Phaser.Math.Between(0, 4);
         const entityList = ["angry_alien", "friendly_alien"];
-        let index = 0
-        if (rand == 4 ) {
-            index = 1;
-        }
         let entity = this.add.image(
-            spawn.x,
-            spawn.y,
-            entityList[index]
+            this.spawnPoints.getChildren()[spawn].x,
+            this.spawnPoints.getChildren()[spawn].y,
+            entityList[type]
         ).setScale(this.scaleFactor).setOrigin(.5, .5);
-        entity.enemy = index;
+        entity.enemy = type;
         // left spawn
-        this.sound.play('enemySpawnSoundEffect');
-        if (this.currSpawn % 2 == 0) {
+        // this.sound.play('enemySpawnSoundEffect');
+        if (spawn % 2 == 0) {
             entity.spawnedFromLeft = true;
             this.tweens.add({
                 targets: entity,
@@ -741,10 +751,6 @@ class GameplayPrototype5 extends BaseScene {
         entity.noteType = note.type;
         entity.targetBeat = ((note.measure - 1) * this.TIME_SIGNATURE) + note.beat;
         entity.judged = false;
-        this.currSpawn++;
-        if (this.currSpawn >= this.spawnPoints.getChildren().length) {
-            this.currSpawn = 0;
-        }
 
         return entity;
 
