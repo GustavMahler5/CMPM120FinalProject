@@ -12,12 +12,8 @@ class LevelSelect extends BaseScene{
     onEnter() {
         this.cameras.main.setBackgroundColor(0xE0C6AD);
 
-        //bgm
-        let music = this.sound.add("menu", {
-            volume: BaseScene.masterVolume,
-            loop: true
-        });
-        music.play();
+        this.hoverSFX = this.sound.add('hover');
+        this.selectionSFX = this.sound.add('selection');
 
         // add scene here to create button
         const scenes = [
