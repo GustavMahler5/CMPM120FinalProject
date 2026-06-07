@@ -144,7 +144,7 @@ class LogoScene extends BaseScene {
                     duration: 1000,
                     hold: 2000,
                     onComplete: () => {
-                        this.changeScene("cinematicsmenuprototype1");
+                        this.changeScene("menu");
                     }
                 },
             ]

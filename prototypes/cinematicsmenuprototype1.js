@@ -1,3 +1,4 @@
+// actively building in menu.js -----------------------
 class CinematicsMenuPrototype1 extends BaseScene {
 
 
@@ -7,12 +8,21 @@ class CinematicsMenuPrototype1 extends BaseScene {
 
     preload() {
         this.load.setBaseURL('./');
-        this.load.image("menu_button_prototype", "../assets/images/menu_button_prototype.png");
+        this.load.image("menu_button", "../assets/images/menu_button.png");
+        this.load.image("background", "../assets/images/title_bg.png");
+        this.load.audio("menu", "../assets/audio/menu.wav");
     }
 
     onEnter() {
         this.cameras.main.setBackgroundColor(0xE0C6AD);
+        //bgm
+        let music = this.sound.add("menu", {
+            volume: BaseScene.masterVolume,
+            loop: true
+        });
+        music.play();
 
+        this.add.image(640, 360, "background");
         
         const buttonLabels = ["Start", "Levels", "Settings", "Credits", "Exit"];
         const buttonBackground = this.add.rectangle(-200, this.SCREEN_HEIGHT / 2, this.SCREEN_WIDTH / 4, this.SCREEN_HEIGHT, 0xC1B2A2);
@@ -46,12 +56,12 @@ class CinematicsMenuPrototype1 extends BaseScene {
                 ease: 'Sine.Out'
             }
         });
-
+        
         buttonLabels.forEach((label, i) => {
             const x = startX;
             const y = (startY) + (buttonSpacing * i);
 
-            const button = this.add.image(0, 0, "menu_button_prototype").setScale(buttonScale);
+            const button = this.add.image(0, 0, "menu_button").setScale(buttonScale);
             const text = this.add.text(0, 0, label, {
                 fontSize: '32px', 
                 fill: '#fff',
@@ -155,5 +165,5 @@ class CinematicsMenuPrototype1 extends BaseScene {
                 break;
 
         }
-    }
+    }   
 }

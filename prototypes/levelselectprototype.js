@@ -5,7 +5,6 @@ class LevelSelect extends BaseScene{
     
     preload() {
         this.load.image("menu_button_prototype", "../assets/images/menu_button_prototype.png");
-        this.load.audio("menu", "../assets/audio/menu.wav");
         this.load.audio('hover', '../assets/audio/hoverSelection.mp3');
         this.load.audio('selection', '../assets/audio/selection.mp3');
     }
@@ -19,9 +18,6 @@ class LevelSelect extends BaseScene{
             loop: true
         });
         music.play();
-
-        this.hoverSFX = this.sound.add('hover');
-        this.selectionSFX = this.sound.add('selection');
 
         // add scene here to create button
         const scenes = [
