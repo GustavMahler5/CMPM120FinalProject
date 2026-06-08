@@ -2,14 +2,28 @@ VIEW AS CODE (NOT PREVIEW) TO VISUALIZE PATHS
 ---------------------------------------------
 /assets
     /audio
-        /enemySpawn.wav -- Beck Grah; BFXR
-        /jubeatb2b.mp3
-        /laser.wav -- Beck Grah; BFXR
-        /menu.wav -- Adam Top, Bonnie Montgomery
-        /paranoia.mp3
-        /suspicious.mp3 - Jason Holtman, Orbweaver
-        /bossa.mp3 - Jason Holtman, Orbweaver
-        /tick.wav
+        /SFX
+            /level2
+                /enemySpawn.wav -- Beck Grah; BFXR
+                /friendSpawn.wav
+                /laser.wav -- Beck Grah; BFXR
+                /tick.wav
+            /level3
+                /cow.mp3
+                /metronome.mp3
+                /miss.mp3
+                /perfectOk.mp3
+            /menu
+                /hoverSelection.mp3
+                /selection.mp3
+        /songs
+            /beef_installer.wav - Adam Top, Bonnie Montgomery
+            /bossa.mp3 - Jason Holtman, Orbweaver
+            /jubeatb2b.mp3
+            /menu.wav -- Adam Top, Bonnie Montgomery
+            /paranoia.mp3
+            /suspicious.mp3 - Jason Holtman, Orbweaver
+### update below
     /images
         /menu_button_prototype.png
         /menu_button.png -- Adam Top; Pixilart
