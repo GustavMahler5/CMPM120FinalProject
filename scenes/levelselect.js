@@ -104,12 +104,12 @@ class LevelSelect extends BaseScene{
                 const container = this.add.container(x, y, [button, text]);
                 container.scene = scene;
                 container.setSize(button.displayWidth, button.displayHeight);
-                button.setInteractive();
+                container.setInteractive();
 
             }
 
             // hover + click events
-            button.on("pointerover", () => {
+            container.on("pointerover", () => {
                 this.add.tween({
                     targets: button,
                     scale: buttonScale + (buttonScale / 8),
@@ -121,7 +121,7 @@ class LevelSelect extends BaseScene{
                     volume: BaseScene.masterVolume * 1.5,
                 });
             });
-            button.on("pointerout",  () => {
+            container.on("pointerout",  () => {
                 this.add.tween({
                     targets: button,
                     scale: buttonScale,
@@ -129,10 +129,10 @@ class LevelSelect extends BaseScene{
                     ease: 'Sine.InOut'
                 });
             });
-            button.on("pointerdown", () => {
+            container.on("pointerdown", () => {
                 button.setTint(0xdddddd);
             });
-            button.on("pointerup", () => {
+            container.on("pointerup", () => {
                 button.clearTint();
                 // removed, as scenes haven't been made yet
                 this.selectionSFX.play({
