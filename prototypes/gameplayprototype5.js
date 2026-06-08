@@ -27,7 +27,7 @@ class GameplayPrototype5 extends BaseScene {
         }
 
         this.ENTITY_TYPE_CONFIG = {
-            friendly: 1,
+            friend: 1,
             enemy: 0
         }
 
@@ -56,6 +56,7 @@ class GameplayPrototype5 extends BaseScene {
     preload() {
         this.load.audio('suspicious', '../assets/audio/suspicious.mp3');
         this.load.audio('enemySpawnSoundEffect', '../assets/audio/enemySpawn.wav');
+        this.load.audio('friendSpawnSoundEffect', '../assets/audio/friendSpawn.wav');
         this.load.audio('laser', '../assets/audio/laser.wav');
         this.load.json('score_suspicious', '../assets/score_suspicious.json');
 
@@ -329,7 +330,8 @@ class GameplayPrototype5 extends BaseScene {
             this.music.play({ 
                 loop: false, 
                 volume: 0.05,
-                rate: 1
+                rate: 1,
+                seek: 18
             });
 
             this.musicStarted = true;
@@ -693,7 +695,12 @@ class GameplayPrototype5 extends BaseScene {
         ).setScale(this.scaleFactor).setOrigin(.5, .5);
         entity.enemy = type;
         // left spawn
-        // this.sound.play('enemySpawnSoundEffect');
+        if (entity.enemy === 0) {
+            this.sound.play('enemySpawnSoundEffect');
+        }
+        else {
+            this.sound.play('friendSpawnSoundEffect');
+        }
         if (spawn % 2 == 0) {
             entity.spawnedFromLeft = true;
             this.tweens.add({
