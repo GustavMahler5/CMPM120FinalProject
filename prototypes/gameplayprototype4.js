@@ -253,6 +253,14 @@ class GameplayPrototype4 extends BaseScene {
 
         this.lastBeatEvent = currentBeatFloor;
         this.tickSound.play({ volume: 0.1 });
+        
+    for (let entity of this.activeEntities) {
+
+        if (entity.noteType === "ball") {
+            this.sound.play("ballBeat", { volume: 0.1, seek: 0.0199 });
+        }
+
+    }
 
         for (let noteName in this.noteCooldowns) {
 
