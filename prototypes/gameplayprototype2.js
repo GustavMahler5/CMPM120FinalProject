@@ -199,7 +199,7 @@ class GameplayPrototype2 extends BaseScene {
             this.fade(true, this.FADE_DURATION);
             this.time.delayedCall(this.FADE_DURATION, () => {
 
-                this.scene.start('evaluationscene', { score: this.totalScore });
+                this.scene.start('evaluationscene', { score: this.totalScore, level: 3 });
 
             });
             
@@ -739,10 +739,10 @@ this.currentBeatContinuous (Elapsed beats with decimals): ${this.currentBeatCont
             this.music.play({ 
                 loop: false, 
                 volume: BaseScene.masterVolume,
-                seek: 13,
+                // seek: 13,
                 // seek: 75,
                 // seek: 100,
-                // seek: 145,
+                seek: 145,
                 rate: 1
             });
 

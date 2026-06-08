@@ -215,7 +215,7 @@ class Level3 extends BaseScene {
             this.fade(true, this.FADE_DURATION);
             this.time.delayedCall(this.FADE_DURATION, () => {
 
-                this.scene.start('evaluationscene', { score: this.totalScore });
+                this.scene.start('evaluationscene', { score: this.totalScore, level: 3 });
 
             });
             

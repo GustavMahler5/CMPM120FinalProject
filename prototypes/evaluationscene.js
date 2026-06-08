@@ -38,17 +38,20 @@ class EvaluationScene extends BaseScene {
 
                 bestScore = Math.max(this.score, BaseScene.level1BestScore);
                 BaseScene.level1BestScore = bestScore;
+                break;
                 
             
             case(2):
 
                 bestScore = Math.max(this.score, BaseScene.level2BestScore);
                 BaseScene.level2BestScore = bestScore;
+                break;
 
             case(3):
                 
                 bestScore = Math.max(this.score, BaseScene.level3BestScore);
                 BaseScene.level3BestScore = bestScore;
+                break;
             
             default:
                 return;
@@ -93,7 +96,7 @@ class EvaluationScene extends BaseScene {
                 .setInteractive({useHandCursor: true})
                 .on('pointerdown', () => {
 
-                    this.changeScene('levelSelect');
+                    this.changeScene('levelselectprototype');
 
                 }
             )
