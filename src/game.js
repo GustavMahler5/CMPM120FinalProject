@@ -4,7 +4,8 @@ let scenes = {
 
     level3: Level3,
     level3tutorial: Level3Tutorial,
-    pause: PauseScene
+    pause: PauseScene,
+    evaluationscene: EvaluationScene
 
 };
 
