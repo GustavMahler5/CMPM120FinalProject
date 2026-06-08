@@ -5,6 +5,7 @@
 
 let prototypeScenes = {
 
+
     cinematics: CinematicsPrototype,
     cinematicsMenu1: CinematicsMenuPrototype1,
     cinematicsMenu: CinematicsMenuPrototype,
@@ -25,7 +26,9 @@ let prototypeScenes = {
     jaylalevelstart: Start,
     pause: PauseScene
 
+
 };
+
 
 const sceneKey = document.body.dataset.scene;
 const StartScene = prototypeScenes[sceneKey];

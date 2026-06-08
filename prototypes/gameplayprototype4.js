@@ -22,6 +22,9 @@ class GameplayPrototype4 extends BaseScene {
 
     preload() {
 
+        this.load.image("roomBackground", "../assets/images/gameplay/roomBackground.png");
+        this.load.video("windowVideo", "../assets/windowVideo.mp4");
+
         this.load.audio("cat_tick", "../assets/audio/tick.wav");
 
         this.load.image("catDefault", "../assets/images/gameplay/catDefault.png");
@@ -31,9 +34,18 @@ class GameplayPrototype4 extends BaseScene {
 
         this.load.image("catTreat", "../assets/images/gameplay/catTreat.png");
         this.load.image("treatWin", "../assets/images/gameplay/treatWin.png");
+        this.load.image("treatHand1", "../assets/images/gameplay/treatHand1.png");
+        this.load.image("treatHand2", "../assets/images/gameplay/treatHand2.png");
+
+
 
         this.load.image("sprayBottle", "../assets/images/gameplay/sprayBottle.png");
         this.load.image("sprayBottleWin", "../assets/images/gameplay/sprayBottleWin.png");
+
+        this.load.spritesheet("sprayBottleSheet", "../assets/images/gameplay/spray_sprite_sheet.png", {
+        frameWidth: 1080,
+        frameHeight: 720
+        });
 
     }
 
@@ -95,6 +107,37 @@ class GameplayPrototype4 extends BaseScene {
 
         this.createScene();
 
+        this.anims.create({
+            key: "sprayAnimation",
+            frames: this.anims.generateFrameNumbers("sprayBottleSheet", {
+                start: 0,
+                end: 11
+            }),
+            frameRate: 24,
+            repeat: 0
+        });
+
+        this.windowVideo = this.add.video(
+            this.SCREEN_WIDTH * 0.5,
+            this.SCREEN_HEIGHT * 0.43,
+            "windowVideo"
+        );
+
+        this.windowVideo.setScale(0.3);
+
+        this.windowVideo.setDepth(0);
+        this.windowVideo.setLoop(true);
+        this.windowVideo.play();
+
+        this.roomBackground = this.add.image(
+            this.SCREEN_WIDTH * 0.5,
+            this.SCREEN_HEIGHT * 0.5,
+            "roomBackground"
+        );
+
+this.roomBackground.setDepth(1);
+this.roomBackground.setDisplaySize(this.SCREEN_WIDTH, this.SCREEN_HEIGHT);
+
         this.startTime = this.time.now;
         this.tickSound = this.sound.add("cat_tick");
 
@@ -126,10 +169,10 @@ class GameplayPrototype4 extends BaseScene {
         this.cat = this.add.image(
 
             this.SCREEN_WIDTH * 0.8,
-            this.SCREEN_HEIGHT * 0.7,
+            this.SCREEN_HEIGHT * 0.65,
             "catDefault"
 
-        );
+        ).setDepth(15);
 
         this.timingText = this.add.text(
             this.SCREEN_WIDTH * 0.5,
@@ -251,36 +294,16 @@ class GameplayPrototype4 extends BaseScene {
 
     spawnEntity(noteName, noteData, targetBeat) {
 
-        let entity = this.add.image(
-            this.SCREEN_WIDTH * 0.1,
-            this.SCREEN_HEIGHT * 0.7,
-            noteData.texture
-        ).setScale(0.2);
+        if (noteName === "spray") {
+            return this.spawnSpray(noteData, targetBeat);
+        }
 
         if (noteName === "ball") {
-
-            this.tweens.add({
-                targets: entity,
-                y: entity.y - 80,
-                duration: (noteData.anticipationBeats * this.BEAT_DURATION * 1000) / 8,
-                yoyo: true,
-                repeat: 3,
-                ease: "Sine.Out"
-            });
-
+            return this.spawnBall(noteData, targetBeat);
         }
 
         if (noteName === "treat") {
-
-            entity.setY(this.SCREEN_HEIGHT * 0.4);
-
-        }
-
-        if (noteName === "spray") {
-
-            entity.setX(this.SCREEN_WIDTH * 0.4);
-            entity.setY(this.SCREEN_HEIGHT * 0.7);
-
+            return this.spawnTreat(noteData, targetBeat);
         }
 
         entity.noteType = noteName;
@@ -294,21 +317,188 @@ class GameplayPrototype4 extends BaseScene {
             duration: noteData.anticipationBeats * this.BEAT_DURATION * 1000,
             ease: "Linear",
             onComplete: () => {
-
                 if (entity.active) {
-
                     entity.destroy();
-
                 }
-
             }
         });
 
         return entity;
-
     }
 
+    spawnSpray(noteData, targetBeat) {
+        let entity = this.add.sprite(
+            -10,
+            this.SCREEN_HEIGHT * 0.5,
+            "sprayBottleSheet",
+            0
+        );
 
+        entity.setScale(1);
+        entity.setDepth(11);
+
+        entity.noteType = "spray";
+        entity.winTexture = noteData.winTexture;
+        entity.targetBeat = targetBeat;
+
+        let beatMs = this.BEAT_DURATION * 1000;
+
+        this.tweens.add({
+            targets: entity,
+            x: this.SCREEN_WIDTH * 0.45,
+            duration: beatMs * 0.5,
+            ease: "Linear",
+            onComplete: () => {
+                entity.play("sprayAnimation");
+            }
+        });
+
+        return entity;
+    }
+
+    spawnBall(noteData, targetBeat) {
+        let startX = this.SCREEN_WIDTH * 0.12;
+        let endX = this.cat.x;
+
+    let peakY = this.SCREEN_HEIGHT * 0.8; /// These are actually inverted but I didnt want to change all the logic, so change the number for opposite part of the arch
+    let groundY = this.SCREEN_HEIGHT * 0.45;
+
+        let entity = this.add.image(
+            startX,
+            peakY,
+            "ball"
+        ).setScale(0.62).setDepth(20);
+
+        entity.noteType = "ball";
+        entity.winTexture = noteData.winTexture;
+        entity.targetBeat = targetBeat;
+
+        let totalDuration = (targetBeat - this.currentBeatContinuous) * this.BEAT_DURATION * 1000;
+        let motion = { progress: 0 };
+
+        this.tweens.add({
+            targets: motion,
+            progress: 1,
+            duration: totalDuration,
+            ease: "Linear",
+            onUpdate: () => {
+                let p = motion.progress;
+
+                entity.x = startX + (endX - startX) * p;
+
+                let arcProgress = p * 3;
+                let currentArc = Math.floor(arcProgress);
+                let localProgress = arcProgress - currentArc;
+
+                if (p >= 1) {
+                    localProgress = 1;
+                }
+
+                let curve = 4 * localProgress * (1 - localProgress);
+
+                entity.y = peakY + (groundY - peakY) * curve;
+            }
+        });
+
+        return entity;
+    }
+
+    spawnTreat(noteData, targetBeat) {
+        let handStartX = this.SCREEN_WIDTH * -0.1;
+        let handStartY = this.SCREEN_HEIGHT * 0.68;
+
+        let handTossX = this.SCREEN_WIDTH * -0.01;
+        let handTossY = this.SCREEN_HEIGHT * 0.57;
+
+        let mouthX = this.cat.x - this.SCREEN_WIDTH * 0.04;
+        let mouthY = this.cat.y - this.SCREEN_HEIGHT * 0.15;
+
+        let hand = this.add.image(
+            handStartX,
+            handStartY,
+            "treatHand1"
+        ).setScale(1).setDepth(20);
+
+        hand.setAngle(+75);
+        hand.setOrigin(0.3, 0.8);
+
+        hand.noteType = "treat";
+        hand.winTexture = noteData.winTexture;
+        hand.targetBeat = targetBeat;
+
+        let totalDuration = (targetBeat - this.currentBeatContinuous) * this.BEAT_DURATION * 1000;
+
+        let handDuration = totalDuration * 0.25;
+        let treatDuration = totalDuration * 0.75;
+
+        this.tweens.add({
+            targets: hand,
+            x: handTossX,
+            y: handTossY,
+            angle: +30,
+            duration: handDuration,
+            ease: "Sine.In",
+            onComplete: () => {
+                hand.setTexture("treatHand2");
+
+                let treatStartX = hand.x + this.SCREEN_WIDTH * 0.105;
+                let treatStartY = hand.y - this.SCREEN_HEIGHT * 0.04;
+
+                let treatEndX = mouthX - this.SCREEN_WIDTH * 0.045;
+                let treatEndY = mouthY - this.SCREEN_HEIGHT * 0.004;
+
+                let treat = this.add.image(
+                    treatStartX,
+                    treatStartY,
+                    "catTreat"
+                ).setScale(1).setDepth(21);
+
+                this.tweens.add({
+                    targets: treat,
+                    angle: treat.angle + 360,
+                    duration: treatDuration,
+                    ease: "Linear"
+                });
+
+                treat.noteType = "treat";
+                treat.winTexture = noteData.winTexture;
+                treat.targetBeat = targetBeat;
+
+                this.activeEntities = this.activeEntities.filter(e => e !== hand);
+                this.activeEntities.push(treat);
+
+                let motion = { progress: 0 };
+
+                this.tweens.add({
+                    targets: motion,
+                    progress: 1,
+                    duration: treatDuration,
+                    ease: "Linear",
+                    onUpdate: () => {
+                        let p = motion.progress;
+
+                        treat.x = treatStartX + (treatEndX - treatStartX) * p;
+
+                        let arcHeight = this.SCREEN_HEIGHT * 0.18;
+                        let arc = 4 * p * (1 - p);
+
+                        treat.y = treatStartY + (treatEndY - treatStartY) * p - arcHeight * arc;
+                    },
+                    onComplete: () => {
+                        if (treat.active) {
+                            treat.destroy();
+                        }
+
+                        if (hand.active) {
+                            hand.destroy();
+                        }
+                    }
+                });
+            }
+        });
+
+        return hand;
+    }
 
     handleInput() {
 
