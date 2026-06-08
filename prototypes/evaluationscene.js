@@ -21,7 +21,7 @@ class EvaluationScene extends BaseScene {
 
     preload() {
 
-        this.load.pack("main", "../assets/assets.json");
+        this.load.pack("main", "../assets/level3assets.json");
 
     }
 
