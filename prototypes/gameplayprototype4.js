@@ -31,14 +31,25 @@ class GameplayPrototype4 extends BaseScene {
 
         this.load.image("ball", "../assets/images/level1/ball.png");
         this.load.image("ballWin", "../assets/images/level1/ballWin.png");
+        this.load.audio("ballBeat", "../assets/audio/sfx/level1/ballBeat.wav");
+        this.load.audio("ballWinSound", "../assets/audio/sfx/level1/ballWinSound.wav");
+
 
         this.load.image("catTreat", "../assets/images/level1/catTreat.png");
         this.load.image("treatWin", "../assets/images/level1/treatWin.png");
         this.load.image("treatHand1", "../assets/images/level1/treatHand1.png");
         this.load.image("treatHand2", "../assets/images/level1/treatHand2.png");
+        this.load.audio("treatBeat", "../assets/audio/sfx/level1/treatBeat.wav");
+        this.load.audio("treatWinSound", "../assets/audio/sfx/level1/treatWinSound.wav");
+
+
 
         this.load.image("sprayBottle", "../assets/images/level1/sprayBottle.png");
         this.load.image("sprayBottleWin", "../assets/images/level1/sprayBottleWin.png");
+        this.load.audio("sprayBeat", "../assets/audio/sfx/level1/sprayBeat.wav");
+        this.load.audio("sprayWinSound", "../assets/audio/sfx/level1/sprayWinSound.wav");
+
+
 
         this.load.spritesheet("sprayBottleSheet", "../assets/images/level1/spray_sprite_sheet.png", {
         frameWidth: 1080,
@@ -81,7 +92,7 @@ class GameplayPrototype4 extends BaseScene {
                 texture: "ball",
                 winTexture: "ballWin",
                 anticipationBeats: 4,
-                weight: 1
+                weight: 0
 
             },
 
@@ -90,7 +101,7 @@ class GameplayPrototype4 extends BaseScene {
                 texture: "catTreat",
                 winTexture: "treatWin",
                 anticipationBeats: 3,
-                weight: 2
+                weight: 1
 
             },
 
@@ -99,7 +110,7 @@ class GameplayPrototype4 extends BaseScene {
                 texture: "sprayBottle",
                 winTexture: "sprayBottleWin",
                 anticipationBeats: 2,
-                weight: 3
+                weight: 0
 
             }
 
@@ -135,8 +146,8 @@ class GameplayPrototype4 extends BaseScene {
             "roomBackground"
         );
 
-this.roomBackground.setDepth(1);
-this.roomBackground.setDisplaySize(this.SCREEN_WIDTH, this.SCREEN_HEIGHT);
+        this.roomBackground.setDepth(1);
+        this.roomBackground.setDisplaySize(this.SCREEN_WIDTH, this.SCREEN_HEIGHT);
 
         this.startTime = this.time.now;
         this.tickSound = this.sound.add("cat_tick");
@@ -241,7 +252,7 @@ this.roomBackground.setDisplaySize(this.SCREEN_WIDTH, this.SCREEN_HEIGHT);
         }
 
         this.lastBeatEvent = currentBeatFloor;
-        this.tickSound.play({ volume: 0.0 });
+        this.tickSound.play({ volume: 0.1 });
 
         for (let noteName in this.noteCooldowns) {
 
@@ -357,11 +368,11 @@ this.roomBackground.setDisplaySize(this.SCREEN_WIDTH, this.SCREEN_HEIGHT);
     }
 
     spawnBall(noteData, targetBeat) {
-        let startX = this.SCREEN_WIDTH * 0.12;
-        let endX = this.cat.x;
+        let startX = -this.SCREEN_WIDTH * 0.09; // starts slightly offscreen left
+        let endX = this.cat.x - this.SCREEN_WIDTH * 0.1; // goes a little past cat
 
-    let peakY = this.SCREEN_HEIGHT * 0.8; /// These are actually inverted but I didnt want to change all the logic, so change the number for opposite part of the arch
-    let groundY = this.SCREEN_HEIGHT * 0.45;
+        let peakY = this.SCREEN_HEIGHT * 0.55;
+        let groundY = this.SCREEN_HEIGHT * 0.8;
 
         let entity = this.add.image(
             startX,
@@ -386,7 +397,7 @@ this.roomBackground.setDisplaySize(this.SCREEN_WIDTH, this.SCREEN_HEIGHT);
 
                 entity.x = startX + (endX - startX) * p;
 
-                let arcProgress = p * 3;
+                let arcProgress = p * 4; // 4 bounces / arches
                 let currentArc = Math.floor(arcProgress);
                 let localProgress = arcProgress - currentArc;
 
@@ -396,7 +407,12 @@ this.roomBackground.setDisplaySize(this.SCREEN_WIDTH, this.SCREEN_HEIGHT);
 
                 let curve = 4 * localProgress * (1 - localProgress);
 
-                entity.y = peakY + (groundY - peakY) * curve;
+                entity.y = groundY + (peakY - groundY) * curve;
+
+                let baseSpin = 1;
+                let peakSpin = 5;
+                entity.angle += baseSpin + curve * peakSpin;
+
             }
         });
 
@@ -419,7 +435,7 @@ this.roomBackground.setDisplaySize(this.SCREEN_WIDTH, this.SCREEN_HEIGHT);
             "treatHand1"
         ).setScale(1).setDepth(20);
 
-        hand.setAngle(+75);
+        hand.setAngle(+120);
         hand.setOrigin(0.3, 0.8);
 
         hand.noteType = "treat";
@@ -427,9 +443,8 @@ this.roomBackground.setDisplaySize(this.SCREEN_WIDTH, this.SCREEN_HEIGHT);
         hand.targetBeat = targetBeat;
 
         let totalDuration = (targetBeat - this.currentBeatContinuous) * this.BEAT_DURATION * 1000;
-
-        let handDuration = totalDuration * 0.25;
-        let treatDuration = totalDuration * 0.75;
+        let handDuration = this.BEAT_DURATION * 1000;      // 1 beat
+        let treatDuration = this.BEAT_DURATION * 1000 * 2.2; // 2 beats
 
         this.tweens.add({
             targets: hand,
@@ -452,6 +467,14 @@ this.roomBackground.setDisplaySize(this.SCREEN_WIDTH, this.SCREEN_HEIGHT);
                     treatStartY,
                     "catTreat"
                 ).setScale(1).setDepth(21);
+
+                let originalAudioBeats = 3;
+                let audioRate = (originalAudioBeats * this.BEAT_DURATION * 1000) / treatDuration;
+
+                this.sound.play("treatBeat", {
+                    volume: 0.2,
+                    rate: audioRate * 1.4
+                });
 
                 this.tweens.add({
                     targets: treat,
@@ -523,6 +546,18 @@ this.roomBackground.setDisplaySize(this.SCREEN_WIDTH, this.SCREEN_HEIGHT);
         let rating = this.getJudgement(error);
 
         this.cat.setTexture(entity.winTexture);
+        
+        if (entity.noteType === "ball") {
+            this.sound.play("ballWinSound");
+        }
+
+        if (entity.noteType === "treat") {
+            this.sound.play("treatWinSound");
+        }
+
+        if (entity.noteType === "spray") {
+            this.sound.play("sprayWinSound");
+        }
 
         this.time.delayedCall(250, () => {
 
