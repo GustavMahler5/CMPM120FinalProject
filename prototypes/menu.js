@@ -1,4 +1,4 @@
-class CinematicsMenuPrototype1 extends BaseScene {
+class Menu extends BaseScene {
     
     constructor() {
         super({ key: "menu" });
@@ -8,6 +8,8 @@ class CinematicsMenuPrototype1 extends BaseScene {
         this.load.setBaseURL('./');
         this.load.image("menu_button", "../assets/images/menu_button.png");
         this.load.image("background", "../assets/images/title_bg.png");
+        this.load.audio('hover', '../assets/audio/hoverSelection.mp3');
+        this.load.audio('selection', '../assets/audio/selection.mp3');
         this.load.audio("menu", "../assets/audio/menu.wav");
     }
 
@@ -18,6 +20,9 @@ class CinematicsMenuPrototype1 extends BaseScene {
         });
         menu_bgm.play();
 
+        this.hoverSFX = this.sound.add('hover');
+        this.selectionSFX = this.sound.add('selection');
+
         this.add.image(540, 360, "background");
 
         const title = this.add.text(400, 100, "Game Name",  {
@@ -26,19 +31,19 @@ class CinematicsMenuPrototype1 extends BaseScene {
             fill: '#A3B2A4',
         });
 
-        const buttonLabels = ["Start", "Levels", "Settings", "Credits", "Exit"];  
+        const buttonLabels = ["Start", "Settings", "Credits", "Exit"];  
         const buttonStart = 500
 
         const handleButtonClick = (label) => {
             // not fully implemented yet, so button clicks will be disabled until then
             switch(label) {
                 case "Start":    
-                    this.changeScene("gameplayprototype2");
-                    break;
-                
-                case "Levels":
                     this.changeScene("levelselectprototype");
                     break;
+                
+                // case "Levels":
+                //     this.changeScene("levelselectprototype");
+                //     break;
     
                 case "Settings": 
                     this.changeScene("settingsprototype");
@@ -77,6 +82,10 @@ class CinematicsMenuPrototype1 extends BaseScene {
                     duration: 200,
                     ease: 'Sine.InOut'
                 });
+                this.hoverSFX.play({
+                    loop: false,
+                    volume: BaseScene.masterVolume * 1.5,
+                });
             });
             button.on("pointerout",  () => {
                 this.add.tween({
@@ -92,6 +101,10 @@ class CinematicsMenuPrototype1 extends BaseScene {
             button.on("pointerup", () => {
                 button.clearTint();
                 this.handleButtonClick(label);
+                this.selectionSFX.play({
+                    loop: false,
+                    volume: BaseScene.masterVolume * 1.5,
+                });
             });        
 
             this.tweens.add({
