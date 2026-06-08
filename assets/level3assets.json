@@ -123,11 +123,6 @@
             },
             {
                 "type": "image",
-                "key": "cow",
-                "url": "../assets/images/level3/cow.png"
-            },
-            {
-                "type": "image",
                 "key": "background",
                 "url": "../assets/images/level3/background.png"
             },

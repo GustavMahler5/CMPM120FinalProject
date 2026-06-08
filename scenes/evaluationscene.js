@@ -22,7 +22,6 @@ class EvaluationScene extends BaseScene {
     preload() {
 
         this.load.pack("main", "../assets/level3assets.json");
-
     }
 
 
@@ -89,7 +88,6 @@ class EvaluationScene extends BaseScene {
                 bestScore = Math.max(this.score, BaseScene.level2BestScore);
                 BaseScene.level2BestScore = bestScore;
                 localStorage.setItem('level2BestScore', bestScore);
-
                 if (this.score > this.CUTOFF_SCORE) {
 
                     this.add.text(
