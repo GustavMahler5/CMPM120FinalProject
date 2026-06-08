@@ -9,7 +9,6 @@ class GameplayPrototype5 extends BaseScene {
 
         this.scrollSpeed = 1; // speed multiplier
 
-        this.spawnIndex = 0;
         this.activeEntities = [];
         
         this.ENTITY_TIMING_CONFIG =  {
@@ -34,12 +33,6 @@ class GameplayPrototype5 extends BaseScene {
         this.ERROR_MARGIN = 0.6;
         this.OK_ERROR = 0.3;
         this.PERFECT_ERROR = 0.15;
-
-        this.perfectCount = 0;
-        this.okCount = 0;
-        this.missCount = 0;
-
-        this.initialized = false;
 
         this.sunHues = [
             { min: 0,   max: 0   },  // natural orange (no shift)
@@ -72,6 +65,13 @@ class GameplayPrototype5 extends BaseScene {
     }
 
     onEnter() {
+
+        this.perfectCount = 0;
+        this.okCount = 0;
+        this.missCount = 0;
+        this.spawnIndex = 0;
+
+        this.initialized = false;
 
         this.sound.removeAll();
         
