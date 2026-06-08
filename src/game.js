@@ -1,12 +1,12 @@
 "use strict";
 
 let scenes = {
-
+    level2: Level2,
     level3: Level3,
+    level2tutorial: Level2Tutorial,
     level3tutorial: Level3Tutorial,
     pause: PauseScene,
     evaluationscene: EvaluationScene
-
 };
 
 const sceneKey = document.body.dataset.scene;
