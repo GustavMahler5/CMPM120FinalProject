@@ -10,7 +10,6 @@ class LevelSelect extends BaseScene{
         this.load.audio('selection', '../assets/audio/sfx/menu/selection.mp3');
         this.load.image('fullscreen', "../assets/images/menu/fullscreen.png");
         this.load.image('level3jacket', "../assets/images/menu/level3jacket.png");
-        this.load.image('level3jacket', "../assets/images/menu/level2jacket.png");
     }
 
     onEnter() {
@@ -29,7 +28,7 @@ class LevelSelect extends BaseScene{
         // add scene here to create button
         const scenes = [
             { key: "level1",  jacket: "placeholder" },
-            { key: "level2tutorial", jacket: "level2jacket" },
+            { key: "level2tutorial", jacket: "placeholder" },
             { key: "level3tutorial", jacket: "level3jacket" },
             { key: "menu", label: "Back" }
         ]
@@ -66,15 +65,18 @@ class LevelSelect extends BaseScene{
             }
         });
 
-        scenes.forEach((button, i) => {
+        let button;
+        let container;
+
+        scenes.forEach((scene, i) => {
             
             const x = startX;
             const y = (startY) + (buttonSpacing * i);
 
-            if (button.label) {
+            if (scene.label) {
 
                 const button = this.add.image(0, 0, "menu_button_prototype").setScale(buttonScale);
-                const text = this.add.text(0, 0, button.label, {
+                const text = this.add.text(0, 0, scene.label, {
                     fontSize: '32px', 
                     fill: '#fff',
                     align: 'center'
@@ -85,17 +87,24 @@ class LevelSelect extends BaseScene{
 
                 // buttons + text are grouped into containers for easier use
                 const container = this.add.container(x, y, [button, text]);
-                container.button = button;
+                container.scene = scene;
                 container.setSize(button.displayWidth, button.displayHeight);
                 button.setInteractive();
 
             }
 
-            else if (button.jacket) {
+            else if (scene.jacket) {
 
                 const button = this.add.image(0, 0, "menu_button_prototype").setScale(buttonScale);
-                const text = this.add.image(0, 0, button.jacket).setOrigin(0.5, 0.5);
+                const text = this.add.image(0, 0, scene.jacket).setOrigin(0.5, 0.5);
                 text.setScale(Math.min(1, (buttonWidth - 20) / text.width));
+
+
+                // buttons + text are grouped into containers for easier use
+                const container = this.add.container(x, y, [button, text]);
+                container.scene = scene;
+                container.setSize(button.displayWidth, button.displayHeight);
+                button.setInteractive();
 
             }
 
@@ -130,7 +139,7 @@ class LevelSelect extends BaseScene{
                     loop: false,
                     volume: BaseScene.masterVolume * 1.5,
                 });
-                this.handleButtonClick(container.button.key);
+                this.handleButtonClick(container.scene.key);
             });
 
             // add to timeline

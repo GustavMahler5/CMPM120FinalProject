@@ -4,7 +4,7 @@ class SettingsScene2 extends BaseScene {
     }
 
     preload() {
-        this.preload.setBaseURL('./');
+        this.load.setBaseURL('./');
         this.load.image("menu_button", "../assets/images/menu/menu_button.png");
         this.load.audio("button_sfx", "../assets/audio/menu/selection.mp3");
         this.load.audio("button_hover", "../assets/audio/menu/hoverSelection.mp3");
@@ -31,7 +31,7 @@ class SettingsScene2 extends BaseScene {
             const y = startY + index * spacing;
             this.add.text(150, y, setting.label, {
                 fontSize: "24px",
-                fill: "fff",
+                fill: "#fff",
             });
             this.createSlider(y, setting);
         });

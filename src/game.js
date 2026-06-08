@@ -7,7 +7,7 @@ let scenes = {
     level3tutorial: Level3Tutorial,
     pause: PauseScene,
     evaluationscene: EvaluationScene,
-    //settings: SettingsScene,
+    settings: SettingsScene,
     settings2: SettingsScene2,
     menu: MenuScene,
     credits: CreditsScene,

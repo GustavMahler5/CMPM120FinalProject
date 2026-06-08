@@ -27,7 +27,7 @@ class BaseScene extends Phaser.Scene {
     static masterVolume = parseFloat(localStorage.getItem('masterVolume')) || 0.05;
     static sfxVolume = parseFloat(localStorage.getItem('sfxVolume')) || 0.05;
     static musicVolume = parseFloat(localStorage.getItem('musicVolume')) || 0.05;
-    static backgroundMusic = localStorage.getItem('backgroundMusic') !== false;
+    static backgroundMusic = localStorage.getItem('backgroundMusic') !== 'false';
 
     create() {
 
