@@ -186,7 +186,7 @@ class TutorialPrototype2 extends BaseScene {
 
             {
                 type: null,
-                hitsNeeded: 4,
+                hitsNeeded: 1,
                 dialogue: [
                     "All right.",
                     "Good luck solder! Do Glorpulon 5 proud!"
