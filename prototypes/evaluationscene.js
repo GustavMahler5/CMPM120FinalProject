@@ -38,6 +38,7 @@ class EvaluationScene extends BaseScene {
 
                 bestScore = Math.max(this.score, BaseScene.level1BestScore);
                 BaseScene.level1BestScore = bestScore;
+                localStorage.setItem('level1BestScore', bestScore);
 
                 if (this.score > this.CUTOFF_SCORE) {
 
@@ -87,6 +88,7 @@ class EvaluationScene extends BaseScene {
 
                 bestScore = Math.max(this.score, BaseScene.level2BestScore);
                 BaseScene.level2BestScore = bestScore;
+                localStorage.setItem('level2BestScore', bestScore);
 
                 if (this.score > this.CUTOFF_SCORE) {
 
@@ -136,6 +138,7 @@ class EvaluationScene extends BaseScene {
                 
                 bestScore = Math.max(this.score, BaseScene.level3BestScore);
                 BaseScene.level3BestScore = bestScore;
+                localStorage.setItem('level3BestScore', bestScore);
 
                 if (this.score > this.CUTOFF_SCORE) {
 
