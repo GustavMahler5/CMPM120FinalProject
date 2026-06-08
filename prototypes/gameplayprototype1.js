@@ -44,8 +44,7 @@ class GameplayPrototype1 extends BaseScene {
 
     preload() {
 
-        this.load.audio('paranoia', '../assets/audio/paranoia.mp3');
-        this.load.audio('jubeatb2b', '../assets/audio/jubeatb2b.mp3');
+        this.load.pack('main', '../assets/level3assets.json');
         this.load.json('score', '../assets/score.json');
 
     }

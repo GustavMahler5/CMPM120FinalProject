@@ -738,8 +738,8 @@ this.currentBeatContinuous (Elapsed beats with decimals): ${this.currentBeatCont
                 // seek: 13,
                 // seek: 75,
                 // seek: 100,
-                // seek: 145,
-                seek: 200,
+                seek: 145,
+                // seek: 200,
                 rate: 1
             });
 

@@ -31,6 +31,16 @@ class BaseScene extends Phaser.Scene {
 
         this.cameras.main.setBackgroundColor("#272727");
         this.fade(false, this.FADE_DURATION);
+        this.fullscreen = this.add.image(this.SCREEN_WIDTH - 20, this.SCREEN_HEIGHT - 20, 'fullscreen')
+        .setOrigin(1, 1)
+        .setScale(0.05)
+        .setAlpha(0.5)
+        .setDepth(1000)
+        .setInteractive({useHandCursor: true})
+            .on('pointerdown', () => {
+                this.scale.isFullscreen ? this.scale.stopFullscreen() : this.scale.startFullscreen();
+            });
+
         this.onEnter();
 
     }

@@ -56,7 +56,8 @@ class GameplayPrototype3 extends BaseScene {
         this.load.spritesheet('explosion', "../assets/images/gameplay/explosion_particle.png", { frameWidth: 32, frameHeight: 32});
         this.load.image('angry_alien', '../assets/images/gameplay/angry_alien.png');
         this.load.image('friendly_alien', '../assets/images/gameplay/friendly_alien.png');
-        this.load.image('crosshair', '../assets/images/gameplay/crosshair.png')
+        this.load.image('crosshair', '../assets/images/gameplay/crosshair.png');
+        this.load.image('fullscreen', "../assets/images/menu/fullscreen.png");
     }
 
     onEnter() {

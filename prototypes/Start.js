@@ -15,7 +15,6 @@ class Start extends BaseScene {
     create() {
         this.scene.start('GameScene');
 
-
     }
 
     update() {

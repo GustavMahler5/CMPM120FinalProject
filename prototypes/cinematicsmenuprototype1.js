@@ -11,6 +11,7 @@ class CinematicsMenuPrototype1 extends BaseScene {
         this.load.image("menu_button", "../assets/images/menu/menu_button.png");
         this.load.image("background", "../assets/images/menu/title_bg.png");
         this.load.audio("menu", "../assets/audio/menu.wav");
+        this.load.image('fullscreen', "../assets/images/menu/fullscreen.png");
     }
 
     onEnter() {

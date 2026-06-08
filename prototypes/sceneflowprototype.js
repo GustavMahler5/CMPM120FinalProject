@@ -12,7 +12,11 @@ class SceneFlowPrototype extends BaseScene {
 
     }
 
-    preload() {}
+    preload() {
+
+        this.load.image('fullscreen', "../assets/images/menu/fullscreen.png");
+        
+    }
 
     onEnter() {
 

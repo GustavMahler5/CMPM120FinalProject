@@ -45,6 +45,8 @@ class GameplayPrototype4 extends BaseScene {
         frameHeight: 720
         });
 
+        this.load.image('fullscreen', "../assets/images/menu/fullscreen.png");
+
     }
 
 

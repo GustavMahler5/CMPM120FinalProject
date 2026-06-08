@@ -87,6 +87,11 @@
 
             {
                 "type": "image",
+                "key": "fullscreen",
+                "url": "../assets/images/menu/fullscreen.png"
+            },
+            {
+                "type": "image",
                 "key": "ufo",
                 "url": "../assets/images/level3/ufo.png"
             },

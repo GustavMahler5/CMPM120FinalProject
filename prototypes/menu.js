@@ -5,6 +5,7 @@ class SettingsScene extends BaseScene {
     }
 
     preload() {
+        this.load.image('fullscreen', "../assets/images/menu/fullscreen.png");
         this.load.setBaseURL('./');
     }
 
@@ -38,6 +39,7 @@ class MenuScene extends BaseScene {
         this.load.audio("menu", "../assets/audio/songs/menu.wav");
         this.load.audio("button_sfx", "../assets/audio/SFX/menu/selection.mp3");
         this.load.audio("button_hover", "../assets/audio/SFX/menu/hoverSelection.mp3");
+        this.load.image('fullscreen', "../assets/images/menu/fullscreen.png");
     }
 
     onEnter() {
