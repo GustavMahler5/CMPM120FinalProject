@@ -130,13 +130,6 @@ class Level2 extends BaseScene {
 
         // Create text
         if (1) {
-        let disclaimer = this.add.text(
-            this.SCREEN_WIDTH * 0.5,
-            this.SCREEN_HEIGHT * 0.05,
-            "Gameplay prototype v5")
-            .setStyle({ fontSize: `16px`, color: '#ff5757' })
-            .setOrigin(0.5, 0.5);
-
         this.debugText = this.add.text(
             this.SCREEN_WIDTH * 0.1,
             this.SCREEN_HEIGHT * 0.7,
@@ -339,7 +332,8 @@ class Level2 extends BaseScene {
             this.music.play({ 
                 loop: false, 
                 volume: 0.05,
-                rate: 1
+                rate: 1,
+                seek: 180
             });
 
             this.musicStarted = true;
