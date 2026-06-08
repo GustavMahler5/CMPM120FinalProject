@@ -23,7 +23,7 @@ class GameplayPrototype2 extends BaseScene {
 
             human: {
 
-                anticipationBeats: 2,
+                anticipationBeats: 3,
                 cues: [
                     { leadBeats: 1, sfx: "human"},
                 ]
@@ -32,9 +32,10 @@ class GameplayPrototype2 extends BaseScene {
 
             cow: {
 
-                anticipationBeats: 3,
+                anticipationBeats: 4,
                 cues: [
-                    { leadBeats: 2, sfx: "cow"},
+                    { leadBeats: 2, sfx: "human"},
+                    { leadBeats: 1.5, sfx: "human"},
                     { leadBeats: 1, sfx: "human"}
                 ]
 
@@ -44,15 +45,16 @@ class GameplayPrototype2 extends BaseScene {
 
                 anticipationBeats: 2,
                 cues: [
-                    { leadBeats: 1.5, sfx: "ghost"},
-                    { leadBeats: 0.5, sfx: "human"}
+                    { leadBeats: 2.5, sfx: "human"},
+                    { leadBeats: 1.5, sfx: "human"},
+                    { leadBeats: 1, sfx: "human"},
                 ]
 
             }
 
         };
 
-        this.ENTITY_SPAWN_LOCATION = 0.7
+        this.ENTITY_SPAWN_LOCATION = 1
 
         // Error margins
         this.ERROR_MARGIN = 0.75;
@@ -124,16 +126,31 @@ class GameplayPrototype2 extends BaseScene {
         this.createAnimations();
         this.createScene();
 
-        this.backButton = this.add.text(
-            this.SCREEN_WIDTH * 0.05,
-            this.SCREEN_HEIGHT * 0.05,
-            `<- Back`)
-            .setStyle({ fontSize: `32px`, color: '#FFFFFF' })
+        // this.backButton = this.add.text(
+        //     this.SCREEN_WIDTH * 0.05,
+        //     this.SCREEN_HEIGHT * 0.05,
+        //     `<- Back`)
+        //     .setStyle({ fontSize: `32px`, color: '#FFFFFF' })
+        //     .setOrigin(0, 0)
+        //     .setInteractive({useHandCursor: true})
+        //     .on('pointerdown', () => {
+        //         this.game.sound.stopAll();
+        //         this.changeScene('levelselectprototype');
+        //     })
+
+        this.pauseButton = this.add.image(
+            this.SCREEN_WIDTH * 0.01,
+            this.SCREEN_HEIGHT * 0.01,
+            "pause")
             .setOrigin(0, 0)
+            .setScale(0.05)
+            .setDepth(10000)
+            .setAlpha(0.5)
             .setInteractive({useHandCursor: true})
             .on('pointerdown', () => {
-                this.game.sound.stopAll();
-                this.changeScene('levelselectprototype');
+                this.game.sound.pauseAll();
+                this.scene.pause();
+                this.scene.launch('pausescene'); 
             })
         
         // On user input
@@ -236,7 +253,7 @@ class GameplayPrototype2 extends BaseScene {
                     start: 0,
                     end: 1
                 }),
-                frameRate: this.BPM / 10,
+                frameRate: this.BPM / 15,
                 repeat: -1,
                 
             });
@@ -377,7 +394,7 @@ class GameplayPrototype2 extends BaseScene {
             .setDepth(11);
 
         this.barn = this.add.sprite(
-            this.SCREEN_WIDTH * 0.9,
+            this.SCREEN_WIDTH * 0.92,
             this.SCREEN_HEIGHT * 0.9,
             "barn")
             .setOrigin(0.5, 1)
@@ -389,7 +406,7 @@ class GameplayPrototype2 extends BaseScene {
             this.SCREEN_HEIGHT * 0.9,
             "fence")
             .setOrigin(0.5, 1)
-            .setScale(0.45)
+            .setScale(0.35)
             .setDepth(100);
 
         // this.otherFence = this.add.sprite(
@@ -722,7 +739,10 @@ this.currentBeatContinuous (Elapsed beats with decimals): ${this.currentBeatCont
             this.music.play({ 
                 loop: false, 
                 volume: BaseScene.masterVolume,
-                // seek: 30,
+                seek: 13,
+                // seek: 75,
+                // seek: 100,
+                // seek: 145,
                 rate: 1
             });
 
@@ -775,7 +795,7 @@ this.currentBeatContinuous (Elapsed beats with decimals): ${this.currentBeatCont
     spawnEntity(note, config) {
 
         let sprites = {
-            cow: "walking",
+            cow: "cow",
             ghost: "ghost",
             human: "walking"
         };

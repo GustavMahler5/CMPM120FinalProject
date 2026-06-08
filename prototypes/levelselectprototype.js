@@ -7,6 +7,7 @@ class LevelSelect extends BaseScene{
         this.load.image("menu_button_prototype", "../assets/images/menu_button_prototype.png");
         this.load.audio('hover', '../assets/audio/hoverSelection.mp3');
         this.load.audio('selection', '../assets/audio/selection.mp3');
+        this.load.audio('menu', '../assets/audio/menu.wav');
     }
 
     onEnter() {

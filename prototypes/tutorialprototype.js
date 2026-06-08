@@ -23,7 +23,7 @@ class TutorialPrototype extends BaseScene {
 
             human: {
 
-                anticipationBeats: 2,
+                anticipationBeats: 3,
                 cues: [
                     { leadBeats: 1, sfx: "human"},
                 ]
@@ -32,9 +32,10 @@ class TutorialPrototype extends BaseScene {
 
             cow: {
 
-                anticipationBeats: 3,
+                anticipationBeats: 4,
                 cues: [
-                    { leadBeats: 2, sfx: "cow"},
+                    { leadBeats: 2, sfx: "human"},
+                    { leadBeats: 1.5, sfx: "human"},
                     { leadBeats: 1, sfx: "human"}
                 ]
 
@@ -44,15 +45,16 @@ class TutorialPrototype extends BaseScene {
 
                 anticipationBeats: 2,
                 cues: [
-                    { leadBeats: 1.5, sfx: "ghost"},
-                    { leadBeats: 0.5, sfx: "human"}
+                    { leadBeats: 2.5, sfx: "human"},
+                    { leadBeats: 1.5, sfx: "human"},
+                    { leadBeats: 1, sfx: "human"},
                 ]
 
             }
 
         };
 
-        this.ENTITY_SPAWN_LOCATION = 0.7;
+        this.ENTITY_SPAWN_LOCATION = 1;
 
         this.ERROR_MARGIN = 0.75;
         this.OK_ERROR = 0.25;
@@ -89,7 +91,7 @@ class TutorialPrototype extends BaseScene {
         this.score = this.cache.json.get("score");
         this.songInfo = this.score.song;
 
-        this.BPM = this.songInfo[this.SONG].bpm - 40;
+        this.BPM = this.songInfo[this.SONG].bpm * 0.75;
         this.BEAT_DURATION = 60 / this.BPM;
         this.TIME_SIGNATURE = 4;
         this.SONG_DELAY = this.songInfo[this.SONG].startdelay;
@@ -118,17 +120,18 @@ class TutorialPrototype extends BaseScene {
                 hitsNeeded: 0,
                 dialogue: [
                     "Greetings Earthling!",
-                    "I seek research material.",
+                    "I have come to abduc- AHH! er- I mean GATHER materials for my \"experiments\"!",
                     "However, I do need your help...",
-                    "Signal me with a click anywhere on the screen when a target is underneath my ship.",
-                    "Let's practice!",
-                    "Oh look! Here comes a potential subject!"
+                    "You will have to signal me with a click anywhere on the screen when a target is underneath my ship.",
+                    "Let's do some practice first!",
+                    "Oh look! Here comes a potential subject!",
+                    "Don't try to time with your eyes! Use your ears and tap to the beat!"
                 ]
             },
 
             {
                 type: "cow",
-                hitsNeeded: 4,
+                hitsNeeded: 1,
                 dialogue: [
                     "Oh look! Here comes a potential subject!"
                 ]
@@ -136,7 +139,7 @@ class TutorialPrototype extends BaseScene {
 
             {
                 type: "human",
-                hitsNeeded: 4,
+                hitsNeeded: 1,
                 dialogue: [
                     "Nice! That's the way.",
                     "Oh! It looks like something else is approaching!"
@@ -145,16 +148,16 @@ class TutorialPrototype extends BaseScene {
 
             {
                 type: "ghost",
-                hitsNeeded: 4,
+                hitsNeeded: 1,
                 dialogue: [
                     "Excellent work!",
-                    "This one is approaching faster than the others. Be vigilant!"
+                    "Now let's try this one"
                 ]
             },
 
             {
                 type: null,
-                hitsNeeded: 1,
+                hitsNeeded: 4,
                 dialogue: [
                     "All right.",
                     "Let's do it for real now!"
@@ -369,7 +372,7 @@ class TutorialPrototype extends BaseScene {
 
         this.createBackground();
         this.createUfo();
-        this.createStars();
+        // this.createStars();
         this.createText();
         this.createTutorialText();
 
@@ -380,8 +383,8 @@ class TutorialPrototype extends BaseScene {
     createTutorialText() {
 
         this.tutorialText = this.add.text(
-            this.SCREEN_WIDTH * 0.7,
-            this.SCREEN_HEIGHT * 0.1,
+            this.SCREEN_WIDTH * 0.5,
+            this.SCREEN_HEIGHT * 0.9,
             "",
             {
                 fontSize: "16px",
@@ -403,14 +406,14 @@ class TutorialPrototype extends BaseScene {
 
     createBackground() {
 
-        this.moon = this.add.sprite(
-            this.SCREEN_WIDTH,
-            0,
-            "moon"
-        )
-        .setOrigin(0.5, 0.5)
-        .setScale(0.25)
-        .setDepth(10);
+        // this.moon = this.add.sprite(
+        //     this.SCREEN_WIDTH,
+        //     0,
+        //     "moon"
+        // )
+        // .setOrigin(0.5, 0.5)
+        // .setScale(0.25)
+        // .setDepth(10);
 
         this.house = this.add.sprite(
             this.SCREEN_WIDTH * 0.1,
@@ -422,7 +425,7 @@ class TutorialPrototype extends BaseScene {
         .setDepth(11);
 
         this.barn = this.add.sprite(
-            this.SCREEN_WIDTH * 0.9,
+            this.SCREEN_WIDTH * 0.92,
             this.SCREEN_HEIGHT * 0.9,
             "barn"
         )
@@ -583,7 +586,7 @@ class TutorialPrototype extends BaseScene {
                     start: 0,
                     end: 1
                 }),
-                frameRate: this.BPM / 10,
+                frameRate: this.BPM / 15,
                 repeat: -1
             });
         }
@@ -668,7 +671,7 @@ class TutorialPrototype extends BaseScene {
 
         let sprites = {
 
-            cow: "walking",
+            cow: "cow",
             ghost: "ghost",
             human: "walking"
 
@@ -1000,8 +1003,18 @@ class TutorialPrototype extends BaseScene {
 
         let evenBeat = beatNumber % 2 == 0;
 
-        this.updateStarShine(evenBeat);
-        this.updateMoonShine(evenBeat);
+        if (this.stars) {
+
+            this.updateStarShine(evenBeat);
+
+        }
+
+        if (this.moon) {
+
+            this.updateMoonShine(evenBeat);
+
+        }
+
         this.updateBounces();
 
     }

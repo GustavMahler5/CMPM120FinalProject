@@ -21,7 +21,8 @@ let prototypeScenes = {
     settings: SettingsPrototype,
     credits: CreditsPrototype,
     levelSelect: LevelSelect,
-    jaylalevelstart: Start
+    jaylalevelstart: Start,
+    pause: PauseScene
 
 };
 
