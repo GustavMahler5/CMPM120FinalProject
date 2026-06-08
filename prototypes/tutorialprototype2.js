@@ -80,21 +80,20 @@ class TutorialPrototype2 extends BaseScene {
 
     preload() {
 
-        this.load.audio("metronome", "../assets/audio/metronome.mp3")
-        this.load.audio('suspicious', '../assets/audio/suspicious.mp3');
+        this.load.audio("metronome", "../assets/audio/SFX/level3/metronome.mp3")
+        this.load.audio('suspicious', '../assets/audio/songs/suspicious.mp3');
 
-        this.load.json("score_level2", "../assets/score_suspicious.json");
+        this.load.audio('enemySpawnSoundEffect', '../assets/audio/SFX/level2/enemySpawn.wav');
+        this.load.audio('friendSpawnSoundEffect', '../assets/audio/SFX/level2/friendSpawn.wav');
+        this.load.audio('laser', '../assets/audio/SFX/level2/laser.wav');
 
-        this.load.audio('enemySpawnSoundEffect', '../assets/audio/enemySpawn.wav');
-        this.load.audio('friendSpawnSoundEffect', '../assets/audio/friendSpawn.wav');
-        this.load.audio('laser', '../assets/audio/laser.wav');
-        this.load.json('score_suspicious', '../assets/score_suspicious.json');
+        this.load.json('score_suspicious', '../assets/audio/beatmaps/score_suspicious.json');
 
-        this.load.image('pause', '../assets/images/gameplay/pause.png');
-        this.load.spritesheet('explosion', "../assets/images/gameplay/explosion_particle.png", { frameWidth: 32, frameHeight: 32});
-        this.load.image('angry_alien', '../assets/images/gameplay/angry_alien.png');
-        this.load.image('friendly_alien', '../assets/images/gameplay/friendly_alien.png');
-        this.load.image('crosshair', '../assets/images/gameplay/crosshair.png')
+        this.load.image('pause', '../assets/images/menu/pause.png');
+        this.load.spritesheet('explosion', "../assets/images/level2/explosion_particle.png", { frameWidth: 32, frameHeight: 32});
+        this.load.image('angry_alien', '../assets/images/level2/angry_alien.png');
+        this.load.image('friendly_alien', '../assets/images/level2/friendly_alien.png');
+        this.load.image('crosshair', '../assets/images/level2/crosshair.png')
 
     }
 
