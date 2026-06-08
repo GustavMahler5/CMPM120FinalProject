@@ -1,4 +1,31 @@
-class CinematicsMenuPrototype1 extends BaseScene {
+class SettingsScene extends BaseScene {
+    
+    constructor() {
+        super({ key: "settings" });
+    }
+
+    preload() {
+        this.load.setBaseURL('./');
+    }
+
+    onEnter() {        
+        let graphics = this.add.graphics();
+        
+        graphics.fillStyle("0xf542dd");
+        graphics.fillRect(0, 0, this.SCREEN_WIDTH, this.SCREEN_HEIGHT);
+
+        const title = this.add.text(400, 100, "Game Name",  {
+            fontSize: '64px',
+            fontStyle: 'bold',
+            fill: '#A3B2A4',
+        });
+
+        // this.scene.resume("menu"); this.scene.stop() on exit
+    }
+
+}
+
+class MenuScene extends BaseScene {
     
     constructor() {
         super({ key: "menu" });
@@ -6,10 +33,11 @@ class CinematicsMenuPrototype1 extends BaseScene {
 
     preload() {
         this.load.setBaseURL('./');
-        this.load.image("menu_button", "../assets/images/menu_button.png");
-        this.load.image("background", "../assets/images/title_bg.png");
-        this.load.audio("menu", "../assets/audio/menu.wav");
-        this.load.audio("button_sfx", "../assets/audio/enemySpawn.wav");
+        this.load.image("menu_button", "../assets/images/menu/menu_button.png");
+        this.load.image("background", "../assets/images/menu/title_bg.png");
+        this.load.audio("menu", "../assets/audio/songs/menu.wav");
+        this.load.audio("button_sfx", "../assets/audio/SFX/menu/selection.mp3");
+        this.load.audio("button_hover", "../assets/audio/SFX/menu/hoverSelection.mp3");
     }
 
     onEnter() {
@@ -20,6 +48,10 @@ class CinematicsMenuPrototype1 extends BaseScene {
         menu_bgm.play();
 
         let button_sfx = this.sound.add("button_sfx", {
+            volume: BaseScene.masterVolume,
+        });
+
+        let button_hover = this.sound.add("button_hover", {
             volume: BaseScene.masterVolume,
         });
 
@@ -38,7 +70,7 @@ class CinematicsMenuPrototype1 extends BaseScene {
             // not fully implemented yet, so button clicks will be disabled until then
             switch(label) {
                 case "Start":    
-                    this.changeScene("gameplayprototype2");
+                    this.changeScene("gameplayprototype");
                     break;
                 
                 case "Levels":
@@ -46,7 +78,7 @@ class CinematicsMenuPrototype1 extends BaseScene {
                     break;
     
                 case "Settings":
-                    this.scene.switch("settings");
+                    this.changeScene("settings");
                     break;
     
                 case "Credits":  
@@ -76,7 +108,7 @@ class CinematicsMenuPrototype1 extends BaseScene {
 
             // hover + click events
             button.on("pointerover", () => {
-                this.sound.play("button_sfx");
+                this.sound.play("button_hover");
                 this.add.tween({
                     targets: container,
                     scale: this.SCREEN_HEIGHT / 300,
@@ -93,12 +125,13 @@ class CinematicsMenuPrototype1 extends BaseScene {
                 });
             });
             button.on("pointerdown", () => {
+                this.sound.play("button_sfx");
                 button.setTint(0xdddddd);
                 handleButtonClick(label);
             });
             button.on("pointerup", () => {
                 button.clearTint();
-                this.handleButtonClick(label);
+                handleButtonClick(label);
             });        
 
             this.tweens.add({
@@ -118,31 +151,4 @@ class CinematicsMenuPrototype1 extends BaseScene {
 
         })
     }
-}
-
-class Settings extends CinematicsMenuPrototype1 {
-    
-    constructor() {
-        super({ key: "settings"});
-    }
-
-    preload() {
-
-    }
-
-    onEnter() {        
-        this.add.graphics();
-        
-        this.fillStyle("0xf542dd");
-        this.fillRect(0, 0, this.SCREEN_WIDTH, this.SCREEN_HEIGHT);
-
-        const title = this.add.text(400, 100, "Game Name",  {
-            fontSize: '64px',
-            fontStyle: 'bold',
-            fill: '#A3B2A4',
-        });
-
-        // this.scene.resume("menu"); this.scene.stop() on exit
-    }
-
 }
