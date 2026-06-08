@@ -32,7 +32,7 @@ class TutorialPrototype extends BaseScene {
 
             cow: {
 
-                anticipationBeats: 4,
+                anticipationBeats: 3,
                 cues: [
                     { leadBeats: 2, sfx: "human"},
                     { leadBeats: 1.5, sfx: "human"},
@@ -68,17 +68,8 @@ class TutorialPrototype extends BaseScene {
 
     preload() {
 
-        this.load.audio("paranoia", "../assets/audio/paranoia.mp3");
-        this.load.audio("jubeatb2b", "../assets/audio/jubeatb2b.mp3");
-        this.load.audio("metronome", "../assets/audio/metronome.mp3")
-        this.load.audio("bossa", "../assets/audio/bossa.mp3");
-        this.load.audio('perfectok', '../assets/audio/perfectOk.mp3');
-        this.load.audio('miss', '../assets/audio/miss.mp3');
-        this.load.audio('cow', '../assets/audio/cow.mp3');
-        this.load.audio('ghost', '../assets/audio/laser.wav');
-        this.load.audio('human', '../assets/audio/miss.mp3');
-        this.load.json("score", "../assets/score2.json");
-        this.load.pack("main", "../assets/assets.json");
+        this.load.json("score", "../assets/beatmaps/level3score.json");
+        this.load.pack("main", "../assets/level3assets.json");
 
     }
 
@@ -119,7 +110,6 @@ class TutorialPrototype extends BaseScene {
                 type: null,
                 hitsNeeded: 0,
                 dialogue: [
-                    "Greetings Earthling!",
                     "I have come to abduc- AHH! er- I mean GATHER materials for my \"experiments\"!",
                     "However, I do need your help...",
                     "You will have to signal me with a click anywhere on the screen when a target is underneath my ship.",
@@ -130,7 +120,7 @@ class TutorialPrototype extends BaseScene {
             },
 
             {
-                type: "cow",
+                type: "human",
                 hitsNeeded: 1,
                 dialogue: [
                     "Oh look! Here comes a potential subject!"
@@ -138,7 +128,7 @@ class TutorialPrototype extends BaseScene {
             },
 
             {
-                type: "human",
+                type: "cow",
                 hitsNeeded: 1,
                 dialogue: [
                     "Nice! That's the way.",
@@ -157,7 +147,7 @@ class TutorialPrototype extends BaseScene {
 
             {
                 type: null,
-                hitsNeeded: 4,
+                hitsNeeded: 0,
                 dialogue: [
                     "All right.",
                     "Let's do it for real now!"
@@ -175,19 +165,8 @@ class TutorialPrototype extends BaseScene {
         this.createMusic();
         this.createAnimations();
         this.createScene();
-
-        this.backButton = this.add.text(
-            this.SCREEN_WIDTH * 0.05,
-            this.SCREEN_HEIGHT * 0.05,
-            "<- Back"
-        )
-        .setStyle({ fontSize: "32px", color: "#FFFFFF" })
-        .setOrigin(0, 0)
-        .setInteractive({ useHandCursor: true })
-        .on("pointerdown", () => {
-            this.game.sound.stopAll();
-            this.changeScene("levelselectprototype");
-        });
+        this.createFocusBorder();
+        this.createPauseButton();
 
         this.input.removeAllListeners("pointerdown");
         this.input.on("pointerdown", () => {
@@ -205,9 +184,11 @@ class TutorialPrototype extends BaseScene {
         this.updateTimestamps();
 
         if (this.tutorialPhase == 1) {
+
             this.updateEntities();
             this.spawnEntities();
             this.playCueEvents();
+
         }
 
         this.playBeatEvents();
@@ -232,6 +213,111 @@ class TutorialPrototype extends BaseScene {
         };
 
         this.musicStarted = false;
+
+    }
+
+
+
+    createPauseButton() {
+
+        this.pauseButton = this.add.image(
+            this.SCREEN_WIDTH * 0.01,
+            this.SCREEN_HEIGHT * 0.01,
+            "pause")
+            .setOrigin(0, 0)
+            .setScale(0.05)
+            .setDepth(10000)
+            .setAlpha(0.5)
+            .setInteractive({useHandCursor: true})
+            .on('pointerdown', () => {
+                this.game.sound.pauseAll();
+                this.scene.pause();
+                this.scene.launch('pausescene', { level: this.scene.key }); 
+            })
+
+    }
+
+
+
+    createFocusBorder() {
+
+        this.top = this.add.rectangle(
+            0,
+            this.ufo.y * 0.1,
+            this.SCREEN_WIDTH,
+            this.SCREEN_HEIGHT,
+            0x000000
+        ).setOrigin(0, 1).setDepth(100);
+
+        this.bottom = this.add.rectangle(
+            0,
+            this.ufo.y * 1.9,
+            this.SCREEN_WIDTH,
+            this.SCREEN_HEIGHT,
+            0x000000
+        ).setOrigin(0, 0).setDepth(100);
+
+        this.left = this.add.rectangle(
+            this.ufo.x * 0.6,
+            0,
+            this.SCREEN_WIDTH,
+            this.SCREEN_HEIGHT,
+            0x000000
+        ).setOrigin(1, 0).setDepth(100);
+
+        this.right = this.add.rectangle(
+            this.ufo.x * 1.4,
+            0,
+            this.SCREEN_WIDTH,
+            this.SCREEN_HEIGHT,
+            0x000000
+        ).setOrigin(0, 0).setDepth(100);
+
+        this.focusBorderPieces = [
+
+            this.top,
+            this.bottom,
+            this.left,
+            this.right
+
+        ];
+
+    }
+
+
+
+    expandFocusBorder() {
+
+        this.tweens.add({
+            targets: this.top,
+            y: -100,
+            duration: 1000,
+            ease: "Sine.easeIn"
+        });
+
+        this.tweens.add({
+            targets: this.bottom,
+            y: this.SCREEN_HEIGHT + 100,
+            duration: 1000,
+            ease: "Sine.easeIn"
+        });
+
+        this.tweens.add({
+            targets: this.left,
+            x: -100,
+            duration: 1000,
+            ease: "Sine.easeIn"
+        });
+
+        this.tweens.add({
+            targets: this.right,
+            x: this.SCREEN_WIDTH + 100,
+            duration: 1000,
+            ease: "Sine.easeIn",
+            onComplete: () => {
+                this.focusBorderPieces.forEach(piece => piece.destroy());
+            }
+        });
 
     }
 
@@ -262,6 +348,9 @@ class TutorialPrototype extends BaseScene {
         if (this.tutorialPhase == 0) {
 
             this.advanceDialogue();
+            this.missSFX.play({
+                rate: 5
+            })
             return;
 
         }
@@ -287,8 +376,6 @@ class TutorialPrototype extends BaseScene {
         this.playAbductionAnimation(rating, entity);
 
         this.activeEntities = this.activeEntities.filter(e => e !== entity);
-
-        this.tutorialText.setText(`${this.practicePhases[this.practicePhase].hitsNeeded - this.practiceHits} more time(s).`);
 
     }
 
@@ -323,7 +410,7 @@ class TutorialPrototype extends BaseScene {
             this.dialogueIndex = 0;
 
         }
-
+        if (this.focusBorderPieces.length > 0 ) this.expandFocusBorder();
         this.startPracticePhase();
 
     }
@@ -343,7 +430,7 @@ class TutorialPrototype extends BaseScene {
         this.musicPosition = 0;
 
         this.tutorialText.setText(
-            `${phase.hitsNeeded} more time(s).`
+            `${phase.hitsNeeded} more time(s)`
         );
 
         this.startMusic();
@@ -385,7 +472,7 @@ class TutorialPrototype extends BaseScene {
         this.tutorialText = this.add.text(
             this.SCREEN_WIDTH * 0.5,
             this.SCREEN_HEIGHT * 0.9,
-            "",
+            "Greetings Earthling!",
             {
                 fontSize: "16px",
                 color: "#000000",
@@ -393,7 +480,7 @@ class TutorialPrototype extends BaseScene {
                 align: "center",
                 padding: { x: 20, y: 15 },
                 wordWrap: { 
-                    width: this.SCREEN_WIDTH * 0.3
+                    width: this.SCREEN_WIDTH * 0.4
                 }
             }
         )
@@ -422,7 +509,7 @@ class TutorialPrototype extends BaseScene {
         )
         .setOrigin(0.5, 1)
         .setScale(0.3)
-        .setDepth(11);
+        .setDepth(10);
 
         this.barn = this.add.sprite(
             this.SCREEN_WIDTH * 0.92,
@@ -431,7 +518,7 @@ class TutorialPrototype extends BaseScene {
         )
         .setOrigin(0.5, 1)
         .setScale(0.3)
-        .setDepth(11);
+        .setDepth(10);
 
     }
 
@@ -591,6 +678,18 @@ class TutorialPrototype extends BaseScene {
             });
         }
 
+        if (!this.anims.exists("cowwalk")) {
+            this.anims.create({
+                key: "cowwalk",
+                frames: this.anims.generateFrameNumbers("cowwalk", {
+                    start: 0,
+                    end: 2
+                }),
+                frameRate: this.BPM / 20,
+                repeat: -1
+            });
+        }
+
     }
 
 
@@ -660,8 +759,11 @@ class TutorialPrototype extends BaseScene {
 
         this.dialogueIndex = 0;
         this.currentDialogue = phase.dialogue;
-
         this.tutorialPhase = 0;
+
+        this.time.delayedCall(1500, () => {
+            this.advanceDialogue();
+        });
 
     }
 
@@ -722,6 +824,11 @@ class TutorialPrototype extends BaseScene {
             case("ghost") :
 
                 entity.play("ghostwalk");
+                break;
+
+            case("cow") :
+
+                entity.play("cowwalk");
                 break;
         }
 
@@ -833,6 +940,7 @@ class TutorialPrototype extends BaseScene {
 
             this.practiceHits++;
             let currentPhase = this.practicePhases[this.practicePhase];
+            this.tutorialText.setText(`${this.practicePhases[this.practicePhase].hitsNeeded - this.practiceHits} more time(s)`);
 
             if (this.practiceHits >= currentPhase.hitsNeeded) {
 

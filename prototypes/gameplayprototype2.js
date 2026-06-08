@@ -118,31 +118,19 @@ class GameplayPrototype2 extends BaseScene {
         this.createAnimations();
         this.createScene();
 
-        // this.backButton = this.add.text(
-        //     this.SCREEN_WIDTH * 0.05,
-        //     this.SCREEN_HEIGHT * 0.05,
-        //     `<- Back`)
-        //     .setStyle({ fontSize: `32px`, color: '#FFFFFF' })
-        //     .setOrigin(0, 0)
-        //     .setInteractive({useHandCursor: true})
-        //     .on('pointerdown', () => {
-        //         this.game.sound.stopAll();
-        //         this.changeScene('levelselectprototype');
-        //     })
-
         this.pauseButton = this.add.image(
             this.SCREEN_WIDTH * 0.01,
             this.SCREEN_HEIGHT * 0.01,
             "pause")
             .setOrigin(0, 0)
             .setScale(0.05)
-            .setDepth(10000)
+            .setDepth(100)
             .setAlpha(0.5)
             .setInteractive({useHandCursor: true})
             .on('pointerdown', () => {
                 this.game.sound.pauseAll();
                 this.scene.pause();
-                this.scene.launch('pausescene'); 
+                this.scene.launch('pausescene', { level: this.scene.key }); 
             })
         
         // On user input

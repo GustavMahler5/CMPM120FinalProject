@@ -16,6 +16,11 @@
                 "key": "jubeatb2b",
                 "url": "../assets/audio/songs/jubeatb2b.mp3"
             },
+            {
+                "type": "audio",
+                "key": "metronome",
+                "url": "../assets/audio/sfx/level3/metronome.mp3"
+            },
 
             {
                 "type": "audio",

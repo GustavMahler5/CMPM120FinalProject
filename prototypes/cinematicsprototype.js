@@ -164,7 +164,7 @@ class CinematicsMenuPrototype extends BaseScene {
 
     preload() {
         this.load.setBaseURL('./');
-        this.load.image("menu_button", "../assets/images/menu_button.png");
+        this.load.image("menu_button", "../assets/images/menu/menu_button.png");
     }
 
     onEnter() {
@@ -318,7 +318,7 @@ class SettingsPrototype extends BaseScene {
 
     preload() {
         this.load.setBaseURL('./');
-        this.load.image("menu_button", "../assets/images/menu_button.png");
+        this.load.image("menu_button", "../assets/images/menu/menu_button.png");
     }
 
     onEnter() {
@@ -463,7 +463,7 @@ class CreditsPrototype extends BaseScene {
 
     preload() {
         this.load.setBaseURL('./');
-        this.load.image("menu_button", "../assets/images/menu_button.png");
+        this.load.image("menu_button", "../assets/images/menu/menu_button.png");
     }
 
     onEnter() {
@@ -480,7 +480,14 @@ class CreditsPrototype extends BaseScene {
         const flyInDuration = 1000;                                     // how long it should take buttons to fly in
         const buttonStartTime = 150;                                    // how long the buttons should wait before starting their tweens
 
-        const buttonLabels = ["Jason Holtman", "Beck Grah", "Jayla Lackaff", "Kajol Prasad", "Adam Top", "Back"];
+        const buttonLabels = [
+            "Jason Holtman", 
+            "Beck Grah", 
+            "Jayla Lackaff", 
+            "Kajol Prasad", 
+            "Adam Top", 
+            // "Orbweaver", Credits to Jason's friend for helping with music and sfx productions
+            "Back"];
         const title = this.add.text(((this.SCREEN_WIDTH - buttonBackground.width) / 2), -30, "Credits",  {
                 fontSize: '64px',
                 fontStyle: 'bold',
