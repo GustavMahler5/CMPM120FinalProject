@@ -13,7 +13,7 @@ class SettingsScene extends BaseScene {
         this.graphics = this.add.graphics();
         
         this.graphics.fillStyle("0xf542dd");
-        this.graphics.fillRect(0, 0, this.SCREEN_WIDTH, this.SCREEN_HEIGHT).setAlpha(0.3);
+        this.graphics.fillRect(0, 0, this.SCREEN_WIDTH, this.SCREEN_HEIGHT);
 
         const title = this.add.text(this.SCREEN_WIDTH / 2, this.SCREEN_HEIGHT / 2, "Settings",  {
             fontSize: '64px',
@@ -36,7 +36,7 @@ class SettingsScene extends BaseScene {
         
         this.input.setDraggable(dragger);
         const minX = trackX;
-        const maxX = trackX + trackWidth;
+        const maxX = trackX + width;
 
        //this.input.on('drag', (pointer, ))
 

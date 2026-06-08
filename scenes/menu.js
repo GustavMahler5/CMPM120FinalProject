@@ -29,7 +29,7 @@ class MenuScene extends BaseScene {
             volume: BaseScene.masterVolume,
         });
 
-        this.background = this.add.image(540, 340, "background");
+        this.background = this.add.image(540, 340, "background").setScale(1.1);
 
         const title = this.add.text(400, 100, "Game Name",  {
             fontSize: '64px',
@@ -41,14 +41,14 @@ class MenuScene extends BaseScene {
         const buttonStart = 500
 
         const handleButtonClick = (label) => {
-            // not fully implemented yet, so button clicks will be disabled until then
             switch(label) {
                 case "Levels":
                     this.changeScene("levelselect");
                     break;
     
                 case "Settings":
-                    this.changeScene("settings");
+                    this.scene.launch("settings2"); // overlays menu
+                    this.scene.pause();
                     break;
     
                 case "Credits":  
@@ -116,9 +116,9 @@ class MenuScene extends BaseScene {
         // fx
         //this.cameras.main.shake(10000000, .001, true);
 
-        this.tweens.add({
-            targets: this.background
+        const blurEffect = this.background.postFX.addBlur(0, 2, 2, 100); 
 
-        })
+
+       
     }
 }
