@@ -4,8 +4,10 @@ class LevelSelect extends BaseScene{
     }
     
     preload() {
-        this.load.image("menu_button_prototype", "../assets/images/menu_button_prototype.png");
-        this.load.audio('menu', '../assets/audio/menu.wav');
+        this.load.image("menu_button_prototype", "../assets/images/menu/menu_button_prototype.png");
+        this.load.audio('menu', '../assets/audio/songs/menu.wav');
+        this.load.audio('hover', '../assets/audio/sfx/menu/hoverSelection.mp3');
+        this.load.audio('selection', '../assets/audio/sfx/menu/selection.mp3');
     }
 
     onEnter() {
@@ -27,7 +29,7 @@ class LevelSelect extends BaseScene{
             { key: "tutorial", label: "Prototype\n2" },
             { key: "gameplayprototype3", label: "Prototype\n3" },
             { key: "gameplayprototype4", label: "Prototype\n4" },
-            { key: "gameplayprototype5", label: "Prototype\n5" },
+            { key: "tutorial2", label: "Prototype\n5" },
             { key: "cinematicsmenuprototype1", label: "Back" }
         ]
 

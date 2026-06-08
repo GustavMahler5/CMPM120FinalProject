@@ -9,12 +9,10 @@ class GameplayPrototype5 extends BaseScene {
 
         this.scrollSpeed = 1; // speed multiplier
 
-        this.spawnIndex = 0;
         this.activeEntities = [];
         
         this.ENTITY_TIMING_CONFIG =  {
-            small: { anticipationBeats: 4 },
-            xxlarge: { anticipationBeats: 5 }
+            small: { anticipationBeats: 4 }
         };
 
         this.ENTITY_SPAWN_CONFIG = {
@@ -36,12 +34,6 @@ class GameplayPrototype5 extends BaseScene {
         this.OK_ERROR = 0.3;
         this.PERFECT_ERROR = 0.15;
 
-        this.perfectCount = 0;
-        this.okCount = 0;
-        this.missCount = 0;
-
-        this.initialized = false;
-
         this.sunHues = [
             { min: 0,   max: 0   },  // natural orange (no shift)
             { min: -20, max: -10 },  // shift toward red-orange
@@ -54,25 +46,32 @@ class GameplayPrototype5 extends BaseScene {
     }
 
     preload() {
-        this.load.audio('suspicious', '../assets/audio/suspicious.mp3');
-        this.load.audio('enemySpawnSoundEffect', '../assets/audio/enemySpawn.wav');
-        this.load.audio('friendSpawnSoundEffect', '../assets/audio/friendSpawn.wav');
-        this.load.audio('laser', '../assets/audio/laser.wav');
-        this.load.json('score_suspicious', '../assets/score_suspicious.json');
+        this.load.audio('suspicious', '../assets/audio/songs/suspicious.mp3');
+        this.load.audio('enemySpawnSoundEffect', '../assets/audio/SFX/level2/enemySpawn.wav');
+        this.load.audio('friendSpawnSoundEffect', '../assets/audio/SFX/level2/friendSpawn.wav');
+        this.load.audio('laser', '../assets/audio/SFX/level2/laser.wav');
+        this.load.json('score_suspicious', '../assets/audio/beatmaps/score_suspicious.json');
 
-        this.load.image('planet1', '../assets/images/gameplay/planet1.png');
-        this.load.image('pause', '../assets/images/gameplay/pause.png');
-        this.load.image('planet2', '../assets/images/gameplay/planet2.png');
-        this.load.image('planet3', '../assets/images/gameplay/planet3.png');
-        this.load.image('sun', '../assets/images/gameplay/sun.png');
-        this.load.spritesheet('star', '../assets/images/gameplay/twinkling_star.png', { frameWidth: 9, frameHeight: 9 });
-        this.load.spritesheet('explosion', "../assets/images/gameplay/explosion_particle.png", { frameWidth: 32, frameHeight: 32});
-        this.load.image('angry_alien', '../assets/images/gameplay/angry_alien.png');
-        this.load.image('friendly_alien', '../assets/images/gameplay/friendly_alien.png');
-        this.load.image('crosshair', '../assets/images/gameplay/crosshair.png')
+        this.load.image('planet1', '../assets/images/level2/planet1.png');
+        this.load.image('pause', '../assets/images/menu/pause.png');
+        this.load.image('planet2', '../assets/images/level2/planet2.png');
+        this.load.image('planet3', '../assets/images/level2/planet3.png');
+        this.load.image('sun', '../assets/images/level2/sun.png');
+        this.load.spritesheet('star', '../assets/images/level2/twinkling_star.png', { frameWidth: 9, frameHeight: 9 });
+        this.load.spritesheet('explosion', "../assets/images/level2/explosion_particle.png", { frameWidth: 32, frameHeight: 32});
+        this.load.image('angry_alien', '../assets/images/level2/angry_alien.png');
+        this.load.image('friendly_alien', '../assets/images/level2/friendly_alien.png');
+        this.load.image('crosshair', '../assets/images/level2/crosshair.png')
     }
 
     onEnter() {
+
+        this.perfectCount = 0;
+        this.okCount = 0;
+        this.missCount = 0;
+        this.spawnIndex = 0;
+
+        this.initialized = false;
 
         this.sound.removeAll();
         
@@ -339,8 +338,7 @@ class GameplayPrototype5 extends BaseScene {
             this.music.play({ 
                 loop: false, 
                 volume: 0.05,
-                rate: 1,
-                seek: 180
+                rate: 1
             });
 
             this.musicStarted = true;

@@ -17,7 +17,7 @@ class Level3 extends BaseScene {
             paranoia = 1
             bossa = 2
         */
-        this.SONG = 2;
+        this.SONG = 0;
         
         this.ENTITY_TIMING_CONFIG = {
 
@@ -69,22 +69,9 @@ class Level3 extends BaseScene {
 
     preload() {
 
-        // Load music
-        this.load.audio('bossa', '../assets/audio/bossa.mp3');
-
-        // Load hit SFX
-        this.load.audio('perfectok', '../assets/audio/perfectOk.mp3');
-        this.load.audio('miss', '../assets/audio/miss.mp3');
-
-        // Load entity SFX
-        this.load.audio('cow', '../assets/audio/cow.mp3');
-        this.load.audio('ghost', '../assets/audio/laser.wav');
-        this.load.audio('human', '../assets/audio/miss.mp3');
-
-        // Load data
-        this.load.json('score', '../assets/level3score.json');
-        this.load.pack("main", "../assets/assets.json");
-
+        this.load.json('score', '../assets/beatmaps/level3score.json');
+        this.load.pack("main", "../assets/level3assets.json");
+    
     }
 
 
@@ -317,7 +304,7 @@ class Level3 extends BaseScene {
             .on('pointerdown', () => {
                 this.game.sound.pauseAll();
                 this.scene.pause();
-                this.scene.launch('pausescene'); 
+                this.scene.launch('pausescene', { level: this.scene.key }); 
             })
 
     }
@@ -696,12 +683,19 @@ class Level3 extends BaseScene {
 
         switch(note.type) {
 
-            case("human") :
+            case("human"):
+
                 entity.play("walk");
                 break;
 
-            case("ghost") :
+            case("ghost"):
+
                 entity.play("ghostwalk");
+                break;
+
+            case("cow"):
+            
+                entity.play("cowwalk");
                 break;
         }
 

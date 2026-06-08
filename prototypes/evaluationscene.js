@@ -21,7 +21,7 @@ class EvaluationScene extends BaseScene {
 
     preload() {
 
-        this.load.pack("main", "../assets/assets.json");
+        this.load.pack("main", "../assets/level3assets.json");
 
     }
 
@@ -38,56 +38,172 @@ class EvaluationScene extends BaseScene {
 
                 bestScore = Math.max(this.score, BaseScene.level1BestScore);
                 BaseScene.level1BestScore = bestScore;
-                break;
+
+                if (this.score > this.CUTOFF_SCORE) {
+
+                    this.add.text(
+                        this.SCREEN_WIDTH * 0.5,
+                        this.SCREEN_HEIGHT * 0.2,
+                        "Great Job!")
+                        .setOrigin(0.5, 0.5);
+
+                    this.time.delayedCall (
+
+                        2000,
+                        () => this.add.text (
+                            this.SCREEN_WIDTH * 0.5, 
+                            this.SCREEN_HEIGHT * 0.4,
+                            `Your score was ${this.score.toFixed(0)}`)
+                            .setOrigin(0.5, 0.5)
+
+                    );
+
+                }
+
+                else {
+
+                    this.add.text(
+                        this.SCREEN_WIDTH * 0.5,
+                        this.SCREEN_HEIGHT * 0.2,
+                        "Meh!")
+                        .setOrigin(0.5, 0.5);
+
+                    this.time.delayedCall (
+
+                        2000,
+                        () => this.add.text (
+                            this.SCREEN_WIDTH * 0.5, 
+                            this.SCREEN_HEIGHT * 0.4,
+                            `Your score was ${this.score.toFixed(0)}`)
+                            .setOrigin(0.5, 0.5)
+
+                    );
+
+                }
                 
+                break;
             
             case(2):
 
                 bestScore = Math.max(this.score, BaseScene.level2BestScore);
                 BaseScene.level2BestScore = bestScore;
+
+                if (this.score > this.CUTOFF_SCORE) {
+
+                    this.add.text(
+                        this.SCREEN_WIDTH * 0.5,
+                        this.SCREEN_HEIGHT * 0.2,
+                        "Great Job!")
+                        .setOrigin(0.5, 0.5);
+
+                    this.time.delayedCall (
+
+                        2000,
+                        () => this.add.text (
+                            this.SCREEN_WIDTH * 0.5, 
+                            this.SCREEN_HEIGHT * 0.4,
+                            `Your score was ${this.score.toFixed(0)}`)
+                            .setOrigin(0.5, 0.5)
+
+                    );
+
+                }
+
+                else {
+
+                    this.add.text(
+                        this.SCREEN_WIDTH * 0.5,
+                        this.SCREEN_HEIGHT * 0.2,
+                        "Meh!")
+                        .setOrigin(0.5, 0.5);
+
+                    this.time.delayedCall (
+
+                        2000,
+                        () => this.add.text (
+                            this.SCREEN_WIDTH * 0.5, 
+                            this.SCREEN_HEIGHT * 0.4,
+                            `Your score was ${this.score.toFixed(0)}`)
+                            .setOrigin(0.5, 0.5)
+
+                    );
+
+                }
+                
                 break;
 
             case(3):
                 
                 bestScore = Math.max(this.score, BaseScene.level3BestScore);
                 BaseScene.level3BestScore = bestScore;
+
+                if (this.score > this.CUTOFF_SCORE) {
+
+                    this.add.text(
+                        this.SCREEN_WIDTH * 0.5,
+                        this.SCREEN_HEIGHT * 0.2,
+                        "Great Job!")
+                        .setOrigin(0.5, 0.5);
+
+                    this.time.delayedCall (
+
+                        2000,
+                        () =>  { this.add.text (
+                            this.SCREEN_WIDTH * 0.5, 
+                            this.SCREEN_HEIGHT * 0.4,
+                            `Your score was ${this.score.toFixed(0)}`)
+                            .setOrigin(0.5, 0.5),
+
+                            this.add.image (
+                            this.SCREEN_WIDTH * 0.7,
+                            this.SCREEN_HEIGHT * 0.4,
+                            "goodEvaluation")
+                            .setOrigin(0.5, 0.5)
+                            .setScale(0.1)
+
+                    });
+
+                }
+
+                else {
+
+                    this.add.text(
+                        this.SCREEN_WIDTH * 0.5,
+                        this.SCREEN_HEIGHT * 0.2,
+                        "Meh!")
+                        .setOrigin(0.5, 0.5);
+
+                    this.time.delayedCall (
+
+                        2000,
+                        () =>  { this.add.text (
+                            this.SCREEN_WIDTH * 0.5, 
+                            this.SCREEN_HEIGHT * 0.4,
+                            `Your score was ${this.score.toFixed(0)}`)
+                            .setOrigin(0.5, 0.5),
+
+                            this.add.image (
+                            this.SCREEN_WIDTH * 0.7,
+                            this.SCREEN_HEIGHT * 0.4,
+                            "badEvaluation")
+                            .setOrigin(0.5, 0.5)
+                            .setScale(0.1)
+
+                    });
+
+                }
+                
                 break;
             
             default:
-                return;
+
+                break;
+
         }
 
-        this.evaluationText = this.add.text(
-            this.SCREEN_WIDTH * 0.5,
-            this.SCREEN_HEIGHT * 0.2,
-            "Great Job!")
-            .setOrigin(0.5, 0.5);
-
         this.time.delayedCall (
 
-            2000,
-            () => this.add.text (
-                this.SCREEN_WIDTH * 0.5, 
-                this.SCREEN_HEIGHT * 0.4,
-                `Your score was ${this.score.toFixed(0)}`)
-                .setOrigin(0.5, 0.5)
-
-        );
-        
-        this.time.delayedCall (
-
-            4000,
-            () => this.add.text (
-                this.SCREEN_WIDTH * 0.5, 
-                this.SCREEN_HEIGHT * 0.5,
-                `Best Score: ${bestScore.toFixed(0)}`)
-                .setOrigin(0.5, 0.5)
-
-        );
-
-        this.time.delayedCall (
-
-            6000,
+            3000,
             () => playAgain = this.add.text (
                 this.SCREEN_WIDTH * 0.5, 
                 this.SCREEN_HEIGHT * 0.7,
@@ -113,13 +229,4 @@ class EvaluationScene extends BaseScene {
         });
 
     }
-
-
-
-    update() {
-
-    }
-
-
-
 }
