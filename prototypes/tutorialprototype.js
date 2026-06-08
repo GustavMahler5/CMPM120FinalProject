@@ -165,8 +165,6 @@ class TutorialPrototype extends BaseScene {
         this.createMusic();
         this.createAnimations();
         this.createScene();
-        this.createFocusBorder();
-        this.createPauseButton();
 
         this.input.removeAllListeners("pointerdown");
         this.input.on("pointerdown", () => {
@@ -234,6 +232,34 @@ class TutorialPrototype extends BaseScene {
                 this.scene.pause();
                 this.scene.launch('pausescene', { level: this.scene.key }); 
             })
+
+    }
+
+
+
+    createSkipTutorial() {
+
+        this.skipTutorial = this.add.text(
+            50, 
+            this.SCREEN_HEIGHT - 50, 
+            "Skip Tutorial",
+            {
+                fontSize: "16px",
+                color: "#000000",
+                backgroundColor: "#FFFFFF",
+                align: "center",
+                padding: { x: 20, y: 15 },
+                wordWrap: { 
+                    width: this.SCREEN_WIDTH * 0.4
+                }
+            }
+        )
+        .setOrigin(0, 1)
+        .setDepth(1000)
+        .setInteractive({useHandCursor: true})
+            .on('pointerdown', () => {
+                this.changeScene('gameplayprototype2');
+            });
 
     }
 
@@ -462,6 +488,9 @@ class TutorialPrototype extends BaseScene {
         // this.createStars();
         this.createText();
         this.createTutorialText();
+        this.createFocusBorder();
+        this.createPauseButton();
+        this.createSkipTutorial();
 
     }
 

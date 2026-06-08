@@ -165,6 +165,7 @@ class CinematicsMenuPrototype extends BaseScene {
     preload() {
         this.load.setBaseURL('./');
         this.load.image("menu_button", "../assets/images/menu/menu_button.png");
+        this.load.image('fullscreen', "../assets/images/menu/fullscreen.png");
     }
 
     onEnter() {
@@ -319,6 +320,7 @@ class SettingsPrototype extends BaseScene {
     preload() {
         this.load.setBaseURL('./');
         this.load.image("menu_button", "../assets/images/menu/menu_button.png");
+        this.load.image('fullscreen', "../assets/images/menu/fullscreen.png");
     }
 
     onEnter() {
@@ -464,6 +466,7 @@ class CreditsPrototype extends BaseScene {
     preload() {
         this.load.setBaseURL('./');
         this.load.image("menu_button", "../assets/images/menu/menu_button.png");
+        this.load.image('fullscreen', "../assets/images/menu/fullscreen.png");
     }
 
     onEnter() {

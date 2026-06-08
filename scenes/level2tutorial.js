@@ -1,22 +1,11 @@
-/*
-Have all scenes extend the custom engine for this project: "BaseScene"
-We will put all global variables and static functions into basescene.js 
-to maintain code readability and neatness.
-*/
-
-class TutorialPrototype2 extends BaseScene {
+class Level2Tutorial extends BaseScene {
 
 
 
     constructor() {
 
-        super("tutorial2");
+        super("level2tutorial");
 
-        /*
-            jubeatb2b = 0
-            paranoia = 1
-            bossa = 2
-        */
         this.SONG = 0;
 
         this.ENTITY_SPAWN_CONFIG = {

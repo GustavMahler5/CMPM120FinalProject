@@ -161,8 +161,6 @@ class Level3Tutorial extends BaseScene {
         this.createMusic();
         this.createAnimations();
         this.createScene();
-        this.createFocusBorder();
-        this.createPauseButton();
 
         this.input.removeAllListeners("pointerdown");
         this.input.on("pointerdown", () => {
@@ -238,6 +236,9 @@ class Level3Tutorial extends BaseScene {
         this.createBackground();
         this.createUfo();
         this.createTutorialText();
+        this.createSkipTutorial();
+        this.createFocusBorder();
+        this.createPauseButton();
 
     }
 
@@ -262,6 +263,34 @@ class Level3Tutorial extends BaseScene {
         )
         .setOrigin(0.5, 0.5)
         .setDepth(1000);
+
+    }
+
+
+
+    createSkipTutorial() {
+
+        this.skipTutorial = this.add.text(
+            this.SCREEN_WIDTH * 0.01, 
+            this.SCREEN_HEIGHT * 0.9, 
+            "Skip Tutorial",
+            {
+                fontSize: "16px",
+                color: "#000000",
+                backgroundColor: "#FFFFFF",
+                align: "center",
+                padding: { x: 20, y: 15 },
+                wordWrap: { 
+                    width: this.SCREEN_WIDTH * 0.4
+                }
+            }
+        )
+        .setOrigin(0, 0.5)
+        .setDepth(1000)
+        .setInteractive({useHandCursor: true})
+            .on('pointerdown', () => {
+                this.changeScene('level3');
+            });
 
     }
 

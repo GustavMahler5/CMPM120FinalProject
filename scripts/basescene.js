@@ -21,15 +21,26 @@ class BaseScene extends Phaser.Scene {
 
     static justAGlobalVariable = 0;
 
-    static level1BestScore = 0;
-    static level2BestScore = 0;
-    static level3BestScore = 0;
-    static masterVolume = 0.05;
+    static level1BestScore = parseInt(localStorage.getItem('level1BestScore')) || 0;
+    static level2BestScore = parseInt(localStorage.getItem('level2BestScore')) || 0;
+    static level3BestScore = parseInt(localStorage.getItem('level3BestScore')) || 0;
+    static masterVolume = parseInt(localStorage.getItem('masterVolume')) || 0.05;
+    static backgroundMusic = localStorage.getItem('backgroundMusic') != false;
 
     create() {
 
         this.cameras.main.setBackgroundColor("#272727");
         this.fade(false, this.FADE_DURATION);
+        this.fullscreen = this.add.image(this.SCREEN_WIDTH - 20, this.SCREEN_HEIGHT - 20, 'fullscreen')
+        .setOrigin(1, 1)
+        .setScale(0.05)
+        .setAlpha(0.5)
+        .setDepth(1000)
+        .setInteractive({useHandCursor: true})
+            .on('pointerdown', () => {
+                this.scale.isFullscreen ? this.scale.stopFullscreen() : this.scale.startFullscreen();
+            });
+
         this.onEnter();
 
     }

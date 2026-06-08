@@ -1,33 +1,38 @@
-class GameplayPrototype3 extends BaseScene {
+// new version of my (Beck's) level, with the new music
+
+class Level2 extends BaseScene {
     constructor() {
 
-        super("gameplayprototype3");
+        super("level2");
 
         this.SONG = 0;
 
         this.scrollSpeed = 1; // speed multiplier
 
-        this.spawnIndex = 0;
         this.activeEntities = [];
         
         this.ENTITY_TIMING_CONFIG =  {
-            small: { anticipationBeats: 1.5 },
-            medium: { anticipationBeats: 2 },
-            large: { anticipationBeats: 3 },
-            xlarge: { anticipationBeats: 4 },
-            xxlarge: { anticipationBeats: 5 }
+            small: { anticipationBeats: 4 }
         };
+
+        this.ENTITY_SPAWN_CONFIG = {
+            left_high: 0,
+            right_high: 1,
+            left_mid: 2,
+            right_mid: 3,
+            left_low: 4,
+            right_low: 5
+        }
+
+        this.ENTITY_TYPE_CONFIG = {
+            friend: 1,
+            enemy: 0
+        }
 
         // Error margins
         this.ERROR_MARGIN = 0.6;
         this.OK_ERROR = 0.3;
         this.PERFECT_ERROR = 0.15;
-
-        this.perfectCount = 0;
-        this.okCount = 0;
-        this.missCount = 0;
-
-        this.initialized = false;
 
         this.sunHues = [
             { min: 0,   max: 0   },  // natural orange (no shift)
@@ -41,26 +46,33 @@ class GameplayPrototype3 extends BaseScene {
     }
 
     preload() {
+        this.load.audio('suspicious', '../assets/audio/songs/suspicious.mp3');
+        this.load.audio('enemySpawnSoundEffect', '../assets/audio/SFX/level2/enemySpawn.wav');
+        this.load.audio('friendSpawnSoundEffect', '../assets/audio/SFX/level2/friendSpawn.wav');
+        this.load.audio('laser', '../assets/audio/SFX/level2/laser.wav');
+        this.load.json('score_suspicious', '../assets/audio/beatmaps/score_suspicious.json');
 
-        this.load.audio('paranoia', '../assets/audio/paranoia.mp3');
-        this.load.audio('jubeatb2b', '../assets/audio/jubeatb2b.mp3');
-        this.load.audio('enemySpawnSoundEffect', '../assets/audio/enemySpawn.wav');
-        this.load.audio('laser', '../assets/audio/laser.wav');
-        this.load.json('score', '../assets/score_old.json');
-
-        this.load.image('planet1', '../assets/images/gameplay/planet1.png');
-        this.load.image('planet2', '../assets/images/gameplay/planet2.png');
-        this.load.image('planet3', '../assets/images/gameplay/planet3.png');
-        this.load.image('sun', '../assets/images/gameplay/sun.png');
-        this.load.spritesheet('star', '../assets/images/gameplay/twinkling_star.png', { frameWidth: 9, frameHeight: 9 });
-        this.load.spritesheet('explosion', "../assets/images/gameplay/explosion_particle.png", { frameWidth: 32, frameHeight: 32});
-        this.load.image('angry_alien', '../assets/images/gameplay/angry_alien.png');
-        this.load.image('friendly_alien', '../assets/images/gameplay/friendly_alien.png');
-        this.load.image('crosshair', '../assets/images/gameplay/crosshair.png');
+        this.load.image('planet1', '../assets/images/level2/planet1.png');
+        this.load.image('pause', '../assets/images/menu/pause.png');
+        this.load.image('planet2', '../assets/images/level2/planet2.png');
+        this.load.image('planet3', '../assets/images/level2/planet3.png');
+        this.load.image('sun', '../assets/images/level2/sun.png');
+        this.load.spritesheet('star', '../assets/images/level2/twinkling_star.png', { frameWidth: 9, frameHeight: 9 });
+        this.load.spritesheet('explosion', "../assets/images/level2/explosion_particle.png", { frameWidth: 32, frameHeight: 32});
+        this.load.image('angry_alien', '../assets/images/level2/angry_alien.png');
+        this.load.image('friendly_alien', '../assets/images/level2/friendly_alien.png');
+        this.load.image('crosshair', '../assets/images/level2/crosshair.png');
         this.load.image('fullscreen', "../assets/images/menu/fullscreen.png");
     }
 
     onEnter() {
+
+        this.perfectCount = 0;
+        this.okCount = 0;
+        this.missCount = 0;
+        this.spawnIndex = 0;
+
+        this.initialized = false;
 
         this.sound.removeAll();
         
@@ -77,10 +89,15 @@ class GameplayPrototype3 extends BaseScene {
 
         this.scaleFactor = 4;
         this.planet_array = ['planet1', 'planet2', 'planet3'];
-        this.score = this.cache.json.get('score');
+        this.score = this.cache.json.get('score_suspicious');
         this.notes = this.score.notes;
         this.songInfo = this.score.song;
         console.log(this.score);
+
+        this.totalNotes = this.notes.length;
+        this.perfectPoints = this.MAXIMUM_SCORE / this.totalNotes;
+        this.okPoints = (this.MAXIMUM_SCORE * 0.75) / this.totalNotes;
+        this.totalScore = 0;
 
         this.BPM = this.songInfo[this.SONG].bpm;                    // BPM
         this.BEAT_DURATION = 60 / this.BPM;                 // how many seconds is 1 beat
@@ -93,12 +110,30 @@ class GameplayPrototype3 extends BaseScene {
         // Add Music
         this.music = this.sound.add(`${this.songInfo[this.SONG].name}`);
 
+        this.pauseButton = this.add.image(
+            this.SCREEN_WIDTH * 0.01,
+            this.SCREEN_HEIGHT * 0.01,
+            "pause")
+            .setOrigin(0, 0)
+            .setScale(0.05)
+            .setDepth(10000)
+            .setAlpha(0.5)
+            .setInteractive({useHandCursor: true})
+            .on('pointerdown', () => {
+                this.game.sound.pauseAll();
+                this.scene.pause();
+                this.scene.launch('pausescene'); 
+            }
+        );
+        this.pauseButton.fx = this.pauseButton.enableFilters().filters.internal.addColorMatrix().colorMatrix;
+        this.pauseButton.fx.hue(100);
+
         // Create text
         if (1) {
         let disclaimer = this.add.text(
             this.SCREEN_WIDTH * 0.5,
             this.SCREEN_HEIGHT * 0.05,
-            "Gameplay prototype v3")
+            "Gameplay prototype v5")
             .setStyle({ fontSize: `16px`, color: '#ff5757' })
             .setOrigin(0.5, 0.5);
 
@@ -147,18 +182,6 @@ class GameplayPrototype3 extends BaseScene {
             .setDepth(1)
             .setScale(7);
 
-        // back button
-        this.backButton = this.add.text(
-        this.SCREEN_WIDTH * 0.1,
-        this.SCREEN_HEIGHT * 0.1,
-        `<- Back`)
-        .setStyle({ fontSize: `32px`, color: '#FFFFFF' })
-        .setOrigin(0, 0)
-        .setInteractive({useHandCursor: true})
-        .on('pointerdown', () => {
-            this.game.sound.stopAll();
-            this.changeScene('levelselectprototype');
-        });
 
         this.spawnPoints = this.add.group();
         this.spawnPoints.add(this.add.container(-20, this.SCREEN_HEIGHT * .3));
@@ -167,8 +190,6 @@ class GameplayPrototype3 extends BaseScene {
         this.spawnPoints.add(this.add.container(this.SCREEN_WIDTH + 20, this.SCREEN_HEIGHT * .5));
         this.spawnPoints.add(this.add.container(-20, this.SCREEN_HEIGHT * .7));
         this.spawnPoints.add(this.add.container(this.SCREEN_WIDTH + 20, this.SCREEN_HEIGHT * .7));
-        this.currSpawn = 0;
-
         this.laserSpawnLeft = this.add.container(this.SCREEN_WIDTH * .25, this.SCREEN_HEIGHT);
         this.laserSpawnRight = this.add.container(this.SCREEN_WIDTH * .75, this.SCREEN_HEIGHT);
 
@@ -208,6 +229,11 @@ class GameplayPrototype3 extends BaseScene {
 
             this.handleInput();
         });
+
+        this.input.keyboard.on('keydown-SPACE', () => {
+
+            this.handleInput();
+        });
     }
 
     update(time, delta) {
@@ -242,7 +268,7 @@ class GameplayPrototype3 extends BaseScene {
         }
 
         this.lastBeatEvent = this.lastBeat;
-    
+
         let evenBeat = (this.lastBeat % 2 == 0);
 
         this.updateColors(evenBeat);
@@ -298,9 +324,6 @@ class GameplayPrototype3 extends BaseScene {
 
 
     handleInput() {
-
-        // Configuration
-        if (1) {
         if (!this.music) return;
 
         // Click once to initialize the game. Used for synching purposes
@@ -323,7 +346,18 @@ class GameplayPrototype3 extends BaseScene {
             return;
 
         }
-        }
+
+        this.music.once('complete', () => {
+
+            this.fade(true, this.FADE_DURATION);
+            this.time.delayedCall(this.FADE_DURATION, () => {
+
+                this.scene.start('evaluationscene', { score: this.totalScore, level: 2 });
+
+            });
+            
+
+        });
 
         let entity = this.getClosestEntity();
         if (!entity) {
@@ -470,7 +504,7 @@ class GameplayPrototype3 extends BaseScene {
         laser.lineStyle(3, 0xd02b14, 1);
         laser.beginPath();
 
-        this.sound.play('laser');
+        this.sound.play('laser', { volume: 0.1 });
         this.cameras.main.shake(200, .005);
 
         switch (judgement) {
@@ -539,8 +573,9 @@ class GameplayPrototype3 extends BaseScene {
 
             let note = this.notes[this.spawnIndex];
             let config = this.ENTITY_TIMING_CONFIG[note.type];
+            let targetBeat = ((note.measure - 1) * this.TIME_SIGNATURE) + note.beat;
 
-            let spawnBeat = note.beat - config.anticipationBeats;
+            let spawnBeat = targetBeat - config.anticipationBeats;
 
             if (this.currentBeatContinuous >= spawnBeat) {
 
@@ -668,23 +703,24 @@ class GameplayPrototype3 extends BaseScene {
     }
 
     spawnEntity(note, config) {
-        const spawn = this.spawnPoints.getChildren()[this.currSpawn];
+        const spawn = this.ENTITY_SPAWN_CONFIG[note.spawn];
+        const type = this.ENTITY_TYPE_CONFIG[note.entity];
 
-        const rand = Phaser.Math.Between(0, 4);
         const entityList = ["angry_alien", "friendly_alien"];
-        let index = 0
-        if (rand == 4 ) {
-            index = 1;
-        }
         let entity = this.add.image(
-            spawn.x,
-            spawn.y,
-            entityList[index]
+            this.spawnPoints.getChildren()[spawn].x,
+            this.spawnPoints.getChildren()[spawn].y,
+            entityList[type]
         ).setScale(this.scaleFactor).setOrigin(.5, .5);
-        entity.enemy = index;
+        entity.enemy = type;
         // left spawn
-        this.sound.play('enemySpawnSoundEffect');
-        if (this.currSpawn % 2 == 0) {
+        if (entity.enemy === 0) {
+            this.sound.play('enemySpawnSoundEffect');
+        }
+        else {
+            this.sound.play('friendSpawnSoundEffect');
+        }
+        if (spawn % 2 == 0) {
             entity.spawnedFromLeft = true;
             this.tweens.add({
                 targets: entity,
@@ -739,12 +775,8 @@ class GameplayPrototype3 extends BaseScene {
         }
 
         entity.noteType = note.type;
-        entity.targetBeat = note.beat;
+        entity.targetBeat = ((note.measure - 1) * this.TIME_SIGNATURE) + note.beat;
         entity.judged = false;
-        this.currSpawn++;
-        if (this.currSpawn >= this.spawnPoints.getChildren().length) {
-            this.currSpawn = 0;
-        }
 
         return entity;
 
@@ -772,13 +804,13 @@ class GameplayPrototype3 extends BaseScene {
         switch(rating) {
 
             case("perfect!"):
-
+                this.totalScore += this.perfectPoints;
                 this.perfectCount++;
                 this.perfectScore.setText(`Perfect: ${this.perfectCount}`);
                 break;
 
             case("ok"):
-
+                this.totalScore += this.okPoints;
                 this.okCount++;
                 this.okScore.setText(`Ok: ${this.okCount}`);
                 break;
