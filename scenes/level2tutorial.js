@@ -262,6 +262,8 @@ class Level2Tutorial extends BaseScene {
             alpha: { start: 1, end: .7},
             emitting: false
         });
+
+        this.createSkipTutorial();
     }
 
 
@@ -1031,6 +1033,32 @@ class Level2Tutorial extends BaseScene {
             }
 
         }
+
+    }
+
+    createSkipTutorial() {
+
+        this.skipTutorial = this.add.text(
+            50, 
+            this.SCREEN_HEIGHT - 50, 
+            "Skip Tutorial",
+            {
+                fontSize: "16px",
+                color: "#000000",
+                backgroundColor: "#FFFFFF",
+                align: "center",
+                padding: { x: 20, y: 15 },
+                wordWrap: { 
+                    width: this.SCREEN_WIDTH * 0.4
+                }
+            }
+        )
+        .setOrigin(0, 1)
+        .setDepth(1000)
+        .setInteractive({useHandCursor: true})
+            .on('pointerdown', () => {
+                this.changeScene('level2');
+            });
 
     }
 
