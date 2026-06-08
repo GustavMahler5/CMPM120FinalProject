@@ -24,8 +24,10 @@ class BaseScene extends Phaser.Scene {
     static level1BestScore = parseInt(localStorage.getItem('level1BestScore')) || 0;
     static level2BestScore = parseInt(localStorage.getItem('level2BestScore')) || 0;
     static level3BestScore = parseInt(localStorage.getItem('level3BestScore')) || 0;
-    static masterVolume = parseInt(localStorage.getItem('masterVolume')) || 0.05;
-    static backgroundMusic = localStorage.getItem('backgroundMusic') != false;
+    static masterVolume = parseFloat(localStorage.getItem('masterVolume')) || 0.05;
+    static sfxVolume = parseFloat(localStorage.getItem('sfxVolume')) || 0.05;
+    static musicVolume = parseFloat(localStorage.getItem('musicVolume')) || 0.05;
+    static backgroundMusic = localStorage.getItem('backgroundMusic') !== false;
 
     create() {
 

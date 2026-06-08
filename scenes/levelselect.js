@@ -1,6 +1,6 @@
-class LevelSelectPrototype extends BaseScene{
+class LevelSelect extends BaseScene{
     constructor() {
-        super("levelselectprototype");
+        super("levelselect");
     }
     
     preload() {
@@ -9,9 +9,12 @@ class LevelSelectPrototype extends BaseScene{
         this.load.audio('hover', '../assets/audio/sfx/menu/hoverSelection.mp3');
         this.load.audio('selection', '../assets/audio/sfx/menu/selection.mp3');
         this.load.image('fullscreen', "../assets/images/menu/fullscreen.png");
+        this.load.image('level3jacket', "../assets/images/menu/level3jacket.png");
+        this.load.image('level3jacket', "../assets/images/menu/level2jacket.png");
     }
 
     onEnter() {
+
         this.cameras.main.setBackgroundColor(0xE0C6AD);
 
         this.hoverSFX = this.sound.add('hover');
@@ -25,13 +28,10 @@ class LevelSelectPrototype extends BaseScene{
 
         // add scene here to create button
         const scenes = [
-            { key: "gameplayprototype",  label: "Prototype\n0" },
-            { key: "gameplayprototype1", label: "Prototype\n1" },
-            { key: "tutorial", label: "Prototype\n2" },
-            { key: "gameplayprototype3", label: "Prototype\n3" },
-            { key: "gameplayprototype4", label: "Prototype\n4" },
-            { key: "tutorial2", label: "Prototype\n5" },
-            { key: "cinematicsmenuprototype1", label: "Back" }
+            { key: "level1",  jacket: "placeholder" },
+            { key: "level2tutorial", jacket: "level2jacket" },
+            { key: "level3tutorial", jacket: "level3jacket" },
+            { key: "menu", label: "Back" }
         ]
 
         const buttonBackground = this.add.rectangle(-200, this.SCREEN_HEIGHT / 2, this.SCREEN_WIDTH / 4, this.SCREEN_HEIGHT, 0xC1B2A2);
@@ -66,25 +66,38 @@ class LevelSelectPrototype extends BaseScene{
             }
         });
 
-        scenes.forEach((scene, i) => {
+        scenes.forEach((button, i) => {
+            
             const x = startX;
             const y = (startY) + (buttonSpacing * i);
 
-            const button = this.add.image(0, 0, "menu_button_prototype").setScale(buttonScale);
-            const text = this.add.text(0, 0, scene.label, {
-                fontSize: '32px', 
-                fill: '#fff',
-                align: 'center'
-            })
-            .setOrigin(0.5, 0.5);
-            text.setScale(Math.min(1, (buttonWidth - 20) / text.width));
+            if (button.label) {
+
+                const button = this.add.image(0, 0, "menu_button_prototype").setScale(buttonScale);
+                const text = this.add.text(0, 0, button.label, {
+                    fontSize: '32px', 
+                    fill: '#fff',
+                    align: 'center'
+                })
+                .setOrigin(0.5, 0.5);
+                text.setScale(Math.min(1, (buttonWidth - 20) / text.width));
 
 
-            // buttons + text are grouped into containers for easier use
-            const container = this.add.container(x, y, [button, text]);
-            container.scene = scene;
-            container.setSize(button.displayWidth, button.displayHeight);
-            button.setInteractive();
+                // buttons + text are grouped into containers for easier use
+                const container = this.add.container(x, y, [button, text]);
+                container.button = button;
+                container.setSize(button.displayWidth, button.displayHeight);
+                button.setInteractive();
+
+            }
+
+            else if (button.jacket) {
+
+                const button = this.add.image(0, 0, "menu_button_prototype").setScale(buttonScale);
+                const text = this.add.image(0, 0, button.jacket).setOrigin(0.5, 0.5);
+                text.setScale(Math.min(1, (buttonWidth - 20) / text.width));
+
+            }
 
             // hover + click events
             button.on("pointerover", () => {
@@ -117,7 +130,7 @@ class LevelSelectPrototype extends BaseScene{
                     loop: false,
                     volume: BaseScene.masterVolume * 1.5,
                 });
-                this.handleButtonClick(container.scene.key);
+                this.handleButtonClick(container.button.key);
             });
 
             // add to timeline

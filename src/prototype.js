@@ -23,7 +23,7 @@ let prototypeScenes = {
     logo: LogoScene,
     settings: SettingsPrototype,
     credits: CreditsPrototype,
-    levelSelect: LevelSelect,
+    levelSelect: LevelSelectProrotype,
     jaylalevelstart: Start,
     pause: PauseScene
 

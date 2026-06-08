@@ -1,31 +1,3 @@
-class SettingsScene extends BaseScene {
-    
-    constructor() {
-        super({ key: "settings" });
-    }
-
-    preload() {
-        this.load.image('fullscreen', "../assets/images/menu/fullscreen.png");
-        this.load.setBaseURL('./');
-    }
-
-    onEnter() {        
-        let graphics = this.add.graphics();
-        
-        graphics.fillStyle("0xf542dd");
-        graphics.fillRect(0, 0, this.SCREEN_WIDTH, this.SCREEN_HEIGHT);
-
-        const title = this.add.text(400, 100, "Game Name",  {
-            fontSize: '64px',
-            fontStyle: 'bold',
-            fill: '#A3B2A4',
-        });
-
-        // this.scene.resume("menu"); this.scene.stop() on exit
-    }
-
-}
-
 class MenuScene extends BaseScene {
     
     constructor() {
@@ -65,18 +37,14 @@ class MenuScene extends BaseScene {
             fill: '#A3B2A4',
         });
 
-        const buttonLabels = ["Start", "Levels", "Settings", "Credits", "Exit"];  
+        const buttonLabels = ["Levels", "Settings", "Credits", "Exit"];  
         const buttonStart = 500
 
         const handleButtonClick = (label) => {
             // not fully implemented yet, so button clicks will be disabled until then
             switch(label) {
-                case "Start":    
-                    this.changeScene("gameplayprototype");
-                    break;
-                
                 case "Levels":
-                    this.changeScene("levelselectprototype");
+                    this.changeScene("levelselect");
                     break;
     
                 case "Settings":
@@ -84,11 +52,11 @@ class MenuScene extends BaseScene {
                     break;
     
                 case "Credits":  
-                    this.changeScene("creditsprototype");
+                    this.changeScene("credits");
                     break;
     
                 case "Exit":
-                    this.changeScene("LogoScene");
+                    this.changeScene("logo");
                     break;
             }
         }

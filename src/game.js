@@ -6,7 +6,14 @@ let scenes = {
     level2tutorial: Level2Tutorial,
     level3tutorial: Level3Tutorial,
     pause: PauseScene,
-    evaluationscene: EvaluationScene
+    evaluationscene: EvaluationScene,
+    //settings: SettingsScene,
+    settings2: SettingsScene2,
+    menu: MenuScene,
+    credits: CreditsScene,
+    levelselect: LevelSelect,
+    logo: LogoScene,
+    
 };
 
 const sceneKey = document.body.dataset.scene;
