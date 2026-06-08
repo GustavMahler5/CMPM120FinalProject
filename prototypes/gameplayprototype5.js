@@ -61,6 +61,7 @@ class GameplayPrototype5 extends BaseScene {
         this.load.json('score_suspicious', '../assets/score_suspicious.json');
 
         this.load.image('planet1', '../assets/images/gameplay/planet1.png');
+        this.load.image('pause', '../assets/images/gameplay/pause.png');
         this.load.image('planet2', '../assets/images/gameplay/planet2.png');
         this.load.image('planet3', '../assets/images/gameplay/planet3.png');
         this.load.image('sun', '../assets/images/gameplay/sun.png');
@@ -93,6 +94,11 @@ class GameplayPrototype5 extends BaseScene {
         this.songInfo = this.score.song;
         console.log(this.score);
 
+        this.totalNotes = this.notes.length;
+        this.perfectPoints = this.MAXIMUM_SCORE / this.totalNotes;
+        this.okPoints = (this.MAXIMUM_SCORE * 0.75) / this.totalNotes;
+        this.totalScore = 0;
+
         this.BPM = this.songInfo[this.SONG].bpm;                    // BPM
         this.BEAT_DURATION = 60 / this.BPM;                 // how many seconds is 1 beat
         this.lastBeat = 0;                                  // current beat of the measure
@@ -103,6 +109,24 @@ class GameplayPrototype5 extends BaseScene {
 
         // Add Music
         this.music = this.sound.add(`${this.songInfo[this.SONG].name}`);
+
+        this.pauseButton = this.add.image(
+            this.SCREEN_WIDTH * 0.01,
+            this.SCREEN_HEIGHT * 0.01,
+            "pause")
+            .setOrigin(0, 0)
+            .setScale(0.05)
+            .setDepth(10000)
+            .setAlpha(0.5)
+            .setInteractive({useHandCursor: true})
+            .on('pointerdown', () => {
+                this.game.sound.pauseAll();
+                this.scene.pause();
+                this.scene.launch('pausescene'); 
+            }
+        );
+        this.pauseButton.fx = this.pauseButton.enableFilters().filters.internal.addColorMatrix().colorMatrix;
+        this.pauseButton.fx.hue(100);
 
         // Create text
         if (1) {
@@ -158,18 +182,6 @@ class GameplayPrototype5 extends BaseScene {
             .setDepth(1)
             .setScale(7);
 
-        // back button
-        this.backButton = this.add.text(
-        this.SCREEN_WIDTH * 0.1,
-        this.SCREEN_HEIGHT * 0.1,
-        `<- Back`)
-        .setStyle({ fontSize: `32px`, color: '#FFFFFF' })
-        .setOrigin(0, 0)
-        .setInteractive({useHandCursor: true})
-        .on('pointerdown', () => {
-            this.game.sound.stopAll();
-            this.changeScene('levelselectprototype');
-        });
 
         this.spawnPoints = this.add.group();
         this.spawnPoints.add(this.add.container(-20, this.SCREEN_HEIGHT * .3));
@@ -312,9 +324,6 @@ class GameplayPrototype5 extends BaseScene {
 
 
     handleInput() {
-
-        // Configuration
-        if (1) {
         if (!this.music) return;
 
         // Click once to initialize the game. Used for synching purposes
@@ -331,14 +340,25 @@ class GameplayPrototype5 extends BaseScene {
                 loop: false, 
                 volume: 0.05,
                 rate: 1,
-                seek: 18
+                seek: 180
             });
 
             this.musicStarted = true;
             return;
 
         }
-        }
+
+        this.music.once('complete', () => {
+
+            this.fade(true, this.FADE_DURATION);
+            this.time.delayedCall(this.FADE_DURATION, () => {
+
+                this.scene.start('evaluationscene', { score: this.totalScore, level: 2 });
+
+            });
+            
+
+        });
 
         let entity = this.getClosestEntity();
         if (!entity) {
@@ -785,13 +805,13 @@ class GameplayPrototype5 extends BaseScene {
         switch(rating) {
 
             case("perfect!"):
-
+                this.totalScore += this.perfectPoints;
                 this.perfectCount++;
                 this.perfectScore.setText(`Perfect: ${this.perfectCount}`);
                 break;
 
             case("ok"):
-
+                this.totalScore += this.okPoints;
                 this.okCount++;
                 this.okScore.setText(`Ok: ${this.okCount}`);
                 break;
