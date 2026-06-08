@@ -29,7 +29,7 @@ class LevelSelect extends BaseScene{
             { key: "tutorial", label: "Prototype\n2" },
             { key: "gameplayprototype3", label: "Prototype\n3" },
             { key: "gameplayprototype4", label: "Prototype\n4" },
-            { key: "gameplayprototype5", label: "Prototype\n5" },
+            { key: "tutorial2", label: "Prototype\n5" },
             { key: "cinematicsmenuprototype1", label: "Back" }
         ]
 

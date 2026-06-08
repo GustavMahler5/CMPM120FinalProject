@@ -13,8 +13,7 @@ class GameplayPrototype5 extends BaseScene {
         this.activeEntities = [];
         
         this.ENTITY_TIMING_CONFIG =  {
-            small: { anticipationBeats: 4 },
-            xxlarge: { anticipationBeats: 5 }
+            small: { anticipationBeats: 4 }
         };
 
         this.ENTITY_SPAWN_CONFIG = {
