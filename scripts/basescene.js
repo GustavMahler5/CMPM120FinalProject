@@ -17,6 +17,7 @@ class BaseScene extends Phaser.Scene {
     FADE_DURATION = 500;
 
     MAXIMUM_SCORE = 1000;
+    CUTOFF_SCORE = 750;
 
     static justAGlobalVariable = 0;
 

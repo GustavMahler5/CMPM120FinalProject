@@ -1,4 +1,4 @@
-class CinematicsMenuPrototype1 extends BaseScene {
+class Menu extends BaseScene {
     
     constructor() {
         super({ key: "menu" });

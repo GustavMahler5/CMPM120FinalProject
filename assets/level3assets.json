@@ -125,6 +125,16 @@
                 "type": "image",
                 "key": "star",
                 "url": "../assets/images/level3/star.png"
+            },
+            {
+                "type": "image",
+                "key": "goodEvaluation",
+                "url": "../assets/images/level3/goodEvaluation.png"
+            },
+            {
+                "type": "image",
+                "key": "badEvaluation",
+                "url": "../assets/images/level3/badEvaluation.png"
             }
         ]
     }
