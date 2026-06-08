@@ -17,7 +17,7 @@ class GameplayPrototype2 extends BaseScene {
             paranoia = 1
             bossa = 2
         */
-        this.SONG = 2;
+        this.SONG = 0;
         
         this.ENTITY_TIMING_CONFIG = {
 
@@ -69,16 +69,8 @@ class GameplayPrototype2 extends BaseScene {
 
     preload() {
 
-        this.load.audio('paranoia', '../assets/audio/paranoia.mp3');
-        this.load.audio('jubeatb2b', '../assets/audio/jubeatb2b.mp3');
-        this.load.audio('bossa', '../assets/audio/bossa.mp3');
-        this.load.audio('perfectok', '../assets/audio/perfectOk.mp3');
-        this.load.audio('miss', '../assets/audio/miss.mp3');
-        this.load.audio('cow', '../assets/audio/cow.mp3');
-        this.load.audio('ghost', '../assets/audio/laser.wav');
-        this.load.audio('human', '../assets/audio/miss.mp3');
-        this.load.json('score', '../assets/score2.json');
-        this.load.pack("main", "../assets/assets.json");
+        this.load.json('score', '../assets/beatmaps/level3score.json');
+        this.load.pack("main", "../assets/level3assets.json");
 
     }
 
@@ -254,6 +246,22 @@ class GameplayPrototype2 extends BaseScene {
                     end: 1
                 }),
                 frameRate: this.BPM / 15,
+                repeat: -1,
+                
+            });
+
+        }
+
+        if (!this.anims.exists("cowwalk")) {
+
+            this.anims.create({
+
+                key: "cowwalk",
+                frames: this.anims.generateFrameNumbers("cowwalk", {
+                    start: 0,
+                    end: 2
+                }),
+                frameRate: this.BPM / 20,
                 repeat: -1,
                 
             });
@@ -739,10 +747,10 @@ this.currentBeatContinuous (Elapsed beats with decimals): ${this.currentBeatCont
             this.music.play({ 
                 loop: false, 
                 volume: BaseScene.masterVolume,
-                // seek: 13,
+                seek: 13,
                 // seek: 75,
                 // seek: 100,
-                seek: 145,
+                // seek: 145,
                 rate: 1
             });
 
@@ -846,12 +854,16 @@ this.currentBeatContinuous (Elapsed beats with decimals): ${this.currentBeatCont
 
         switch(note.type) {
 
-            case("human") :
+            case("human"):
                 entity.play("walk");
                 break;
 
-            case("ghost") :
+            case("ghost"):
                 entity.play("ghostwalk");
+                break;
+
+            case("cow"):
+                entity.play("cowwalk");
                 break;
         }
 
