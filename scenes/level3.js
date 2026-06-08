@@ -304,7 +304,7 @@ class Level3 extends BaseScene {
             .on('pointerdown', () => {
                 this.game.sound.pauseAll();
                 this.scene.pause();
-                this.scene.launch('pausescene'); 
+                this.scene.launch('pausescene', { level: this.scene.key }); 
             })
 
     }

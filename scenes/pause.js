@@ -4,8 +4,9 @@ class PauseScene extends BaseScene {
         super('pausescene');
     }
 
-    create() {
+    create(data) {
 
+        let level = data.level;
         this.add.rectangle(0, 0, this.SCREEN_WIDTH, this.SCREEN_HEIGHT, 0x000000, 0.5).setOrigin(0).setDepth(10000);
 
         this.add.text(this.SCREEN_WIDTH * 0.5, this.SCREEN_HEIGHT * 0.5, 'Game Paused', { 
@@ -20,10 +21,10 @@ class PauseScene extends BaseScene {
 
         this.resumeButton.on('pointerdown', () => {
 
-            this.scene.resume('gameplayprototype2');
+            this.scene.resume(`${level}`);
             this.game.sound.resumeAll();
             this.scene.stop();
-            
+
         });
     }
 }
