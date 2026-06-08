@@ -92,7 +92,7 @@ class GameplayPrototype4 extends BaseScene {
                 texture: "ball",
                 winTexture: "ballWin",
                 anticipationBeats: 4,
-                weight: 0
+                weight: 3
 
             },
 
@@ -101,7 +101,7 @@ class GameplayPrototype4 extends BaseScene {
                 texture: "catTreat",
                 winTexture: "treatWin",
                 anticipationBeats: 3,
-                weight: 1
+                weight: 2
 
             },
 
@@ -110,7 +110,7 @@ class GameplayPrototype4 extends BaseScene {
                 texture: "sprayBottle",
                 winTexture: "sprayBottleWin",
                 anticipationBeats: 2,
-                weight: 0
+                weight: 1
 
             }
 
@@ -546,17 +546,23 @@ class GameplayPrototype4 extends BaseScene {
         let rating = this.getJudgement(error);
 
         this.cat.setTexture(entity.winTexture);
-        
+
         if (entity.noteType === "ball") {
-            this.sound.play("ballWinSound");
+            this.sound.play("ballWinSound", {
+                volume: 0.4
+            });
         }
 
         if (entity.noteType === "treat") {
-            this.sound.play("treatWinSound");
+            this.sound.play("treatWinSound", {
+                volume: 0.9
+            });
         }
 
         if (entity.noteType === "spray") {
-            this.sound.play("sprayWinSound");
+            this.sound.play("sprayWinSound", {
+                volume: 0.9
+            });
         }
 
         this.time.delayedCall(250, () => {
