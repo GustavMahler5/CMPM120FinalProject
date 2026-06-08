@@ -9,6 +9,7 @@ class LevelSelect extends BaseScene{
         this.load.audio('hover', '../assets/audio/sfx/menu/hoverSelection.mp3');
         this.load.audio('selection', '../assets/audio/sfx/menu/selection.mp3');
         this.load.image('fullscreen', "../assets/images/menu/fullscreen.png");
+        this.load.image('level2jacket', "../assets/images/menu/level2jacket.png");
         this.load.image('level3jacket', "../assets/images/menu/level3jacket.png");
     }
 
@@ -20,17 +21,16 @@ class LevelSelect extends BaseScene{
         this.selectionSFX = this.sound.add('selection');
         //bgm
         let music = this.sound.add("menu", {
-            volume: BaseScene.masterVolume,
+            volume: BaseScene.musicVolume,
             loop: true
         });
         music.play();
 
         // add scene here to create button
         const scenes = [
-            { key: "level1",  jacket: "placeholder" },
-            { key: "level2tutorial", jacket: "placeholder" },
+            { key: "level1",  jacket: "level2jacket" },
+            { key: "level2tutorial", jacket: "level2jacket" },
             { key: "level3tutorial", jacket: "level3jacket" },
-            { key: "menu", label: "Back" }
         ]
 
         const buttonBackground = this.add.rectangle(-200, this.SCREEN_HEIGHT / 2, this.SCREEN_WIDTH / 4, this.SCREEN_HEIGHT, 0xC1B2A2);
@@ -46,8 +46,8 @@ class LevelSelect extends BaseScene{
                 fill: '#A3B2A4',
         }).setOrigin(.5, .5);
         let buttonHeight = this.SCREEN_HEIGHT / scenes.length;
-        const buttonWidth = Phaser.Math.Clamp(buttonHeight * 2.375, 0, buttonBackground.width - 20); // 2.375 is the aspect ratio of the button image, clamp is used to make sure buttons don't get too big for the background
-        buttonHeight = buttonWidth / 2.375;
+        const buttonWidth = Phaser.Math.Clamp(buttonHeight, 0, buttonBackground.width - 20); // 2.375 is the aspect ratio of the button image, clamp is used to make sure buttons don't get too big for the background
+        buttonHeight = buttonWidth;
 
         const buttonScale = buttonWidth / 76; // 76 is the original width of the button image, this calculates the scale needed to make the button the right width for the background
         const buttonSpacing = this.SCREEN_HEIGHT / scenes.length;
@@ -73,6 +73,9 @@ class LevelSelect extends BaseScene{
             const x = startX;
             const y = (startY) + (buttonSpacing * i);
 
+            let button;
+            let container
+
             if (scene.label) {
 
                 const button = this.add.image(0, 0, "menu_button_prototype").setScale(buttonScale);
@@ -95,8 +98,8 @@ class LevelSelect extends BaseScene{
 
             else if (scene.jacket) {
 
-                const button = this.add.image(0, 0, "menu_button_prototype").setScale(buttonScale);
-                const text = this.add.image(0, 0, scene.jacket).setOrigin(0.5, 0.5);
+                button = this.add.image(0, 0, scene.jacket).setScale(buttonScale);
+                text = this.add.image(0, 0, scene.jacket).setOrigin(0.5, 0.5);
                 text.setScale(Math.min(1, (buttonWidth - 20) / text.width));
 
 
@@ -118,7 +121,7 @@ class LevelSelect extends BaseScene{
                 });
                 this.hoverSFX.play({
                     loop: false,
-                    volume: BaseScene.masterVolume * 1.5,
+                    volume: BaseScene.sfxVolume * 1.5,
                 });
             });
             button.on("pointerout",  () => {
@@ -137,7 +140,7 @@ class LevelSelect extends BaseScene{
                 // removed, as scenes haven't been made yet
                 this.selectionSFX.play({
                     loop: false,
-                    volume: BaseScene.masterVolume * 1.5,
+                    volume: BaseScene.sfxVolume * 1.5,
                 });
                 this.handleButtonClick(container.scene.key);
             });

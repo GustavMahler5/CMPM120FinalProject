@@ -22,8 +22,9 @@ let prototypeScenes = {
     sceneFlow: SceneFlowPrototype,
     logo: LogoScene,
     settings: SettingsPrototype,
+    settings2: SettingsScene2,
     credits: CreditsPrototype,
-    levelSelect: LevelSelectProrotype,
+    levelselectprototype: LevelSelectPrototype,
     jaylalevelstart: Start,
     pause: PauseScene
 

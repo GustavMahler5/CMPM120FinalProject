@@ -8,7 +8,7 @@ let scenes = {
     pause: PauseScene,
     evaluationscene: EvaluationScene,
     settings: SettingsScene,
-    //settings2: SettingsScene2,
+    settings2: SettingsScene2,
     menu: MenuScene,
     credits: CreditsScene,
     levelselect: LevelSelect,

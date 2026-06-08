@@ -1,4 +1,4 @@
-class LevelSelect extends BaseScene{
+class LevelSelectPrototype extends BaseScene{
     constructor() {
         super("levelselectprototype");
     }

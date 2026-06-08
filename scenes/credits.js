@@ -137,7 +137,7 @@ class CreditsScene extends BaseScene {
         switch(label) {
 
             case "Back":  
-                this.changeScene("CinematicsMenuPrototype");
+                this.changeScene("menu");
                 break;
 
         }

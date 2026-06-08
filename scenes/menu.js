@@ -16,17 +16,17 @@ class MenuScene extends BaseScene {
 
     onEnter() {
         let menu_bgm = this.sound.add("menu", {
-            volume: BaseScene.masterVolume,
+            volume: BaseScene.musicVolume,
             loop: true
         });
         menu_bgm.play();
 
         let button_sfx = this.sound.add("button_sfx", {
-            volume: BaseScene.masterVolume,
+            volume: BaseScene.sfxVolume,
         });
 
         let button_hover = this.sound.add("button_hover", {
-            volume: BaseScene.masterVolume,
+            volume: BaseScene.sfxVolume,
         });
 
         this.background = this.add.image(540, 340, "background").setScale(1.1);
@@ -47,8 +47,7 @@ class MenuScene extends BaseScene {
                     break;
     
                 case "Settings":
-                    this.scene.launch("settings2"); // overlays menu
-                    this.scene.pause();
+                    this.changeScene("settings2"); // overlays menu
                     break;
     
                 case "Credits":  
@@ -116,7 +115,7 @@ class MenuScene extends BaseScene {
         // fx
         //this.cameras.main.shake(10000000, .001, true);
 
-        const blurEffect = this.background.postFX.addBlur(0, 2, 2, 100); 
+       // const blurEffect = this.background.postFX.addBlur(0, 2, 2, 100); 
 
 
        

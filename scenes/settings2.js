@@ -1,6 +1,6 @@
 class SettingsScene2 extends BaseScene {
     constructor() {
-        super({ key: "settings2"});
+        super({ key: "settings2" });
     }
 
     preload() {
