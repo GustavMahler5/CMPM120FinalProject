@@ -8,7 +8,7 @@ let scenes = {
 };
 
 const sceneKey = document.body.dataset.scene;
-const startScene = prototypeScenes[sceneKey];
+const startScene = scenes[sceneKey];
 
 delete scenes[sceneKey];
 
@@ -42,7 +42,7 @@ const config = {
     },
 
     scene: myScenes,
-    title: "Our Game"
+    title: "myGame"
 };
 
 const game = new Phaser.Game(config);
