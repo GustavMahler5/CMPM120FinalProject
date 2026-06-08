@@ -13,6 +13,7 @@ class EvaluationScene extends BaseScene {
     init(data) {
 
         this.score = data.score ?? 0;
+        this.level = data.level;
 
     }
 
@@ -28,8 +29,30 @@ class EvaluationScene extends BaseScene {
 
     create() {
 
-        BaseScene.bestScore = Math.max(this.score, BaseScene.bestScore);
+        let bestScore;
         let playAgain;
+
+        switch(this.level) {
+
+            case(1):
+
+                bestScore = Math.max(this.score, BaseScene.level1BestScore);
+                BaseScene.level1BestScore = bestScore;
+                
+            
+            case(2):
+
+                bestScore = Math.max(this.score, BaseScene.level2BestScore);
+                BaseScene.level2BestScore = bestScore;
+
+            case(3):
+                
+                bestScore = Math.max(this.score, BaseScene.level3BestScore);
+                BaseScene.level3BestScore = bestScore;
+            
+            default:
+                return;
+        }
 
         this.evaluationText = this.add.text(
             this.SCREEN_WIDTH * 0.5,
@@ -54,7 +77,7 @@ class EvaluationScene extends BaseScene {
             () => this.add.text (
                 this.SCREEN_WIDTH * 0.5, 
                 this.SCREEN_HEIGHT * 0.5,
-                `Best Score: ${BaseScene.bestScore.toFixed(0)}`)
+                `Best Score: ${bestScore.toFixed(0)}`)
                 .setOrigin(0.5, 0.5)
 
         );
@@ -65,12 +88,12 @@ class EvaluationScene extends BaseScene {
             () => playAgain = this.add.text (
                 this.SCREEN_WIDTH * 0.5, 
                 this.SCREEN_HEIGHT * 0.7,
-                "Play Again")
+                "Return")
                 .setOrigin(0.5, 0.5)
                 .setInteractive({useHandCursor: true})
                 .on('pointerdown', () => {
 
-                    this.changeScene('gameplayprototype2');
+                    this.changeScene('levelSelect');
 
                 }
             )

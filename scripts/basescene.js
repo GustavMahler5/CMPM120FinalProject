@@ -16,11 +16,13 @@ class BaseScene extends Phaser.Scene {
 
     FADE_DURATION = 500;
 
-    MAXIMUM_SCORE = 1800;
+    MAXIMUM_SCORE = 1000;
 
     static justAGlobalVariable = 0;
 
-    static bestScore = 0;
+    static level1BestScore = 0;
+    static level2BestScore = 0;
+    static level3BestScore = 0;
     static masterVolume = 0.05;
 
     create() {
