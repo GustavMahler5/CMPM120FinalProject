@@ -338,8 +338,7 @@ class GameplayPrototype5 extends BaseScene {
             this.music.play({ 
                 loop: false, 
                 volume: 0.05,
-                rate: 1,
-                seek: 180
+                rate: 1
             });
 
             this.musicStarted = true;

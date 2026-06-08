@@ -44,7 +44,7 @@ class TutorialPrototype2 extends BaseScene {
                 ]
 
             },
-            enemy: {
+            enemy2: {
                 spawn: "right_mid",
                 type: "enemy",
                 anticipationBeats: 4,
@@ -87,7 +87,7 @@ class TutorialPrototype2 extends BaseScene {
         this.load.audio('friendSpawnSoundEffect', '../assets/audio/SFX/level2/friendSpawn.wav');
         this.load.audio('laser', '../assets/audio/SFX/level2/laser.wav');
 
-        this.load.json('score_suspicious', '../assets/audio/beatmaps/score_suspicious.json');
+        this.load.json('score_suspicious', '../assets/beatmaps/score_suspicious.json');
 
         this.load.image('pause', '../assets/images/menu/pause.png');
         this.load.spritesheet('explosion', "../assets/images/level2/explosion_particle.png", { frameWidth: 32, frameHeight: 32});
@@ -102,6 +102,17 @@ class TutorialPrototype2 extends BaseScene {
     onEnter() {
 
         this.sound.removeAll();
+
+        this.judgement = Object.freeze({
+            PERFECT: 0,
+            OK: 1,
+            MISS: 2,
+            FRIENDLY_FIRE: 3
+        });
+
+
+        this.scaleFactor = 4;
+        this.scrollSpeed = 1;
 
         this.score = this.cache.json.get("score_suspicious");
         this.songInfo = this.score.song;
@@ -165,7 +176,7 @@ class TutorialPrototype2 extends BaseScene {
             },
 
             {
-                type: "enemy",
+                type: "enemy2",
                 hitsNeeded: 1,
                 dialogue: [
                     "See ya later Gleremy!",
@@ -175,7 +186,7 @@ class TutorialPrototype2 extends BaseScene {
 
             {
                 type: null,
-                hitsNeeded: 4,
+                hitsNeeded: 1,
                 dialogue: [
                     "All right.",
                     "Good luck solder! Do Glorpulon 5 proud!"
@@ -246,6 +257,21 @@ class TutorialPrototype2 extends BaseScene {
             this.handleInput();
         });
 
+        if (!this.anims.exists('explosion')) {
+            this.anims.create({
+                key: 'explosion',
+                frames: this.anims.generateFrameNumbers('explosion', {start: 0, end: 2}),
+                frameRate: 6,
+            });
+        }
+
+        this.explosionEmitter = this.add.particles(0, 0, 'explosion', {
+            lifespan: 500,
+            anim: 'explosion',
+            scale: 3,
+            alpha: { start: 1, end: .7},
+            emitting: false
+        });
     }
 
 
@@ -329,12 +355,9 @@ class TutorialPrototype2 extends BaseScene {
 
         }
 
-        let rating = this.getJudgement(error);
+        let rating = this.getJudgement(error, entity);
 
         this.applyScore(rating);
-
-
-        this.activeEntities = this.activeEntities.filter(e => e !== entity);
 
         this.tutorialText.setText(`${this.practicePhases[this.practicePhase].hitsNeeded - this.practiceHits} more time(s).`);
 
@@ -464,7 +487,7 @@ class TutorialPrototype2 extends BaseScene {
         .setStyle({ fontSize: "32px", color: "#FFFFFF" })
         .setOrigin(0.5, 0.5);
 
-        this.judgement = this.add.text(
+        this.judgementText= this.add.text(
             this.SCREEN_WIDTH * 0.5,
             this.SCREEN_HEIGHT * 0.5,
             ""
@@ -501,38 +524,6 @@ class TutorialPrototype2 extends BaseScene {
         .setOrigin(0.5, 0.5);
 
     }
-
-
-
-    createAnimations() {
-
-        if (!this.anims.exists("walk")) {
-            this.anims.create({
-                key: "walk",
-                frames: this.anims.generateFrameNumbers("walking", {
-                    start: 0,
-                    end: 4
-                }),
-                frameRate: this.BPM / 20,
-                repeat: -1
-            });
-        }
-
-        if (!this.anims.exists("ghostwalk")) {
-            this.anims.create({
-                key: "ghostwalk",
-                frames: this.anims.generateFrameNumbers("ghostwalk", {
-                    start: 0,
-                    end: 1
-                }),
-                frameRate: this.BPM / 15,
-                repeat: -1
-            });
-        }
-
-    }
-
-
 
     updateTimestamps() {
 
@@ -609,7 +600,7 @@ class TutorialPrototype2 extends BaseScene {
 
     spawnEntity(note, config) {
         const spawn = this.ENTITY_SPAWN_CONFIG[config.spawn];
-        const type = this.ENTITY_TYPE_CONFIG[note.type];
+        const type = this.ENTITY_TYPE_CONFIG[config.type];
 
         const entityList = ["angry_alien", "friendly_alien"];
         let entity = this.add.image(
@@ -696,16 +687,19 @@ class TutorialPrototype2 extends BaseScene {
             let entity = this.activeEntities[i];
 
             if (this.currentBeatContinuous > entity.targetBeat + this.ERROR_MARGIN) {
-
                 this.activeEntities.splice(i, 1);
 
-                this.getJudgement(999);
-                this.applyScore("miss");
+                this.getJudgement(null, entity);
+
+                if (entity.enemy === 0) {
+                    this.applyScore("miss");
+                }
+                if (entity.enemy === 1) {
+                    this.applyScore("perfect!")
+                }
 
             }
-
         }
-
     }
 
 
@@ -734,102 +728,193 @@ class TutorialPrototype2 extends BaseScene {
 
 
 
-    getJudgement(error) {
+    getJudgement(error, entity) {
 
         let evaluation = "";
-
-        if (error <= this.PERFECT_ERROR) {
-
-            this.judgement.setText("PERFECT!");
-            this.judgement.setStyle({ color: "#FFD700" });
-            evaluation = "perfect!";
-            this.laser.play({
-                loop: false,
-                // volume: BaseScene.masterVolume,
-                volume: 1
-            });
-
-        } 
-        
-        else if (error <= this.OK_ERROR) {
-
-            this.judgement.setText("Ok");
-            this.judgement.setStyle({ color: "#228B22" });
-            evaluation = "ok";
-            this.laser.play({
-                loop: false,
-                // volume: BaseScene.masterVolume,
-                volume: 1
-            });
-
-        } 
-
-        else {
-
-            this.judgement.setText("miss");
-            this.judgement.setStyle({ color: "#D2D2D2" });
+        if (error === null && entity.enemy === 0) {
+            this.flashJudgement(this.judgement.MISS);
             evaluation = "miss";
-            this.laser.play({
-                loop: false,
-                // volume: BaseScene.masterVolume,
-                volume: 1
-            });
-
         }
+        else if (error <= this.PERFECT_ERROR && entity.enemy === 0) {
+            this.flashJudgement(this.judgement.PERFECT);
+            this.shootLaser(this.judgement.PERFECT, entity);
+            evaluation = "perfect!";
 
-        this.flashJudgement();
+        } 
+        else if (error == null && entity.enemy === 1) {
+            this.flashJudgement(this.judgement.PERFECT);
+            evaluation = "perfect!";
+        }
+        else if ((error != null && error <= this.OK_ERROR) && entity.enemy === 1) {
+            this.flashJudgement(this.judgement.FRIENDLY_FIRE);
+            this.shootLaser(this.judgement.FRIENDLY_FIRE, entity);
+            evaluation = "miss";
+        }
+        else if (error <= this.OK_ERROR && entity.enemy == 0) {
+            this.flashJudgement(this.judgement.OK);
+            this.shootLaser(this.judgement.OK, entity);
+            evaluation = "ok";
+
+        } 
+        else {
+            this.flashJudgement(this.judgement.MISS);
+            this.shootLaser(this.judgement.MISS, entity);
+            evaluation = "miss";
+        }
 
         return evaluation;
 
     }
 
+    shootLaser(judgement, entity) {
+        console.log(judgement);
+        let laser = this.add.graphics();
+        laser.lineStyle(3, 0xd02b14, 1);
+        laser.beginPath();
 
+        this.sound.play('laser', { volume: 0.1 });
+        this.cameras.main.shake(200, .005);
+
+        switch (judgement) {
+            case 0:
+                if (entity.spawnedFromLeft) {
+                    laser.moveTo(this.laserSpawnLeft.x, this.laserSpawnLeft.y);
+                    laser.lineTo(entity.x, entity.y);
+                } else {
+                    laser.moveTo(this.laserSpawnRight.x, this.laserSpawnRight.y);
+                    laser.lineTo(entity.x, entity.y);
+                }
+                this.explode(entity);
+                break;
+            case 1:
+                if (entity.spawnedFromLeft) {
+                    laser.moveTo(this.laserSpawnLeft.x, this.laserSpawnLeft.y);
+                    laser.lineTo(entity.x, entity.y);
+                } else {
+                    laser.moveTo(this.laserSpawnRight.x, this.laserSpawnRight.y);
+                    laser.lineTo(entity.x, entity.y);
+                }
+                this.explode(entity);
+                break;
+            case 2:
+                if (entity.spawnedFromLeft) {
+                    laser.moveTo(this.laserSpawnLeft.x, this.laserSpawnLeft.y);
+                    laser.lineTo(this.cursor.x, entity.y);
+                } 
+                else {
+                    laser.moveTo(this.laserSpawnRight.x, this.laserSpawnRight.y);
+                    laser.lineTo(this.cursor.x, entity.y);
+                }
+                break;
+            case 3:
+                if (entity.spawnedFromLeft) {
+                    laser.moveTo(this.laserSpawnLeft.x, this.laserSpawnLeft.y);
+                    laser.lineTo(entity.x, entity.y);
+                    this.explode(entity);
+                } 
+                else {
+                    laser.moveTo(this.laserSpawnRight.x, this.laserSpawnRight.y);
+                    laser.lineTo(entity.x, entity.y);
+                    this.explode(entity);
+                }
+
+        }
+
+        laser.strokePath();
+
+        this.tweens.add({
+            targets: laser,
+            alpha: 0,
+            duration: 500,
+            onComplete: () => {
+                laser.destroy();
+            }
+        });
+
+        this.activeEntities = this.activeEntities.filter(e => e !== entity);
+    }
+
+    explode(entity) {
+        this.explosionEmitter.explode(1, entity.x, entity.y);
+        if (entity.enemy === 1) {
+            this.tweens.add({
+                targets: entity,
+                y: this.SCREEN_HEIGHT + 50,
+                ease: 'Sine.In',
+                onComplete: () => {
+                    entity.destroy();
+                }
+            })
+        }
+        else {
+            entity.destroy();
+        }
+    }
 
     applyScore(rating) {
 
-        if (rating == "perfect!") {
+        switch(rating) {
 
-            this.practiceHits++;
-            let currentPhase = this.practicePhases[this.practicePhase];
+            case("perfect!"):
+                this.practiceHits++;
+                let currentPhase = this.practicePhases[this.practicePhase];
+                if (this.practiceHits >= currentPhase.hitsNeeded) {
+                    this.advancePracticePhase();
+                };
+                break;
 
-            if (this.practiceHits >= currentPhase.hitsNeeded) {
+            case("ok"):
+                this.totalScore += this.okPoints;
+                this.okCount++;
+                break;
 
-                this.advancePracticePhase();
+            case("miss"):
 
-            }
+                this.missCount++;
+                break;
 
-            return;
-            
-        }
+            default:
 
-        if (rating == "ok") {
-
-            this.okCount++;
-            this.okScore.setText(`Miss: ${this.missCount}`);
-
-        }
-
-        if (rating == "miss") {
-
-            this.missCount++;
-            this.missScore.setText(`Miss: ${this.missCount}`);
+                return;
 
         }
 
     }
 
-    flashJudgement() {
-
-        this.tweens.killTweensOf(this.judgement);
-        this.judgement.setAlpha(1);
-
-        this.tweens.add({
-            targets: this.judgement,
-            alpha: 0,
-            duration: 500,
-            yoyo: false,
-            repeat: 0
-        });
+    flashJudgement(judgement) {
+        let judgementText = this.add.text(this.SCREEN_WIDTH * 0.5, this.SCREEN_HEIGHT * 0.5, "")
+        .setStyle({ fontSize: `64px`, color: '#FFFFFF', fontStyle: 'bold'/*, fontFamily: "Helvetica"*/})
+        .setOrigin(0.5, 0.5)
+        .setDepth(2);
+        switch (judgement) {
+            case 0:
+                judgementText.setText("PERFECT!");
+                judgementText.setStyle({ color: "#FFD700"});
+                break;
+            case 1:
+                judgementText.setText("Ok");
+                judgementText.setStyle({ color: "#228B22"});
+                break;
+            case 2: 
+                judgementText.setText("miss");
+                judgementText.setStyle({ color: "#D2D2D2"});
+                break;
+            case 3:
+                judgementText.setText("Friendly Fire!");
+                judgementText.setStyle({ color: "#c46d1c"});
+                break;
+        }
+            this.tweens.add({
+                targets: judgementText,
+                alpha: 0,
+                scale: 0,
+                x: judgementText.x - 10,
+                duration: 500,
+                yoyo: false,
+                onComplete: () => {
+                    judgementText.destroy();
+                }
+            });
 
     }
 

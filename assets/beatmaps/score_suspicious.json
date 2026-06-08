@@ -4,6 +4,22 @@
     ],
 
     "notes": [
+        { "measure": 5, "beat": 1, "type": "small", "spawn": "left_high", "entity": "enemy" },
+
+        { "measure": 7, "beat": 1, "type": "small", "spawn": "left_high", "entity": "friend" },
+        { "measure": 7, "beat": 2, "type": "small", "spawn": "left_high", "entity": "enemy" },
+
+        { "measure": 9, "beat": 1, "type": "small", "spawn": "left_low", "entity": "enemy" },
+        { "measure": 9, "beat": 2, "type": "small", "spawn": "left_mid", "entity": "enemy" },
+
+        { "measure": 11, "beat": 1, "type": "small", "spawn": "right_high", "entity": "enemy" },
+        { "measure": 11, "beat": 3, "type": "small", "spawn": "right_mid", "entity": "friend" },
+
+        { "measure": 13, "beat": 1, "type": "small", "spawn": "left_high", "entity": "enemy" },
+        { "measure": 13, "beat": 3, "type": "small", "spawn": "left_high", "entity": "enemy" },
+        { "measure": 14, "beat": 1, "type": "small", "spawn": "left_high", "entity": "enemy" },
+        { "measure": 14, "beat": 3, "type": "small", "spawn": "left_high", "entity": "enemy" },
+
         { "measure": 17, "beat": 4, "type": "small", "spawn": "left_high", "entity": "enemy" },
         { "measure": 18, "beat": 1, "type": "small", "spawn": "left_high", "entity": "enemy" },
         { "measure": 18, "beat": 2, "type": "small", "spawn": "left_high", "entity": "enemy" },
