@@ -73,6 +73,8 @@ class SettingsScene2 extends BaseScene {
 
             if (setting.key === "masterVolume") {
                 this.sound.volume = value;
+            } else if (setting.key === "musicVolume") {
+                if (BaseScene.currentMusic) BaseScene.currentMusic.setVolume(value);
             }
         });
 
@@ -152,8 +154,15 @@ class SettingsScene2 extends BaseScene {
         });
 
         button.on('pointerdown', () => {
-            this.sound.play("button_sfx", { volume: BaseScene.masterVolume });
-            this.changeScene("menu");
+            this.sound.play("button_sfx", { volume: BaseScene.sfxVolume * BaseScene.masterVolume });
+            if (BaseScene.pausedLevel !== null) {
+                const level = BaseScene.pausedLevel;
+                BaseScene.pausedLevel = null;
+                this.scene.launch('pausescene', { level });
+                this.scene.stop();
+            } else {
+                this.changeScene("menu");
+            }
         });
     }    
 }

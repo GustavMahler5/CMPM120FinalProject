@@ -183,7 +183,9 @@ class Level3 extends BaseScene {
     createMusic() {
 
         // Add Music
+        if (BaseScene.currentMusic) BaseScene.currentMusic.stop();
         this.music = this.sound.add(`${this.songInfo[this.SONG].name}`);
+        BaseScene.currentMusic = this.music;
         this.perfectOkSFX = this.sound.add('perfectok');
         this.missSFX = this.sound.add('miss');
         

@@ -407,7 +407,9 @@ class Level3Tutorial extends BaseScene {
 
     createMusic() {
 
+        if (BaseScene.currentMusic) BaseScene.currentMusic.stop();
         this.music = this.sound.add(`${this.songInfo[this.SONG].name}`);
+        BaseScene.currentMusic = this.music;
         this.metronome = this.sound.add("metronome");
         this.perfectOkSFX = this.sound.add('perfectok');
         this.missSFX = this.sound.add('miss');
