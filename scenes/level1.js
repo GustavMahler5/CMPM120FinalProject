@@ -4,7 +4,7 @@ class Level1 extends BaseScene {
 
     constructor() {
 
-        super("gameplayprototype4");
+        super("level1");
 
         this.BPM = 120;
         this.BEAT_DURATION = 60 / this.BPM;
