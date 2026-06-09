@@ -7,12 +7,17 @@ class MenuScene extends BaseScene {
     preload() {
         this.load.setBaseURL('./');
         this.load.image("menu_button", "../assets/images/menu/menu_button.png");
-        this.load.image("background", "../assets/images/menu/title_bg.png");
+        this.load.image("menu_bg", "../assets/images/menu/menubackground1st.png");
         this.load.audio("menu", "../assets/audio/songs/menu.wav");
         this.load.audio("button_sfx", "../assets/audio/SFX/menu/selection.mp3");
         this.load.audio("button_hover", "../assets/audio/SFX/menu/hoverSelection.mp3");
         this.load.image('fullscreen', "../assets/images/menu/fullscreen.png");
         this.load.image('title', "../assets/images/menu/title_icon.png");
+        this.load.image("menu_ufo", "../assets/images/menu/menuufo.png");
+        this.load.image("menu_cow", "../assets/images/menu/menucow.png");
+        this.load.image("menu_biglight", "../assets/images/menu/biglight.png");
+        this.load.image("menu_smalllights", "../assets/images/menu/smalllights.png");
+        this.load.image("flycow", "../assets/images/menu/flycow.png");
     }
 
     onEnter() {
@@ -34,7 +39,18 @@ class MenuScene extends BaseScene {
             volume: BaseScene.sfxVolume,
         });
 
-        this.background = this.add.image(540, 340, "background").setScale(1.1);
+        this.background = this.add.image(540, 340, "menu_bg").setScale(0.44);
+
+        const flyCow = this.add.image(this.SCREEN_WIDTH / 2, this.SCREEN_HEIGHT - 110, "flycow").setScale(0.14);
+
+        const menuCow = this.add.image(600, -50, "menu_cow").setScale(0.44).setFlipX(true);
+        menuCow.setRotation(0);
+
+        const bigLight = this.add.image(540, 340, "menu_biglight").setScale(0.44).setAlpha(0);
+
+        const menuUfo = this.add.image(540, -500, "menu_ufo").setScale(0.44);
+
+        const smallLights = this.add.image(540, 340, "menu_smalllights").setScale(0.44).setAlpha(0);
 
         this.title = this.add.image(this.SCREEN_WIDTH / 2, this.SCREEN_HEIGHT + 100, "title");
 
@@ -120,12 +136,44 @@ class MenuScene extends BaseScene {
             })
         });
 
-        // fx
-        //this.cameras.main.shake(10000000, .001, true);
-
-       // const blurEffect = this.background.postFX.addBlur(0, 2, 2, 100); 
-
-
-       
+        this.tweens.add({
+            targets: menuUfo,
+            y: 340,
+            duration: 1200,
+            ease: 'Cubic.Out',
+            onComplete: () => {
+                this.tweens.add({
+                    targets: bigLight,
+                    alpha: 1,
+                    duration: 1000,
+                    ease: 'Linear',
+                    onComplete: () => {
+                        this.tweens.add({
+                            targets: smallLights,
+                            alpha: 1,
+                            duration: 800,
+                            ease: 'Linear'
+                        });
+                        this.tweens.add({
+                            targets: flyCow,
+                            y: -300,
+                            rotation: Phaser.Math.DegToRad(720),
+                            duration: 1400,
+                            ease: 'Cubic.In',
+                            onComplete: () => {
+                                this.tweens.add({
+                                    targets: menuCow,
+                                    x: 830,
+                                    y: 260,
+                                    rotation: Phaser.Math.DegToRad(-60),
+                                    duration: 1400,
+                                    ease: 'Cubic.Out'
+                                });
+                            }
+                        });
+                    }
+                });
+            }
+        });
     }
 }
