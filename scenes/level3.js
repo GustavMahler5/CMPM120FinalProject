@@ -534,8 +534,8 @@ class Level3 extends BaseScene {
             evaluation = "perfect!";
             this.perfectOkSFX.play({
                 loop: false,
-                // volume: BaseScene.masterVolume,
-                volume: 0.5
+                volume: BaseScene.masterVolume,
+                // volume: 0.5
             });
 
         } 
@@ -545,8 +545,8 @@ class Level3 extends BaseScene {
             evaluation = "ok";
             this.perfectOkSFX.play({
                 loop: false,
-                // volume: BaseScene.masterVolume,
-                volume: 0.5
+                volume: BaseScene.masterVolume,
+                // volume: 0.5
             });
 
         } 
@@ -556,8 +556,8 @@ class Level3 extends BaseScene {
             evaluation = "miss";
             this.missSFX.play({
                 loop: false,
-                // volume: BaseScene.masterVolume,
-                volume: 0.5
+                volume: BaseScene.masterVolume,
+                // volume: 0.5
             });
 
         }
@@ -792,8 +792,8 @@ class Level3 extends BaseScene {
 
                 this.entityCueSFX[cue.sfx].play({
                     loop: false,
-                    // volume: BaseScene.masterVolume,
-                    volume: 0.35,
+                    volume: BaseScene.masterVolume,
+                    // volume: 0.35,
                     rate: 2
                 });
 
