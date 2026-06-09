@@ -14,6 +14,7 @@ class LevelSelect extends BaseScene {
         this.load.image("abduct_alien", "assets/images/level2/angry_alien.png");
         this.load.image("marvelous", "assets/images/level3/marvelous.png");
         this.load.image("oops", "assets/images/level3/oops.png");
+        this.load.image('fullscreen', "assets/images/menu/fullscreen.png");
 
         this.load.audio('menu', 'assets/audio/songs/menu.wav');
         this.load.audio('hover', 'assets/audio/SFX/menu/hoverSelection.mp3');
