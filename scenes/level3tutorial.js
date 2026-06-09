@@ -78,6 +78,7 @@ class Level3Tutorial extends BaseScene {
     onEnter() {
 
         this.sound.removeAll();
+        this.sound.volume = BaseScene.masterVolume;
 
         this.score = this.cache.json.get("score");
         this.songInfo = this.score.song;
@@ -200,7 +201,7 @@ class Level3Tutorial extends BaseScene {
             this.advanceDialogue();
             this.missSFX.play({
                 rate: 5,
-                volume: BaseScene.masterVolume
+                volume: BaseScene.sfxVolume
             })
             return;
 
@@ -826,7 +827,7 @@ class Level3Tutorial extends BaseScene {
             evaluation = "perfect!";
             this.perfectOkSFX.play({
                 loop: false,
-                volume: BaseScene.masterVolume,
+                volume: BaseScene.sfxVolume,
                 // volume: 1
             });
 
@@ -837,7 +838,7 @@ class Level3Tutorial extends BaseScene {
             evaluation = "ok";
             this.perfectOkSFX.play({
                 loop: false,
-                volume: BaseScene.masterVolume,
+                volume: BaseScene.sfxVolume,
                 // volume: 1
             });
 
@@ -848,7 +849,7 @@ class Level3Tutorial extends BaseScene {
             evaluation = "miss";
             this.missSFX.play({
                 loop: false,
-                volume: BaseScene.masterVolume,
+                volume: BaseScene.sfxVolume,
                 // volume: 1
             });
 
@@ -977,7 +978,7 @@ class Level3Tutorial extends BaseScene {
 
             this.metronome.play({
                 loop: false,
-                volume: BaseScene.masterVolume,
+                volume: BaseScene.musicVolume,
                 rate: 1
             });
 
@@ -1003,7 +1004,7 @@ class Level3Tutorial extends BaseScene {
 
                     this.entityCueSFX[cue.sfx].play({
                     loop: false,
-                    volume: BaseScene.masterVolume * 0.5,
+                    volume: BaseScene.sfxVolume * 0.5,
                     // volume: 0.35,
                     rate: 1
 
@@ -1015,7 +1016,7 @@ class Level3Tutorial extends BaseScene {
 
                     this.entityCueSFX[cue.sfx].play({
                         loop: false,
-                        volume: BaseScene.masterVolume,
+                        volume: BaseScene.sfxVolume,
                         // volume: 0.35,
                         rate: 2
                     });

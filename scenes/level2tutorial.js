@@ -208,7 +208,7 @@ class Level2Tutorial extends BaseScene {
             .setDepth(1)
             .setScale(7);
 
-        this.friendlyAlien = this.add.image(700, this.SCREEN_HEIGHT * .75, 'friendly_alien').setScale(7);
+        this.friendlyAlien = this.add.image(700, this.SCREEN_HEIGHT * .75, 'friendly_alien').setScale(7).setDepth(1000);
         this.tweens.add({ 
             targets: this.friendlyAlien,
             y: this.SCREEN_HEIGHT * .77,
@@ -340,7 +340,7 @@ class Level2Tutorial extends BaseScene {
             this.advanceDialogue();
             this.interactSFX.play({
                     rate: 5,
-                    volume: BaseScene.masterVolume
+                    volume: BaseScene.sfxVolume
                 });
             return;
 
@@ -578,10 +578,10 @@ class Level2Tutorial extends BaseScene {
         entity.enemy = type;
         // left spawn
         if (entity.enemy === 0) {
-            this.sound.play('enemySpawnSoundEffect', { volume: BaseScene.sfxVolume });
+            this.sound.play('enemySpawnSoundEffect', { volume: BaseScene.sfxVolume * 1.2 });
         }
         else {
-            this.sound.play('friendSpawnSoundEffect', { volume: BaseScene.sfxVolume });
+            this.sound.play('friendSpawnSoundEffect', { volume: BaseScene.sfxVolume * 1.2 });
         }
         if (spawn % 2 == 0) {
             entity.spawnedFromLeft = true;
@@ -761,7 +761,7 @@ class Level2Tutorial extends BaseScene {
                     laser.moveTo(this.laserSpawnRight.x, this.laserSpawnRight.y);
                     laser.lineTo(entity.x, entity.y);
                 }
-                this.explode(entity);
+                this.explode(entity, true); // fix
                 break;
             case 2:
                 if (entity.spawnedFromLeft) {
@@ -801,7 +801,7 @@ class Level2Tutorial extends BaseScene {
         this.activeEntities = this.activeEntities.filter(e => e !== entity);
     }
 
-    explode(entity) {
+    explode(entity, ok) {
         this.explosionEmitter.explode(1, entity.x, entity.y);
         if (entity.enemy === 1) {
             this.tweens.add({
@@ -814,7 +814,19 @@ class Level2Tutorial extends BaseScene {
             })
         }
         else {
-            entity.destroy();
+            if (ok) {
+                this.tweens.add({
+                    targets: entity,
+                    y: this.SCREEN_HEIGHT + 50,
+                    ease: 'Sine.In',
+                    onComplete: () => {
+                        entity.destroy();
+                    }
+                })
+            }
+            else {
+                entity.destroy();
+            }
         }
     }
 
@@ -963,7 +975,7 @@ class Level2Tutorial extends BaseScene {
                 this.entityCueSFX[cue.sfx].play({
                     loop: false,
                     volume: BaseScene.musicVolume,
-                    volume: 0.35,
+                    // volume: 0.35,
                     rate: 2
                 });
 
@@ -1035,7 +1047,7 @@ class Level2Tutorial extends BaseScene {
             .on('pointerdown', () => {
                 this.interactSFX.play({
                     rate: 5,
-                    volume: BaseScene.masterVolume
+                    volume: BaseScene.sfxVolume
                 });
                 this.changeScene('level2');
             });

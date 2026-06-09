@@ -80,6 +80,7 @@ class Level3 extends BaseScene {
 
         // Stop all sound upon entering scene
         this.sound.removeAll();
+        this.sound.volume = BaseScene.masterVolume;
 
         this.score = this.cache.json.get('score');
         this.notes = this.score.notes;
@@ -221,8 +222,8 @@ class Level3 extends BaseScene {
 
             this.music.play({ 
                 loop: false, 
-                volume: BaseScene.masterVolume  * 0.8,
-                seek: 13,
+                volume: BaseScene.musicVolume,
+                seek: 14,
                 // seek: 75,
                 // seek: 100,
                 // seek: 145,
@@ -534,7 +535,7 @@ class Level3 extends BaseScene {
             evaluation = "perfect!";
             this.perfectOkSFX.play({
                 loop: false,
-                volume: BaseScene.masterVolume,
+                volume: BaseScene.sfxVolume,
                 // volume: 0.5
             });
 
@@ -545,7 +546,7 @@ class Level3 extends BaseScene {
             evaluation = "ok";
             this.perfectOkSFX.play({
                 loop: false,
-                volume: BaseScene.masterVolume,
+                volume: BaseScene.sfxVolume,
                 // volume: 0.5
             });
 
@@ -556,7 +557,7 @@ class Level3 extends BaseScene {
             evaluation = "miss";
             this.missSFX.play({
                 loop: false,
-                volume: BaseScene.masterVolume,
+                volume: BaseScene.sfxVolume,
                 // volume: 0.5
             });
 
@@ -794,7 +795,7 @@ class Level3 extends BaseScene {
 
                     this.entityCueSFX[cue.sfx].play({
                     loop: false,
-                    volume: BaseScene.masterVolume * 0.25,
+                    volume: BaseScene.sfxVolume * 0.5,
                     // volume: 0.35,
                     rate: 1
 
@@ -806,7 +807,7 @@ class Level3 extends BaseScene {
 
                     this.entityCueSFX[cue.sfx].play({
                         loop: false,
-                        volume: BaseScene.masterVolume,
+                        volume: BaseScene.sfxVolume,
                         // volume: 0.35,
                         rate: 2
                     });

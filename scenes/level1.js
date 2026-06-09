@@ -62,6 +62,7 @@ class Level1 extends BaseScene {
     onEnter() {
 
         this.sound.removeAll();
+        this.sound.volume = BaseScene.masterVolume;
         this.spawnDelayBeats = 10;
         this.lastBeat = 0;
         this.lastBeatEvent = null;
@@ -296,11 +297,11 @@ class Level1 extends BaseScene {
         }
 
         this.lastBeatEvent = currentBeatFloor;
-        this.tickSound.play({ volume: BaseScene.masterVolume * 0.3});
+        this.tickSound.play({ volume: BaseScene.sfxVolume * 0.3});
 
         for (let entity of this.activeEntities) {
             if (entity.noteType === "ball") {
-                this.sound.play("ballBeat", { volume: BaseScene.masterVolume * 0.3, seek: 0.0199 });
+                this.sound.play("ballBeat", { volume: BaseScene.sfxVolume * 0.3, seek: 0.0199 });
             }
         }
 
@@ -409,7 +410,7 @@ class Level1 extends BaseScene {
             ease: "Linear",
             onComplete: () => {
                 this.sound.play("sprayBeat", {
-                    volume: BaseScene.masterVolume * 0.3
+                    volume: BaseScene.sfxVolume * 0.3
                 });
                 entity.play("sprayAnimation");
             }
@@ -523,7 +524,7 @@ class Level1 extends BaseScene {
                 let audioRate = (originalAudioBeats * this.BEAT_DURATION * 1000) / treatDuration;
 
                 this.sound.play("treatBeat", {
-                    volume: BaseScene.masterVolume * 0.3,
+                    volume: BaseScene.sfxVolume * 0.3,
                     rate: audioRate * 1.4
                 });
 
@@ -601,26 +602,26 @@ class Level1 extends BaseScene {
         this.cat.setTexture(entity.winTexture);
 
         this.sound.play("hitDrum", {
-            volume: BaseScene.masterVolume * 0.3
+            volume: BaseScene.sfxVolume * 0.3
         });
 
         if (entity.noteType === "ball") {
             this.sound.play("ballWinSound", {
-                volume: BaseScene.masterVolume * 0.3,
+                volume: BaseScene.sfxVolume * 0.3,
                 seek: 0.05
             });
         }
 
         if (entity.noteType === "treat") {
             this.sound.play("treatWinSound", {
-                volume: BaseScene.masterVolume * 0.3,
+                volume: BaseScene.sfxVolume * 0.3,
                 seek: 0.01
             });
         }
 
         if (entity.noteType === "spray") {
             this.sound.play("sprayWinSound", {
-                volume: BaseScene.masterVolume * 0.3,
+                volume: BaseScene.sfxVolume * 0.3,
             });
         }
 
@@ -707,7 +708,7 @@ class Level1 extends BaseScene {
         this.song = this.sound.add("beefInstaller");
 
         this.song.play({
-            volume: BaseScene.masterVolume * 0.3
+            volume: BaseScene.musicVolume * 0.8
         });
 
         this.startTime = this.time.now + 100;

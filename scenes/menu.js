@@ -24,9 +24,9 @@ class MenuScene extends BaseScene {
     onEnter() {
         this.sound.volume = BaseScene.masterVolume;
 
-        if (BaseScene.currentMusic) BaseScene.currentMusic.stop();
+        // if (BaseScene.currentMusic) BaseScene.currentMusic.stop();
         let menu_bgm = this.sound.add("menu", {
-            volume: BaseScene.musicVolume,
+            volume:  BaseScene.musicVolume,
             loop: true
         });
         menu_bgm.play();
@@ -56,7 +56,7 @@ class MenuScene extends BaseScene {
         this.title = this.add.image(this.SCREEN_WIDTH / 2, this.SCREEN_HEIGHT + 100, "title");
 
 
-        const buttonLabels = ["Levels", "Settings", "Credits", "Exit"];  
+        const buttonLabels = ["Levels", "Settings", "Credits", "Exit"];
         const buttonStart = 500
 
         const handleButtonClick = (label) => {
