@@ -199,7 +199,8 @@ class Level3Tutorial extends BaseScene {
 
             this.advanceDialogue();
             this.missSFX.play({
-                rate: 5
+                rate: 5,
+                volume: BaseScene.masterVolume
             })
             return;
 

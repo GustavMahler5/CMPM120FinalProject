@@ -36,6 +36,13 @@ class LevelSelect extends BaseScene {
             .setOrigin(0, 0)
             .setScale(0.44);
 
+
+        const title = this.add.text(this.SCREEN_WIDTH * 0.5, -25, "Select Level",  {
+                fontSize: '64px', 
+                fill: '#fff',
+                align: 'center'
+        }).setOrigin(.5, .5);
+
         const levels = [
             { key: "level1", texture: "lvl1img" },
             { key: "level2tutorial", texture: "lvl2img" },
@@ -105,6 +112,13 @@ class LevelSelect extends BaseScene {
         });
 
         this.setupBackButton();
+
+        this.add.tween({
+                targets: title,
+                y: 100,
+                duration: 1000,
+                ease: "Sine.Out"
+            });
     }
 
     handleButtonClick(key) {

@@ -462,7 +462,7 @@ class Level2 extends BaseScene {
         laser.lineStyle(3, 0xd02b14, 1);
         laser.beginPath();
 
-        this.sound.play('laser', { volume: 0.1 * BaseScene.sfxVolume });
+        this.sound.play('laser', { volume: BaseScene.sfxVolume });
         this.cameras.main.shake(200, .005);
 
         switch (judgement) {

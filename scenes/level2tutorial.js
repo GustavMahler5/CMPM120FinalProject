@@ -75,6 +75,7 @@ class Level2Tutorial extends BaseScene {
         this.load.audio('enemySpawnSoundEffect', '../assets/audio/SFX/level2/enemySpawn.wav');
         this.load.audio('friendSpawnSoundEffect', '../assets/audio/SFX/level2/friendSpawn.wav');
         this.load.audio('laser', '../assets/audio/SFX/level2/laser.wav');
+        this.load.audio('interact', '../assets/audio/SFX/level3/miss.mp3');
 
         this.load.json('score_suspicious', '../assets/beatmaps/score_suspicious.json');
 
@@ -136,7 +137,6 @@ class Level2Tutorial extends BaseScene {
                 type: null,
                 hitsNeeded: 0,
                 dialogue: [
-                    "Glorputations my friend!",
                     "Huh? You don't know how you got here? Haha very funny, in that case I don't either!",
                     "But now is not the time for jokes,",
                     "We're at war!",
@@ -149,7 +149,7 @@ class Level2Tutorial extends BaseScene {
 
             {
                 type: "enemy",
-                hitsNeeded: 1,
+                hitsNeeded: 3,
                 spawn: 0,
                 dialogue: [
                     "I see an enemy approaching now, give it a try!"
@@ -168,7 +168,7 @@ class Level2Tutorial extends BaseScene {
 
             {
                 type: "enemy2",
-                hitsNeeded: 1,
+                hitsNeeded: 3,
                 dialogue: [
                     "See ya later Gleremy!",
                     "Watch out! Don't forget that enemies can come from different angles!"
@@ -196,6 +196,8 @@ class Level2Tutorial extends BaseScene {
         this.createScene();
 
         this.cameras.main.setBackgroundColor('#010B19');
+
+        this.interactSFX = this.sound.add('interact');
 
 
         this.cursor = this.add.image(
@@ -336,6 +338,10 @@ class Level2Tutorial extends BaseScene {
         if (this.tutorialPhase == 0) {
 
             this.advanceDialogue();
+            this.interactSFX.play({
+                    rate: 5,
+                    volume: BaseScene.masterVolume
+                });
             return;
 
         }
@@ -357,7 +363,7 @@ class Level2Tutorial extends BaseScene {
 
         this.applyScore(rating);
 
-        this.tutorialText.setText(`${this.practicePhases[this.practicePhase].hitsNeeded - this.practiceHits} more time(s).`);
+        // this.tutorialText.setText(`${this.practicePhases[this.practicePhase].hitsNeeded - this.practiceHits} more time(s).`);
 
     }
 
@@ -450,7 +456,7 @@ class Level2Tutorial extends BaseScene {
         this.tutorialText = this.add.text(
             this.SCREEN_WIDTH * 0.5,
             this.SCREEN_HEIGHT * 0.9,
-            "",
+            "Glorputations my friend!",
             {
                 fontSize: "16px",
                 color: "#000000",
@@ -530,7 +536,7 @@ class Level2Tutorial extends BaseScene {
                 });
             }
 
-            this.nextTargetBeat += 4;
+            this.nextTargetBeat += 8;
 
             spawnBeat = this.nextTargetBeat - config.anticipationBeats;
         }
@@ -550,6 +556,10 @@ class Level2Tutorial extends BaseScene {
         this.currentDialogue = phase.dialogue;
 
         this.tutorialPhase = 0;
+
+        this.time.delayedCall(1500, () => {
+            this.advanceDialogue();
+        });
 
     }
 
@@ -729,7 +739,7 @@ class Level2Tutorial extends BaseScene {
         laser.lineStyle(3, 0xd02b14, 1);
         laser.beginPath();
 
-        this.sound.play('laser', { volume: .1 * BaseScene.sfxVolume });
+        this.sound.play('laser', { volume: BaseScene.sfxVolume });
         this.cameras.main.shake(200, .005);
 
         switch (judgement) {
@@ -814,6 +824,7 @@ class Level2Tutorial extends BaseScene {
 
             case("perfect!"):
                 this.practiceHits++;
+                this.tutorialText.setText(`${this.practicePhases[this.practicePhase].hitsNeeded - this.practiceHits} more time(s)`);
                 let currentPhase = this.practicePhases[this.practicePhase];
                 if (this.practiceHits >= currentPhase.hitsNeeded) {
                     this.advancePracticePhase();
@@ -1022,6 +1033,10 @@ class Level2Tutorial extends BaseScene {
         .setDepth(1000)
         .setInteractive({useHandCursor: true})
             .on('pointerdown', () => {
+                this.interactSFX.play({
+                    rate: 5,
+                    volume: BaseScene.masterVolume
+                });
                 this.changeScene('level2');
             });
 
