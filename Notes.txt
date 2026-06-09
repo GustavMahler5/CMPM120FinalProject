@@ -217,3 +217,5 @@ bossa*************
         { "measure": 16, "beat": 1.5, "type": "human" },
         { "measure": 16, "beat": 3, "type": "human" },
         { "measure": 16, "beat": 4, "type": "human" },
+
+If I had more time to optimize, I think I would have a base level scene and have all levels extend that scene - Jason Holtman

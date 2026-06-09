@@ -10,8 +10,8 @@ class Level1 extends BaseScene {
         this.BEAT_DURATION = 60 / this.BPM;
         this.TIME_SIGNATURE = 4;
 
-        this.ERROR_MARGIN = 0.3;
-        this.OK_ERROR = 0.2;
+        this.ERROR_MARGIN = 0.75;
+        this.OK_ERROR = 0.25;
         this.PERFECT_ERROR = 0.1;
 
         this.spawnChance = 0.2;
