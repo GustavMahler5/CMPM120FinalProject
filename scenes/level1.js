@@ -50,11 +50,12 @@ class Level1 extends BaseScene {
         this.load.audio("sprayWinSound", "../assets/audio/sfx/level1/sprayWinSound.wav");
 
         this.load.spritesheet("sprayBottleSheet", "../assets/images/level1/spray_sprite_sheet.png", {
-        frameWidth: 1080,
-        frameHeight: 720
+            frameWidth: 1080,
+            frameHeight: 720
         });
 
         this.load.image('fullscreen', "../assets/images/menu/fullscreen.png");
+        this.load.image('pause', '../assets/images/menu/pause_white.png');
 
     }
 
@@ -133,6 +134,7 @@ class Level1 extends BaseScene {
         );
         this.tutorialVideo.setScale(0.23);
         this.tutorialVideo.setDepth(1);
+        this.tutorialVideo.setVolume( BaseScene.masterVolume );
 
         this.startText = this.add.text(
             this.SCREEN_WIDTH * 0.5,
@@ -164,7 +166,23 @@ class Level1 extends BaseScene {
                 this.windowVideo.setScale(0.35);
                 this.windowVideo.setDepth(0);
                 this.windowVideo.setLoop(true);
-                this.windowVideo.play();
+                this.windowVideo.play( { volume: BaseScene.masterVolume });
+
+                this.pauseButton = this.add.image(
+                    this.SCREEN_WIDTH * 0.01,
+                    this.SCREEN_HEIGHT * 0.01,
+                    "pause")
+                    .setOrigin(0, 0)
+                    .setScale(0.05)
+                    .setDepth(10000)
+                    .setAlpha(0.5)
+                    .setInteractive({useHandCursor: true})
+                    .on('pointerdown', () => {
+                        this.game.sound.pauseAll();
+                        this.scene.pause();
+                        this.scene.launch('pausescene', { level: this.scene.key }); 
+                    }
+                );
 
                 this.startGameplay();
 
@@ -180,7 +198,7 @@ class Level1 extends BaseScene {
         this.roomBackground.setDepth(1);
         this.roomBackground.setDisplaySize(this.SCREEN_WIDTH, this.SCREEN_HEIGHT);
 
-this.tickSound = this.sound.add("cat_tick");
+        this.tickSound = this.sound.add("cat_tick");
 
     }
 
@@ -278,11 +296,11 @@ this.tickSound = this.sound.add("cat_tick");
         }
 
         this.lastBeatEvent = currentBeatFloor;
-        this.tickSound.play({ volume: 0.1 });
+        this.tickSound.play({ volume: BaseScene.masterVolume * 0.3});
 
         for (let entity of this.activeEntities) {
             if (entity.noteType === "ball") {
-                this.sound.play("ballBeat", { volume: 0.1, seek: 0.0199 });
+                this.sound.play("ballBeat", { volume: BaseScene.masterVolume * 0.3, seek: 0.0199 });
             }
         }
 
@@ -391,7 +409,7 @@ this.tickSound = this.sound.add("cat_tick");
             ease: "Linear",
             onComplete: () => {
                 this.sound.play("sprayBeat", {
-                    volume: 1
+                    volume: BaseScene.masterVolume * 0.3
                 });
                 entity.play("sprayAnimation");
             }
@@ -505,7 +523,7 @@ this.tickSound = this.sound.add("cat_tick");
                 let audioRate = (originalAudioBeats * this.BEAT_DURATION * 1000) / treatDuration;
 
                 this.sound.play("treatBeat", {
-                    volume: 0.2,
+                    volume: BaseScene.masterVolume * 0.3,
                     rate: audioRate * 1.4
                 });
 
@@ -583,26 +601,26 @@ this.tickSound = this.sound.add("cat_tick");
         this.cat.setTexture(entity.winTexture);
 
         this.sound.play("hitDrum", {
-        volume: 0.7
+            volume: BaseScene.masterVolume * 0.3
         });
 
         if (entity.noteType === "ball") {
             this.sound.play("ballWinSound", {
-                volume: 0.4,
+                volume: BaseScene.masterVolume * 0.3,
                 seek: 0.05
             });
         }
 
         if (entity.noteType === "treat") {
             this.sound.play("treatWinSound", {
-                volume: 0.9,
+                volume: BaseScene.masterVolume * 0.3,
                 seek: 0.01
             });
         }
 
         if (entity.noteType === "spray") {
             this.sound.play("sprayWinSound", {
-                volume: 0.9
+                volume: BaseScene.masterVolume * 0.3,
             });
         }
 
@@ -689,7 +707,7 @@ this.tickSound = this.sound.add("cat_tick");
         this.song = this.sound.add("beefInstaller");
 
         this.song.play({
-            volume: 0.06
+            volume: BaseScene.masterVolume * 0.3
         });
 
         this.startTime = this.time.now + 100;
