@@ -4,54 +4,54 @@
             {
                 "type": "audio",
                 "key": "bossa",
-                "url": "../assets/audio/songs/bossa.mp3"
+                "url": "assets/audio/songs/bossa.mp3"
             },
             {
                 "type": "audio",
                 "key": "paranoia",
-                "url": "../assets/audio/songs/paranoia.mp3"
+                "url": "assets/audio/songs/paranoia.mp3"
             },
             {
                 "type": "audio",
                 "key": "jubeatb2b",
-                "url": "../assets/audio/songs/jubeatb2b.mp3"
+                "url": "assets/audio/songs/jubeatb2b.mp3"
             },
             {
                 "type": "audio",
                 "key": "metronome",
-                "url": "../assets/audio/SFX/level3/metronome.mp3"
+                "url": "assets/audio/SFX/level3/metronome.mp3"
             },
 
             {
                 "type": "audio",
                 "key": "perfectok",
-                "url": "../assets/audio/SFX/level3/perfectok.mp3"
+                "url": "assets/audio/SFX/level3/perfectOk.mp3"
             },
             {
                 "type": "audio",
                 "key": "miss",
-                "url": "../assets/audio/SFX/level3/miss.mp3"
+                "url": "assets/audio/SFX/level3/miss.mp3"
             },
             {
                 "type": "audio",
                 "key": "cow",
-                "url": "../assets/audio/SFX/level3/cow.mp3"
+                "url": "assets/audio/SFX/level3/cow.mp3"
             },
             {
                 "type": "audio",
                 "key": "ghost",
-                "url": "../assets/audio/SFX/level3/ghost.mp3"
+                "url": "assets/audio/SFX/level3/ghost.mp3"
             },
             {
                 "type": "audio",
                 "key": "human",
-                "url": "../assets/audio/SFX/level3/miss.mp3"
+                "url": "assets/audio/SFX/level3/miss.mp3"
             },
 
             {
                 "type": "spritesheet",
                 "key": "walking",
-                "url": "../assets/images/level3/walkingss.png",
+                "url": "assets/images/level3/walkingss.png",
                 "frameConfig": {
                     "frameWidth": 2048,
                     "frameHeight": 2048
@@ -60,7 +60,7 @@
             {
                 "type": "spritesheet",
                 "key": "belt",
-                "url": "../assets/images/level3/beltss.png",
+                "url": "assets/images/level3/beltss.png",
                 "frameConfig": {
                     "frameWidth": 2162,
                     "frameHeight": 295
@@ -69,7 +69,7 @@
             {
                 "type": "spritesheet",
                 "key": "ghostwalk",
-                "url": "../assets/images/level3/ghostss.png",
+                "url": "assets/images/level3/ghostss.png",
                 "frameConfig": {
                     "frameWidth": 2048,
                     "frameHeight": 2048
@@ -78,7 +78,7 @@
             {
                 "type": "spritesheet",
                 "key": "cowwalk",
-                "url": "../assets/images/level3/cowss.png",
+                "url": "assets/images/level3/cowss.png",
                 "frameConfig": {
                     "frameWidth": 2732,
                     "frameHeight": 2048
@@ -88,58 +88,58 @@
             {
                 "type": "image",
                 "key": "fullscreen",
-                "url": "../assets/images/menu/fullscreen.png"
+                "url": "assets/images/menu/fullscreen.png"
             },
             {
                 "type": "image",
                 "key": "ufo",
-                "url": "../assets/images/level3/ufo.png"
+                "url": "assets/images/level3/ufo.png"
             },
             {
                 "type": "image",
                 "key": "barn",
-                "url": "../assets/images/level3/barn.png"
+                "url": "assets/images/level3/barn.png"
             },
             {
                 "type": "image",
                 "key": "pause",
-                "url": "../assets/images/menu/pause.png"
+                "url": "assets/images/menu/pause.png"
             },
             {
                 "type": "image",
                 "key": "moon",
-                "url": "../assets/images/level3/moon.png"
+                "url": "assets/images/level3/moon.png"
             },
             
             {
                 "type": "image",
                 "key": "fence",
-                "url": "../assets/images/level3/fence.png"
+                "url": "assets/images/level3/fence.png"
             },
             {
                 "type": "image",
                 "key": "house",
-                "url": "../assets/images/level3/house.png"
+                "url": "assets/images/level3/house.png"
             },
             {
                 "type": "image",
                 "key": "level3background",
-                "url": "../assets/images/level3/background.png"
+                "url": "assets/images/level3/background.png"
             },
             {
                 "type": "image",
                 "key": "star",
-                "url": "../assets/images/level3/star.png"
+                "url": "assets/images/level3/star.png"
             },
             {
                 "type": "image",
                 "key": "goodEvaluation",
-                "url": "../assets/images/level3/goodEvaluation.png"
+                "url": "assets/images/level3/goodEvaluation.png"
             },
             {
                 "type": "image",
                 "key": "badEvaluation",
-                "url": "../assets/images/level3/badEvaluation.png"
+                "url": "assets/images/level3/badEvaluation.png"
             }
         ]
     }

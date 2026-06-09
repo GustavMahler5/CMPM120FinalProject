@@ -70,7 +70,7 @@ class Level3Tutorial extends BaseScene {
 
         super.preload();
         this.load.json("score", "assets/beatmaps/level3score.json");
-        this.load.pack("main", "assets/level3assets.json");
+        this.load.pack("main", "assets/level3assets.json", "/CMPM120FinalProject/");
 
     }
 
