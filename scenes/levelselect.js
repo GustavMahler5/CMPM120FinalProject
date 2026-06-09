@@ -67,7 +67,7 @@ class LevelSelect extends BaseScene {
 
                 this.hoverSFX.play({
                     loop: false,
-                    volume: BaseScene.masterVolume * 1.5
+                    volume: BaseScene.sfxVolume * 1.5
                 });
             });
 
@@ -89,7 +89,7 @@ class LevelSelect extends BaseScene {
 
                 this.selectionSFX.play({
                     loop: false,
-                    volume: BaseScene.masterVolume * 1.5
+                    volume: BaseScene.sfxVolume * 1.5
                 });
 
                 this.handleButtonClick(icon.levelKey);
@@ -139,7 +139,7 @@ class LevelSelect extends BaseScene {
 
             this.hoverSFX.play({
                 loop: false,
-                volume: BaseScene.masterVolume * 1.5
+                volume: BaseScene.sfxVolume * 1.5
             });
         });
 
@@ -161,7 +161,7 @@ class LevelSelect extends BaseScene {
 
             this.selectionSFX.play({
                 loop: false,
-                volume: BaseScene.masterVolume * 1.5
+                volume: BaseScene.sfxVolume * 1.5
             });
 
             this.handleButtonClick("menu");
