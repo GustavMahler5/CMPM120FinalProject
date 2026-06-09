@@ -17,11 +17,13 @@ class MenuScene extends BaseScene {
     onEnter() {
         this.sound.volume = BaseScene.masterVolume;
 
+        if (BaseScene.currentMusic) BaseScene.currentMusic.stop();
         let menu_bgm = this.sound.add("menu", {
             volume: BaseScene.musicVolume,
             loop: true
         });
         menu_bgm.play();
+        BaseScene.currentMusic = menu_bgm;
 
         let button_sfx = this.sound.add("button_sfx", {
             volume: BaseScene.sfxVolume,

@@ -108,7 +108,9 @@ class Level2 extends BaseScene {
         this.PICKUP_BEATS = this.songInfo[this.SONG].pickupbeats;   // how many pick up beats there are
 
         // Add Music
+        if (BaseScene.currentMusic) BaseScene.currentMusic.stop();
         this.music = this.sound.add(`${this.songInfo[this.SONG].name}`);
+        BaseScene.currentMusic = this.music;
 
         this.pauseButton = this.add.image(
             this.SCREEN_WIDTH * 0.01,
