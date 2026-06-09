@@ -18,6 +18,7 @@ class MenuScene extends BaseScene {
         this.load.image("menu_biglight", "../assets/images/menu/biglight.png");
         this.load.image("menu_smalllights", "../assets/images/menu/smalllights.png");
         this.load.image("flycow", "../assets/images/menu/flycow.png");
+        this.load.image('cow', '../assets/images/menu/cow.png');
     }
 
     onEnter() {
@@ -39,7 +40,7 @@ class MenuScene extends BaseScene {
             volume: BaseScene.sfxVolume,
         });
 
-        this.background = this.add.image(540, 340, "menu_bg").setScale(0.44);
+        this.background = this.add.image(this.SCREEN_WIDTH / 2, this.SCREEN_HEIGHT / 2, "menu_bg").setScale(0.44);
 
         const flyCow = this.add.image(this.SCREEN_WIDTH / 2, this.SCREEN_HEIGHT - 110, "flycow").setScale(0.14);
 
@@ -134,6 +135,28 @@ class MenuScene extends BaseScene {
                 duration: 2000,
                 ease: 'linear'
             })
+
+            this.cow = this.add.image(this.SCREEN_WIDTH / 4.8, this.SCREEN_HEIGHT + 100, 'cow');
+            this.cow.setOrigin(0.5);
+            this.tweens.chain({
+                targets: this.cow,
+                tweens: [
+                    {
+                        y: this.SCREEN_HEIGHT / 3,
+                        delay: 1200,
+                        duration: 3000,
+                        ease: 'linear'
+                    },
+                    {
+                        ease: 'linear',
+                        y: this.SCREEN_HEIGHT / 3 + this.SCREEN_HEIGHT / 10,
+                        duration: 2000,
+                        yoyo: true,
+                        loop: -1
+                    }
+                ]
+            })
+            
         });
 
         this.tweens.add({
@@ -175,5 +198,10 @@ class MenuScene extends BaseScene {
                 });
             }
         });
+        // fx
+       // const blurEffect = this.background.postFX.addBlur(0, 2, 2, 100); 
+        this.cameras.main.shake(4000, new Phaser.Math.Vector2(0, 0.002));
+
+       //this.title.preFX.addGlow(0xffffff, 2, 0, false);
     }
 }

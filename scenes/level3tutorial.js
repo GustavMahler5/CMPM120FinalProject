@@ -36,7 +36,7 @@ class Level3Tutorial extends BaseScene {
                 cues: [
                     { leadBeats: 2, sfx: "human"},
                     { leadBeats: 1.5, sfx: "human"},
-                    { leadBeats: 1, sfx: "human"}
+                    { leadBeats: 1, sfx: "cow"}
                 ]
 
             },
@@ -47,7 +47,7 @@ class Level3Tutorial extends BaseScene {
                 cues: [
                     { leadBeats: 2.5, sfx: "human"},
                     { leadBeats: 1.5, sfx: "human"},
-                    { leadBeats: 1, sfx: "human"},
+                    { leadBeats: 1, sfx: "ghost"},
                 ]
 
             }
@@ -998,12 +998,28 @@ class Level3Tutorial extends BaseScene {
 
             if (this.currentBeatContinuous >= cue.beat) {
 
-                this.entityCueSFX[cue.sfx].play({
+                if (cue.sfx == "ghost") {
+
+                    this.entityCueSFX[cue.sfx].play({
                     loop: false,
-                    volume: BaseScene.masterVolume,
+                    volume: BaseScene.masterVolume * 0.5,
                     // volume: 0.35,
-                    rate: 2
+                    rate: 1
+
                 });
+
+                }
+
+                else {
+
+                    this.entityCueSFX[cue.sfx].play({
+                        loop: false,
+                        volume: BaseScene.masterVolume,
+                        // volume: 0.35,
+                        rate: 2
+                    });
+
+                }
 
                 this.scheduledCueBeats.splice(i, 1);
 

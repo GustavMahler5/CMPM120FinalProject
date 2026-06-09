@@ -43,6 +43,14 @@ class PauseScene extends BaseScene {
         }).setOrigin(0.5).setDepth(1000).setInteractive();
 
         this.quitButton.on('pointerdown', () => {
+             this.game.sound.stopAll();
+
+            if (level) {
+                this.scene.stop(level);
+            }
+
+            BaseScene.pausedLevel = null;
+
             this.scene.start('levelselect');
         });
     }
