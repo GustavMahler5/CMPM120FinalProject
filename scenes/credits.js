@@ -27,10 +27,7 @@ class CreditsScene extends BaseScene{
             { label: "Jayla Lackaff" },
             { label: "Kajol Prasad" },
             { label: "Adam Top" },
-            { label: "name" },
-            { label: "name" },
-            { label: "name" },
-            { label: "name" }
+            { label: "Bonnie Montgomery" },
         ]
 
         const startX = -200;                           // where buttons should start x wise
