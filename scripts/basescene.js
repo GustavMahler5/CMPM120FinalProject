@@ -31,6 +31,10 @@ class BaseScene extends Phaser.Scene {
     static currentMusic = null;
     static pausedLevel = null;
 
+    preload() {
+        this.load.setBaseURL('/CMPM120FinalProject/');
+    }
+
     create() {
 
         this.cameras.main.setBackgroundColor("#272727");
