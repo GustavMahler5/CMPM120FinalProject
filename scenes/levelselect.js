@@ -5,7 +5,7 @@ class LevelSelect extends BaseScene {
 
     preload() {
         this.load.image("menu_button", "../assets/images/menu/menu_button.png");
-        this.load.image("lvl1img", "../assets/images/menu/level2jacket.png");
+        this.load.image("lvl1img", "../assets/images/menu/levelimg.png");
         this.load.image("lvl2img", "../assets/images/menu/level2jacket.png");
         this.load.image("lvl3img", "../assets/images/menu/level3jacket.png");
         this.load.image("menu_background", "../assets/images/menu/background.png");
@@ -34,7 +34,7 @@ class LevelSelect extends BaseScene {
             .setScale(0.44);
 
         const levels = [
-            { key: "gameplayprototype4", texture: "lvl1img" },
+            { key: "level1", texture: "lvl1img" },
             { key: "level2tutorial", texture: "lvl2img" },
             { key: "level3tutorial", texture: "lvl3img" }
         ];
