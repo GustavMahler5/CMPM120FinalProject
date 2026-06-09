@@ -123,7 +123,7 @@
             },
             {
                 "type": "image",
-                "key": "background",
+                "key": "level3background",
                 "url": "../assets/images/level3/background.png"
             },
             {
