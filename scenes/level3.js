@@ -346,7 +346,7 @@ class Level3 extends BaseScene {
         this.background = this.add.sprite(
             this.SCREEN_WIDTH * 0.5,
             this.SCREEN_HEIGHT * 0.5,
-            "background")
+            "level3background")
             .setOrigin(0.5, 0.5);
 
         this.expandToBorder(this.background);
