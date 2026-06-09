@@ -235,7 +235,7 @@ class Level2Tutorial extends BaseScene {
         .setInteractive({ useHandCursor: true })
         .on("pointerdown", () => {
             this.game.sound.stopAll();
-            this.changeScene("levelselectprototype");
+            this.changeScene("levelselect");
         });
 
         this.input.removeAllListeners("pointerdown");
@@ -423,7 +423,7 @@ class Level2Tutorial extends BaseScene {
 
         this.time.delayedCall(this.FADE_DURATION * 2, () => {
 
-            this.changeScene("gameplayprototype5");
+            this.changeScene("level2");
 
         });
 
@@ -463,13 +463,6 @@ class Level2Tutorial extends BaseScene {
 
     createText() {
         
-        this.add.text(
-            this.SCREEN_WIDTH * 0.5,
-            this.SCREEN_HEIGHT * 0.05,
-            "Tutorial prototype v1"
-        )
-        .setStyle({ fontSize: "16px", color: "#ff5757" })
-        .setOrigin(0.5, 0.5);
 
         this.lastInput = this.add.text(
             this.SCREEN_WIDTH * 0.5,

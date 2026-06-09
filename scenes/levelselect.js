@@ -1,190 +1,167 @@
-class LevelSelect extends BaseScene{
+class LevelSelect extends BaseScene {
     constructor() {
         super("levelselect");
     }
-    
+
     preload() {
-        this.load.image("menu_button_prototype", "../assets/images/menu/menu_button_prototype.png");
+        this.load.image("menu_button", "../assets/images/menu/menu_button.png");
+        this.load.image("lvl1img", "../assets/images/menu/level2jacket.png");
+        this.load.image("lvl2img", "../assets/images/menu/level2jacket.png");
+        this.load.image("lvl3img", "../assets/images/menu/level3jacket.png");
+        this.load.image("menu_background", "../assets/images/menu/background.png");
+        this.load.image("lights", "../assets/images/menu/lights.png");
+
         this.load.audio('menu', '../assets/audio/songs/menu.wav');
         this.load.audio('hover', '../assets/audio/sfx/menu/hoverSelection.mp3');
         this.load.audio('selection', '../assets/audio/sfx/menu/selection.mp3');
-        this.load.image('fullscreen', "../assets/images/menu/fullscreen.png");
-        this.load.image('level2jacket', "../assets/images/menu/level2jacket.png");
-        this.load.image('level3jacket', "../assets/images/menu/level3jacket.png");
     }
 
     onEnter() {
-
         this.cameras.main.setBackgroundColor(0xE0C6AD);
 
         this.hoverSFX = this.sound.add('hover');
         this.selectionSFX = this.sound.add('selection');
-        //bgm
+
         let music = this.sound.add("menu", {
-            volume: BaseScene.musicVolume,
+            volume: BaseScene.masterVolume,
             loop: true
         });
         music.play();
 
-        // add scene here to create button
-        const scenes = [
-            { key: "level1",  jacket: "level2jacket" },
-            { key: "level2tutorial", jacket: "level2jacket" },
-            { key: "level3tutorial", jacket: "level3jacket" },
-        ]
 
-        const buttonBackground = this.add.rectangle(-200, this.SCREEN_HEIGHT / 2, this.SCREEN_WIDTH / 4, this.SCREEN_HEIGHT, 0xC1B2A2);
-        const startX = -200;                           // where buttons should start x wise
-        const endX = buttonBackground.width / 2;       // where buttons should end up on the screen
-        const timeBetweenTweens = 150;                 // all buttons fly in one after the other, after this duration
-        const flyInDuration = 1000;                    // how long it should take buttons to fly in
-        const buttonStartTime = 150;                  // how long the buttons should wait before starting their tweens
+        this.add.image(0, 0, "menu_background")
+            .setOrigin(0, 0)
+            .setScale(0.44);
 
-        const title = this.add.text(buttonBackground.width + ((this.SCREEN_WIDTH - buttonBackground.width) / 2), -25, "Level Select",  {
-                fontSize: '64px',
-                fontStyle: 'bold',
-                fill: '#A3B2A4',
-        }).setOrigin(.5, .5);
-        let buttonHeight = this.SCREEN_HEIGHT / scenes.length;
-        const buttonWidth = Phaser.Math.Clamp(buttonHeight, 0, buttonBackground.width - 20); // 2.375 is the aspect ratio of the button image, clamp is used to make sure buttons don't get too big for the background
-        buttonHeight = buttonWidth;
+        const levels = [
+            { key: "gameplayprototype4", texture: "lvl1img" },
+            { key: "level2tutorial", texture: "lvl2img" },
+            { key: "level3tutorial", texture: "lvl3img" }
+        ];
 
-        const buttonScale = buttonWidth / 76; // 76 is the original width of the button image, this calculates the scale needed to make the button the right width for the background
-        const buttonSpacing = this.SCREEN_HEIGHT / scenes.length;
-        const startY = buttonSpacing / 2;
-        this.timeline = this.add.timeline();
+        const scale = 0.1;
+        const spacing = 250; // horizontal spacing between icons
+        const centerY = this.SCREEN_HEIGHT / 2;
+        const startX = this.SCREEN_WIDTH / 2 - spacing;
+        const endY = centerY;
 
-        // button background tween
-        this.timeline.add({
-            at: 0,
-            tween: {
-                targets: buttonBackground,
-                x: buttonBackground.width / 2,
-                duration: flyInDuration,
-                ease: 'Sine.Out'
-            }
-        });
+        levels.forEach((level, i) => {
+            const x = startX + i * spacing;
 
-        let button;
-        let container;
+            const icon = this.add.image(x, -200, level.texture)
+                .setInteractive()
+                .setScale(scale);
 
-        scenes.forEach((scene, i) => {
-            
-            const x = startX;
-            const y = (startY) + (buttonSpacing * i);
+            icon.levelKey = level.key;
 
-            let button;
-            let container
-
-            if (scene.label) {
-
-                const button = this.add.image(0, 0, "menu_button_prototype").setScale(buttonScale);
-                const text = this.add.text(0, 0, scene.label, {
-                    fontSize: '32px', 
-                    fill: '#fff',
-                    align: 'center'
-                })
-                .setOrigin(0.5, 0.5);
-                text.setScale(Math.min(1, (buttonWidth - 20) / text.width));
-
-
-                // buttons + text are grouped into containers for easier use
-                const container = this.add.container(x, y, [button, text]);
-                container.scene = scene;
-                container.setSize(button.displayWidth, button.displayHeight);
-                button.setInteractive();
-
-            }
-
-            else if (scene.jacket) {
-
-                button = this.add.image(0, 0, scene.jacket).setScale(buttonScale);
-                text = this.add.image(0, 0, scene.jacket).setOrigin(0.5, 0.5);
-                text.setScale(Math.min(1, (buttonWidth - 20) / text.width));
-
-
-                // buttons + text are grouped into containers for easier use
-                const container = this.add.container(x, y, [button, text]);
-                container.scene = scene;
-                container.setSize(button.displayWidth, button.displayHeight);
-                button.setInteractive();
-
-            }
-
-            // hover + click events
-            button.on("pointerover", () => {
+            icon.on("pointerover", () => {
                 this.add.tween({
-                    targets: button,
-                    scale: buttonScale + (buttonScale / 8),
-                    duration: 200,
-                    ease: 'Sine.InOut'
+                    targets: icon,
+                    scale: scale * 1.1,
+                    duration: 150,
+                    ease: "Sine.InOut"
                 });
+
                 this.hoverSFX.play({
                     loop: false,
-                    volume: BaseScene.sfxVolume * 1.5,
+                    volume: BaseScene.masterVolume * 1.5
                 });
             });
-            button.on("pointerout",  () => {
+
+            icon.on("pointerout", () => {
                 this.add.tween({
-                    targets: button,
-                    scale: buttonScale,
-                    duration: 200,
-                    ease: 'Sine.InOut'
+                    targets: icon,
+                    scale: scale,
+                    duration: 150,
+                    ease: "Sine.InOut"
                 });
             });
-            button.on("pointerdown", () => {
-                button.setTint(0xdddddd);
+
+            icon.on("pointerdown", () => {
+                icon.setTint(0xdddddd);
             });
-            button.on("pointerup", () => {
-                button.clearTint();
-                // removed, as scenes haven't been made yet
+
+            icon.on("pointerup", () => {
+                icon.clearTint();
+
                 this.selectionSFX.play({
                     loop: false,
-                    volume: BaseScene.sfxVolume * 1.5,
+                    volume: BaseScene.masterVolume * 1.5
                 });
-                this.handleButtonClick(container.scene.key);
+
+                this.handleButtonClick(icon.levelKey);
             });
 
-            // add to timeline
-            this.timeline.add({
-                at: buttonStartTime + i * timeBetweenTweens,
-                tween: {
-                    targets: container,
-                    x: endX,
-                    duration: flyInDuration,
-                    ease: 'Sine.Out'
-                }
-            })
-
+            this.add.tween({
+                targets: icon,
+                y: endY,
+                duration: 900,
+                delay: i * 150,
+                ease: "Sine.Out"
+            });
         });
 
-        // title tweens
-        this.timeline.add({
-            at: buttonStartTime + ((scenes.length + 1) * timeBetweenTweens),
-            tween: {
-                targets: title,
-                y: 50,
-                duration: flyInDuration,
-                ease: 'Sine.Out'
-            }
-        })
-        this.timeline.add({
-            at: buttonStartTime + ((scenes.length + 1) * timeBetweenTweens) + flyInDuration,
-            tween: {
-                targets: title,
-                y: 60,
-                duration: 1500,
-                yoyo: true,
-                ease: 'Sine.InOut',
-                repeat: -1
-            }
-        })
-
-        this.timeline.play();
-
+        this.setupBackButton();
     }
 
     handleButtonClick(key) {
         this.changeScene(key);
+    }
+
+    setupBackButton() {
+        const backButton = this.add.image(0, 0, "menu_button")
+            .setInteractive().setScale(2.5);
+        const buttonText = this.add.text(0, 0, "Back", {
+            fontSize: '40px', 
+            fill: '#fff',
+            align: 'center'
+        }).setOrigin(0.5, 0.5);
+        const container = this.add.container(this.SCREEN_WIDTH / 2, this.SCREEN_HEIGHT + 200, [backButton, buttonText]);
+
+        this.add.tween({
+            targets: container,
+            y: this.SCREEN_HEIGHT * .8,
+            duration: 900,
+            delay: 3 * 150,
+            ease: "Sine.Out"
+        });
+
+        backButton.on("pointerover", () => {
+            this.add.tween({
+                targets: container,
+                scale: 1.1,
+                duration: 150,
+                ease: "Sine.InOut"
+            });
+
+            this.hoverSFX.play({
+                loop: false,
+                volume: BaseScene.masterVolume * 1.5
+            });
+        });
+
+        backButton.on("pointerout", () => {
+            this.add.tween({
+                targets: container,
+                scale: 1,
+                duration: 150,
+                ease: "Sine.InOut"
+            });
+        });
+
+        backButton.on("pointerdown", () => {
+            backButton.setTint(0xdddddd);
+        });
+
+        backButton.on("pointerup", () => {
+            backButton.clearTint();
+
+            this.selectionSFX.play({
+                loop: false,
+                volume: BaseScene.masterVolume * 1.5
+            });
+
+            this.handleButtonClick("menu");
+        });
     }
 }
