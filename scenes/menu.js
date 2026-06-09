@@ -129,9 +129,10 @@ class MenuScene extends BaseScene {
                         y: this.SCREEN_HEIGHT / 3,
                         delay: 1200,
                         duration: 3000,
+                        ease: 'linear'
                     },
                     {
-                        ease: 'circ.easeIn',
+                        ease: 'linear',
                         y: this.SCREEN_HEIGHT / 3 + this.SCREEN_HEIGHT / 10,
                         duration: 2000,
                         yoyo: true,
