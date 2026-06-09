@@ -10,6 +10,7 @@ class LevelSelect extends BaseScene {
         this.load.image("lvl3img", "../assets/images/menu/level3jacket.png");
         this.load.image("menu_background", "../assets/images/menu/background.png");
         this.load.image("lights", "../assets/images/menu/lights.png");
+        this.load.image("abduct_alien", "../assets/images/level2/angry_alien.png");
 
         this.load.audio('menu', '../assets/audio/songs/menu.wav');
         this.load.audio('hover', '../assets/audio/sfx/menu/hoverSelection.mp3');
@@ -17,6 +18,7 @@ class LevelSelect extends BaseScene {
     }
 
     onEnter() {
+        this.animating = false;
         this.cameras.main.setBackgroundColor(0xE0C6AD);
         this.sound.volume = BaseScene.masterVolume;
 
@@ -49,25 +51,53 @@ class LevelSelect extends BaseScene {
             { key: "level3tutorial", texture: "lvl3img" }
         ];
 
-        const scale = 0.1;
-        const spacing = 250; // horizontal spacing between icons
+        const scale = 0.055;
+        const spacing = 245;
         const centerY = this.SCREEN_HEIGHT / 2;
-        const startX = this.SCREEN_WIDTH / 2 - spacing;
+        const startX = this.SCREEN_WIDTH / 2 - spacing - 20;
         const endY = centerY;
+
+        const borderColor = 0xDD55FF;
+        const borderThick = 8;
+        const borderRadius = 10;
 
         levels.forEach((level, i) => {
             const x = startX + i * spacing;
 
-            const icon = this.add.image(x, -200, level.texture)
+            const icon = this.add.image(0, 0, level.texture)
                 .setInteractive()
                 .setScale(scale);
 
-            icon.levelKey = level.key;
+            const w = icon.displayWidth;
+            const h = icon.displayHeight;
+            const half = borderThick / 2;
+
+            const border = this.add.graphics();
+            const glowSteps = [
+                { extra: 14, alpha: 0.06 },
+                { extra: 10, alpha: 0.13 },
+                { extra: 6,  alpha: 0.25 },
+                { extra: 3,  alpha: 0.5  },
+                { extra: 0,  alpha: 1.0  },
+            ];
+            for (const step of glowSteps) {
+                const exp = step.extra / 2;
+                border.lineStyle(borderThick + step.extra, borderColor, step.alpha);
+                border.strokeRoundedRect(
+                    -w / 2 - half - exp,
+                    -h / 2 - half - exp,
+                    w + borderThick + step.extra,
+                    h + borderThick + step.extra,
+                    borderRadius + exp
+                );
+            }
+
+            const container = this.add.container(x, -200, [border, icon]);
 
             icon.on("pointerover", () => {
                 this.add.tween({
-                    targets: icon,
-                    scale: scale * 1.1,
+                    targets: container,
+                    scale: 1.1,
                     duration: 150,
                     ease: "Sine.InOut"
                 });
@@ -80,8 +110,8 @@ class LevelSelect extends BaseScene {
 
             icon.on("pointerout", () => {
                 this.add.tween({
-                    targets: icon,
-                    scale: scale,
+                    targets: container,
+                    scale: 1,
                     duration: 150,
                     ease: "Sine.InOut"
                 });
@@ -92,6 +122,7 @@ class LevelSelect extends BaseScene {
             });
 
             icon.on("pointerup", () => {
+                if (this.animating) return;
                 icon.clearTint();
 
                 this.selectionSFX.play({
@@ -99,11 +130,12 @@ class LevelSelect extends BaseScene {
                     volume: BaseScene.sfxVolume * 1.5
                 });
 
-                this.handleButtonClick(icon.levelKey);
+                this.animating = true;
+                this.playAbductionAnimation(container, icon, x, endY, level.key);
             });
 
             this.add.tween({
-                targets: icon,
+                targets: container,
                 y: endY,
                 duration: 900,
                 delay: i * 150,
@@ -123,6 +155,112 @@ class LevelSelect extends BaseScene {
 
     handleButtonClick(key) {
         this.changeScene(key);
+    }
+
+    playAbductionAnimation(container, icon, containerX, containerY, levelKey) {
+        const ufoScale = 4;
+        const ufo = this.add.image(containerX, -80, 'abduct_alien')
+            .setScale(ufoScale)
+            .setDepth(20);
+
+        const ufoTargetY = containerY - 90;
+
+        this.tweens.add({
+            targets: ufo,
+            y: ufoTargetY,
+            duration: 600,
+            ease: 'Back.Out',
+            onComplete: () => {
+                const ufoBottomY = ufoTargetY + ufo.displayHeight / 2;
+                const beamTopW = ufo.displayWidth * 0.55;
+                const beamBotW = icon.displayWidth * 1.6;
+                const beamBotY = containerY + 100;
+
+                const beam = this.add.graphics().setDepth(18).setAlpha(0);
+                const numSlices = 16;
+                for (let s = 0; s < numSlices; s++) {
+                    const t0 = s / numSlices;
+                    const t1 = (s + 1) / numSlices;
+                    const y0 = ufoBottomY + t0 * (beamBotY - ufoBottomY);
+                    const y1 = ufoBottomY + t1 * (beamBotY - ufoBottomY);
+                    const w0 = beamTopW + t0 * (beamBotW - beamTopW);
+                    const w1 = beamTopW + t1 * (beamBotW - beamTopW);
+                    const alpha = 0.65 * Math.pow(1 - t0, 1.5);
+                    beam.fillStyle(0xFF55CC, alpha);
+                    beam.fillPoints([
+                        { x: containerX - w0 / 2, y: y0 },
+                        { x: containerX + w0 / 2, y: y0 },
+                        { x: containerX + w1 / 2, y: y1 },
+                        { x: containerX - w1 / 2, y: y1 },
+                    ], true);
+                }
+
+                this.tweens.add({
+                    targets: beam,
+                    alpha: { from: 0, to: 1 },
+                    duration: 80,
+                    yoyo: true,
+                    repeat: 1,
+                    onComplete: () => {
+                        beam.setAlpha(1);
+                        container.setVisible(false);
+
+                        const abductIcon = this.add.image(containerX, containerY, icon.texture.key)
+                            .setScale(icon.scaleX)
+                            .setDepth(19);
+
+                        this.tweens.add({
+                            targets: abductIcon,
+                            y: ufoTargetY + ufo.displayHeight * 0.1,
+                            scale: 0,
+                            angle: 360,
+                            duration: 800,
+                            ease: 'Quad.In',
+                            onComplete: () => {
+                                abductIcon.destroy();
+
+                                this.tweens.add({
+                                    targets: beam,
+                                    alpha: 0,
+                                    duration: 120,
+                                    onComplete: () => beam.destroy()
+                                });
+
+                                const curve = new Phaser.Curves.CubicBezier(
+                                    new Phaser.Math.Vector2(ufo.x, ufoTargetY),
+                                    new Phaser.Math.Vector2(ufo.x + 160, ufoTargetY + 18),
+                                    new Phaser.Math.Vector2(ufo.x + 480, ufoTargetY - 70),
+                                    new Phaser.Math.Vector2(ufo.x + 860, -270)
+                                );
+                                const vec = new Phaser.Math.Vector2();
+                                const follower = { t: 0 };
+
+                                this.tweens.add({
+                                    targets: ufo,
+                                    scaleX: ufoScale * 0.35,
+                                    scaleY: ufoScale * 0.35,
+                                    duration: 580,
+                                    ease: 'Sine.In'
+                                });
+
+                                this.tweens.add({
+                                    targets: follower,
+                                    t: 1,
+                                    duration: 580,
+                                    ease: t => 0.5 - 0.5 * Math.cos(Math.PI * Math.pow(t, 0.85)),
+                                    onUpdate: () => {
+                                        curve.getPoint(follower.t, vec);
+                                        ufo.x = vec.x;
+                                        ufo.y = vec.y;
+                                    },
+                                    onComplete: () => this.handleButtonClick(levelKey)
+                                });
+                            }
+                        });
+                    }
+                });
+            }
+        });
     }
 
     setupBackButton() {
