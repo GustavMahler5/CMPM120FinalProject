@@ -7,13 +7,15 @@ class CreditsScene extends BaseScene{
         super.preload();
         this.load.image("menu_button", "assets/images/menu/menu_button.png");
         this.load.audio('menu', 'assets/audio/songs/menu.wav');
-        this.load.audio('hover', 'assets/audio/sfx/menu/hoverSelection.mp3');
-        this.load.audio('selection', 'assets/audio/sfx/menu/selection.mp3');
+        this.load.audio('hover', 'assets/audio/SFX/menu/hoverSelection.mp3');
+        this.load.audio('selection', 'assets/audio/SFX/menu/selection.mp3');
         this.load.image('fullscreen', "assets/images/menu/fullscreen.png");
+        this.load.image("menu_bg", "assets/images/menu/menubackground1st.png");
     }
 
     onEnter() {
         this.cameras.main.setBackgroundColor(0xb934f7);
+        this.background = this.add.image(this.SCREEN_WIDTH / 2, this.SCREEN_HEIGHT / 2, "menu_bg").setScale(0.44);
 
         this.hoverSFX = this.sound.add('hover');
         this.selectionSFX = this.sound.add('selection');
@@ -40,7 +42,7 @@ class CreditsScene extends BaseScene{
         const title = this.add.text(((this.SCREEN_WIDTH) / 2), -25, "Credits",  {
                 fontSize: '64px',
                 fontStyle: 'bold',
-                fill: '#2d0350',
+                fill: '#8712e7',
         }).setOrigin(.5, .5);
         let buttonHeight = (this.SCREEN_HEIGHT - 100) / Math.floor(names.length / 6);
         const buttonWidth = Phaser.Math.Clamp(buttonHeight * 2.375, 0, (this.SCREEN_WIDTH / 4) - 20); // 2.375 is the aspect ratio of the button image, clamp is used to make sure buttons don't get too big for the background
@@ -125,7 +127,7 @@ class CreditsScene extends BaseScene{
             });
             this.hoverSFX.play({
                 loop: false,
-                volume: BaseScene.masterVolume * 1.5,
+                volume: BaseScene.sfxVolume * BaseScene.masterVolume * 1.5,
             });
         });
         button.on("pointerout",  () => {
