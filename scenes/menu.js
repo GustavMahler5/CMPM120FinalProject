@@ -13,6 +13,7 @@ class MenuScene extends BaseScene {
         this.load.audio("button_hover", "../assets/audio/SFX/menu/hoverSelection.mp3");
         this.load.image('fullscreen', "../assets/images/menu/fullscreen.png");
         this.load.image('title', "../assets/images/menu/title_icon.png");
+        this.load.image('cow', '../assets/images/menu/cow.png');
     }
 
     onEnter() {
@@ -34,7 +35,7 @@ class MenuScene extends BaseScene {
             volume: BaseScene.sfxVolume,
         });
 
-        this.background = this.add.image(540, 340, "background").setScale(1.1);
+        this.background = this.add.image(this.SCREEN_WIDTH / 2, this.SCREEN_HEIGHT / 2, "background").setScale(1.1);
 
         this.title = this.add.image(this.SCREEN_WIDTH / 2, this.SCREEN_HEIGHT + 100, "title");
 
@@ -118,14 +119,34 @@ class MenuScene extends BaseScene {
                 duration: 2000,
                 ease: 'linear'
             })
+
+            this.cow = this.add.image(this.SCREEN_WIDTH / 4.8, this.SCREEN_HEIGHT + 100, 'cow');
+            this.cow.setOrigin(0.5);
+            this.tweens.chain({
+                targets: this.cow,
+                tweens: [
+                    {
+                        y: this.SCREEN_HEIGHT / 3,
+                        delay: 1200,
+                        duration: 3000,
+                        ease: 'linear'
+                    },
+                    {
+                        ease: 'linear',
+                        y: this.SCREEN_HEIGHT / 3 + this.SCREEN_HEIGHT / 10,
+                        duration: 2000,
+                        yoyo: true,
+                        loop: -1
+                    }
+                ]
+            })
+            
         });
 
         // fx
-        //this.cameras.main.shake(10000000, .001, true);
-
        // const blurEffect = this.background.postFX.addBlur(0, 2, 2, 100); 
+        this.cameras.main.shake(4000, new Phaser.Math.Vector2(0, 0.002));
 
-
-       
+       //this.title.preFX.addGlow(0xffffff, 2, 0, false);
     }
 }
