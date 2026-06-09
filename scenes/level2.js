@@ -53,7 +53,7 @@ class Level2 extends BaseScene {
         this.load.json('score_suspicious', '../assets/audio/beatmaps/score_suspicious.json');
 
         this.load.image('planet1', '../assets/images/level2/planet1.png');
-        this.load.image('pause', '../assets/images/menu/pause.png');
+        this.load.image('pause', '../assets/images/menu/pause_white.png');
         this.load.image('planet2', '../assets/images/level2/planet2.png');
         this.load.image('planet3', '../assets/images/level2/planet3.png');
         this.load.image('sun', '../assets/images/level2/sun.png');
@@ -127,49 +127,11 @@ class Level2 extends BaseScene {
             .on('pointerdown', () => {
                 this.game.sound.pauseAll();
                 this.scene.pause();
-                this.scene.launch('pausescene'); 
+                this.scene.launch('pausescene', { level: this.scene.key }); 
             }
         );
         this.pauseButton.fx = this.pauseButton.enableFilters().filters.internal.addColorMatrix().colorMatrix;
         this.pauseButton.fx.hue(100);
-
-        // Create text
-        if (1) {
-        this.debugText = this.add.text(
-            this.SCREEN_WIDTH * 0.1,
-            this.SCREEN_HEIGHT * 0.7,
-            "")
-            .setStyle({ fontSize: `16px`, color: '#FFFFFF' })
-            .setOrigin(0, 0);
-
-        this.lastInput = this.add.text(
-            this.SCREEN_WIDTH * 0.5,
-            this.SCREEN_HEIGHT * 0.9,
-            "")
-            .setStyle({ fontSize: `32px`, color: '#FFFFFF' })
-            .setOrigin(0.5, 0.5);
-
-        this.perfectScore = this.add.text(
-            this.SCREEN_WIDTH * 0.9,
-            this.SCREEN_HEIGHT * 0.04,
-            `Perfect: ${this.perfectCount}`)
-            .setStyle({ fontSize: `16px`, color: '#FFD700' })
-            .setOrigin(0.5, 0.5);
-        
-        this.okScore = this.add.text(
-            this.SCREEN_WIDTH * 0.9,
-            this.SCREEN_HEIGHT * 0.07,
-            `Ok: ${this.okCount}`)
-            .setStyle({ fontSize: `16px`, color: '#228B22' })
-            .setOrigin(0.5, 0.5);
-        
-        this.missScore = this.add.text(
-            this.SCREEN_WIDTH * 0.9,
-            this.SCREEN_HEIGHT * 0.1,
-            `Miss: ${this.missCount}`)
-            .setStyle({ fontSize: `16px`, color: '#D3D3D3' })
-            .setOrigin(0.5, 0.5);
-        }
 
         // Add Rectangles
         this.cursor = this.add.image(
@@ -336,7 +298,7 @@ class Level2 extends BaseScene {
 
             this.music.play({ 
                 loop: false, 
-                volume: 0.05,
+                volume: BaseScene.musicVolume,
                 rate: 1
             });
 
@@ -373,8 +335,6 @@ class Level2 extends BaseScene {
         }
 
         let rating = this.getJudgement(error, entity);
-
-        this.lastInput.setText(`most recent input on beat ${this.currentBeatContinuous.toFixed(2)}`);
 
         this.applyScore(rating);
 
@@ -502,7 +462,7 @@ class Level2 extends BaseScene {
         laser.lineStyle(3, 0xd02b14, 1);
         laser.beginPath();
 
-        this.sound.play('laser', { volume: 0.1 });
+        this.sound.play('laser', { volume: 0.1 * BaseScene.sfxVolume });
         this.cameras.main.shake(200, .005);
 
         switch (judgement) {
@@ -713,10 +673,10 @@ class Level2 extends BaseScene {
         entity.enemy = type;
         // left spawn
         if (entity.enemy === 0) {
-            this.sound.play('enemySpawnSoundEffect');
+            this.sound.play('enemySpawnSoundEffect', { volume: BaseScene.sfxVolume });
         }
         else {
-            this.sound.play('friendSpawnSoundEffect');
+            this.sound.play('friendSpawnSoundEffect', { volume: BaseScene.sfxVolume });
         }
         if (spawn % 2 == 0) {
             entity.spawnedFromLeft = true;
@@ -804,19 +764,16 @@ class Level2 extends BaseScene {
             case("perfect!"):
                 this.totalScore += this.perfectPoints;
                 this.perfectCount++;
-                this.perfectScore.setText(`Perfect: ${this.perfectCount}`);
                 break;
 
             case("ok"):
                 this.totalScore += this.okPoints;
                 this.okCount++;
-                this.okScore.setText(`Ok: ${this.okCount}`);
                 break;
 
             case("miss"):
 
                 this.missCount++;
-                this.missScore.setText(`Miss: ${this.missCount}`);
                 break;
 
             default:
