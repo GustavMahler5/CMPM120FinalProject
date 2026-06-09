@@ -19,21 +19,23 @@ class GameplayPrototype4 extends BaseScene {
     }
 
 
-
     preload() {
 
+        this.load.audio("beefInstaller", "../assets/audio/songs/beef_installer.wav");
         this.load.image("roomBackground", "../assets/images/level1/roomBackground.png");
         this.load.video("windowVideo", "../assets/images/level1/windowVideo.mp4");
+        this.load.video("tutorial", "../assets/images/level1/tutorial.mp4");
 
         this.load.audio("cat_tick", "../assets/audio/sfx/level1/tick.wav");
 
         this.load.image("catDefault", "../assets/images/level1/catDefault.png");
+        this.load.image("catMiss", "../assets/images/level1/catMiss.png");
+        this.load.audio("hitDrum", "../assets/audio/sfx/level1/winDrumPop.wav");
 
         this.load.image("ball", "../assets/images/level1/ball.png");
         this.load.image("ballWin", "../assets/images/level1/ballWin.png");
         this.load.audio("ballBeat", "../assets/audio/sfx/level1/ballBeat.wav");
         this.load.audio("ballWinSound", "../assets/audio/sfx/level1/ballWinSound.wav");
-
 
         this.load.image("catTreat", "../assets/images/level1/catTreat.png");
         this.load.image("treatWin", "../assets/images/level1/treatWin.png");
@@ -42,14 +44,10 @@ class GameplayPrototype4 extends BaseScene {
         this.load.audio("treatBeat", "../assets/audio/sfx/level1/treatBeat.wav");
         this.load.audio("treatWinSound", "../assets/audio/sfx/level1/treatWinSound.wav");
 
-
-
         this.load.image("sprayBottle", "../assets/images/level1/sprayBottle.png");
         this.load.image("sprayBottleWin", "../assets/images/level1/sprayBottleWin.png");
         this.load.audio("sprayBeat", "../assets/audio/sfx/level1/sprayBeat.wav");
         this.load.audio("sprayWinSound", "../assets/audio/sfx/level1/sprayWinSound.wav");
-
-
 
         this.load.spritesheet("sprayBottleSheet", "../assets/images/level1/spray_sprite_sheet.png", {
         frameWidth: 1080,
@@ -60,12 +58,10 @@ class GameplayPrototype4 extends BaseScene {
 
     }
 
-
-
     onEnter() {
 
         this.sound.removeAll();
-
+        this.spawnDelayBeats = 10;
         this.lastBeat = 0;
         this.lastBeatEvent = null;
         this.currentBeatContinuous = 0;
@@ -78,6 +74,7 @@ class GameplayPrototype4 extends BaseScene {
 
         this.activeEntities = [];
         this.initialized = false;
+        
 
         this.noteCooldowns = {
             ball: 0,
@@ -113,6 +110,7 @@ class GameplayPrototype4 extends BaseScene {
                 weight: 1
 
             }
+            
 
         };
 
@@ -128,17 +126,50 @@ class GameplayPrototype4 extends BaseScene {
             repeat: 0
         });
 
-        this.windowVideo = this.add.video(
+        this.tutorialVideo = this.add.video(
             this.SCREEN_WIDTH * 0.5,
-            this.SCREEN_HEIGHT * 0.43,
-            "windowVideo"
+            this.SCREEN_HEIGHT * 0.36,
+            "tutorial"
         );
+        this.tutorialVideo.setScale(0.23);
+        this.tutorialVideo.setDepth(1);
 
-        this.windowVideo.setScale(0.3);
+        this.startText = this.add.text(
+            this.SCREEN_WIDTH * 0.5,
+            this.SCREEN_HEIGHT * 0.9,
+            "Click to start tutorial",
+            {
+                fontSize: "32px",
+                color: "#ffffff"
+            }
+        ).setOrigin(0.5).setDepth(101);
 
-        this.windowVideo.setDepth(0);
-        this.windowVideo.setLoop(true);
-        this.windowVideo.play();
+        this.input.once("pointerdown", () => {
+
+            this.startText.destroy();
+
+            this.tutorialVideo.play();
+
+            this.tutorialVideo.on("complete", () => {
+
+                this.tutorialVideo.destroy();
+
+                this.windowVideo = this.add.video(
+                    this.SCREEN_WIDTH * 0.5,
+                    this.SCREEN_HEIGHT * 0.4,
+                    "windowVideo"
+                );
+
+
+                this.windowVideo.setScale(0.35);
+                this.windowVideo.setDepth(0);
+                this.windowVideo.setLoop(true);
+                this.windowVideo.play();
+
+                this.startGameplay();
+
+            });
+        });
 
         this.roomBackground = this.add.image(
             this.SCREEN_WIDTH * 0.5,
@@ -149,29 +180,28 @@ class GameplayPrototype4 extends BaseScene {
         this.roomBackground.setDepth(1);
         this.roomBackground.setDisplaySize(this.SCREEN_WIDTH, this.SCREEN_HEIGHT);
 
-        this.startTime = this.time.now;
-        this.tickSound = this.sound.add("cat_tick");
-
-        this.input.removeAllListeners("pointerdown");
-        this.input.on("pointerdown", () => {
-
-            this.handleInput();
-
-        });
+this.tickSound = this.sound.add("cat_tick");
 
     }
 
-
-
     update() {
-
+        if (!this.song || !this.song.isPlaying) {
+            return;
+        }
+        
         this.updateTimestamps();
         this.updateEntities();
         this.playBeatEvents();
+        this.playCatBounce();
+
+        if (this.musicPosition >= this.levelDuration) {
+
+        console.log("Level Complete");
 
     }
+        
 
-
+    }
 
     createScene() {
 
@@ -180,7 +210,7 @@ class GameplayPrototype4 extends BaseScene {
         this.cat = this.add.image(
 
             this.SCREEN_WIDTH * 0.8,
-            this.SCREEN_HEIGHT * 0.65,
+            this.SCREEN_HEIGHT * 0.64,
             "catDefault"
 
         ).setDepth(15);
@@ -231,8 +261,6 @@ class GameplayPrototype4 extends BaseScene {
         });
     }
 
-
-
     updateTimestamps() {
 
         this.musicPosition = (this.time.now - this.startTime) / 1000;
@@ -246,38 +274,31 @@ class GameplayPrototype4 extends BaseScene {
         let currentBeatFloor = Math.floor(this.currentBeatContinuous);
 
         if (currentBeatFloor === this.lastBeatEvent) {
-
             return;
-
         }
 
         this.lastBeatEvent = currentBeatFloor;
         this.tickSound.play({ volume: 0.1 });
-        
-    for (let entity of this.activeEntities) {
 
-        if (entity.noteType === "ball") {
-            this.sound.play("ballBeat", { volume: 0.1, seek: 0.0199 });
+        for (let entity of this.activeEntities) {
+            if (entity.noteType === "ball") {
+                this.sound.play("ballBeat", { volume: 0.1, seek: 0.0199 });
+            }
         }
 
-    }
-
         for (let noteName in this.noteCooldowns) {
-
             if (this.noteCooldowns[noteName] > 0) {
-
                 this.noteCooldowns[noteName]--;
+            }
+        }
 
+        if (this.currentBeatContinuous >= this.spawnDelayBeats) {
+
+            if (Math.random() < this.spawnChance) {
+                this.spawnRandomNote();
             }
 
         }
-
-        if (Math.random() < this.spawnChance) {
-
-            this.spawnRandomNote();
-
-        }
-
     }
 
     spawnRandomNote() {
@@ -345,9 +366,10 @@ class GameplayPrototype4 extends BaseScene {
         return entity;
     }
 
+
     spawnSpray(noteData, targetBeat) {
         let entity = this.add.sprite(
-            -10,
+            this.SCREEN_WIDTH * 0.1,
             this.SCREEN_HEIGHT * 0.5,
             "sprayBottleSheet",
             0
@@ -368,6 +390,9 @@ class GameplayPrototype4 extends BaseScene {
             duration: beatMs * 0.5,
             ease: "Linear",
             onComplete: () => {
+                this.sound.play("sprayBeat", {
+                    volume: 1
+                });
                 entity.play("sprayAnimation");
             }
         });
@@ -531,6 +556,7 @@ class GameplayPrototype4 extends BaseScene {
         return hand;
     }
 
+
     handleInput() {
 
         let entity = this.getClosestEntity();
@@ -546,6 +572,7 @@ class GameplayPrototype4 extends BaseScene {
         if (error > this.ERROR_MARGIN) {
 
             this.timingText.setText("Miss");
+            this.showCatMiss();
             this.applyScore("miss");
             return;
 
@@ -555,15 +582,21 @@ class GameplayPrototype4 extends BaseScene {
 
         this.cat.setTexture(entity.winTexture);
 
+        this.sound.play("hitDrum", {
+        volume: 0.7
+        });
+
         if (entity.noteType === "ball") {
             this.sound.play("ballWinSound", {
-                volume: 0.4
+                volume: 0.4,
+                seek: 0.05
             });
         }
 
         if (entity.noteType === "treat") {
             this.sound.play("treatWinSound", {
-                volume: 0.9
+                volume: 0.9,
+                seek: 0.01
             });
         }
 
@@ -585,7 +618,30 @@ class GameplayPrototype4 extends BaseScene {
         this.applyScore(rating);
     }
 
+    playCatBounce() {
+            let earlyOffset = 0.035;
+            let earlyBeatFloor = Math.floor(this.currentBeatContinuous + earlyOffset);
 
+            if (earlyBeatFloor === this.lastCatBounceBeat) {
+                return;
+            }
+
+            this.lastCatBounceBeat = earlyBeatFloor;
+
+            this.tweens.killTweensOf(this.cat);
+
+            this.cat.setScale(1, 1);
+
+            this.tweens.add({
+                targets: this.cat,
+                scaleX: 1.03,
+                scaleY: 0.96,
+                y: this.cat.y + 6,
+                duration: 55,
+                yoyo: true,
+                ease: "Quad.Out"
+            });
+    }
 
     getClosestEntity() {
 
@@ -628,7 +684,16 @@ class GameplayPrototype4 extends BaseScene {
 
     }
 
+    startGameplay() {
 
+        this.song = this.sound.add("beefInstaller");
+
+        this.song.play({
+            volume: 0.06
+        });
+
+        this.startTime = this.time.now + 100;
+    }
 
     updateEntities() {
 
@@ -641,6 +706,7 @@ class GameplayPrototype4 extends BaseScene {
                 entity.destroy();
                 this.activeEntities.splice(i, 1);
                 this.timingText.setText("Miss");
+                this.showCatMiss();
                 this.applyScore("miss");
 
             }
@@ -676,6 +742,13 @@ class GameplayPrototype4 extends BaseScene {
     }
 
 
+    showCatMiss() {
+        this.cat.setTexture("catMiss");
+
+        this.time.delayedCall(250, () => {
+            this.cat.setTexture("catDefault");
+        });
+    }
 
     pickWeightedNote() {
 
