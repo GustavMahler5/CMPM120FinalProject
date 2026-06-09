@@ -711,6 +711,18 @@ class Level1 extends BaseScene {
             volume: BaseScene.musicVolume * 0.8
         });
 
+        this.song.once('complete', () => {
+
+            this.fade(true, this.FADE_DURATION);
+            this.time.delayedCall(this.FADE_DURATION, () => {
+
+                this.scene.start('evaluationscene', { score: this.totalScore, level: 1 });
+
+            });
+            
+
+        });
+
         this.startTime = this.time.now + 100;
 
         this.input.removeAllListeners("pointerdown");
