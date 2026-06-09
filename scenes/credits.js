@@ -125,7 +125,7 @@ class CreditsScene extends BaseScene{
             });
             this.hoverSFX.play({
                 loop: false,
-                volume: BaseScene.masterVolume * 1.5,
+                volume: BaseScene.sfxVolume * BaseScene.masterVolume * 1.5,
             });
         });
         button.on("pointerout",  () => {
