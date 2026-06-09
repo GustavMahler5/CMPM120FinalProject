@@ -24,6 +24,7 @@ class EvaluationScene extends BaseScene {
         this.load.pack("main", "../assets/level3assets.json");
         this.load.image("marvelous", "../assets/images/level3/marvelous.png");
         this.load.image("oops", "../assets/images/level3/oops.png");
+        this.load.image('friendly_alien', '../assets/images/level2/friendly_alien.png');
     }
 
 
@@ -93,34 +94,84 @@ class EvaluationScene extends BaseScene {
                 BaseScene.level2BestScore = bestScore;
                 localStorage.setItem('level2BestScore', bestScore);
                 if (this.score > this.CUTOFF_SCORE) {
-
-                    this.add.text(
+                    let friend = this.add.image(-100, -100, "friendly_alien")
+                        .setOrigin(.5, .5).setScale(4);
+                    this.tweens.add({
+                        targets: friend,
+                        x: this.SCREEN_WIDTH * .3,
+                        duration: 1000,
+                        ease: 'Sine.In'
+                    })
+                    this.tweens.add({
+                        targets: friend,
+                        y: this.SCREEN_HEIGHT * .2,
+                        duration: 1000,
+                        ease: 'Sine.Out'
+                    })
+                    this.time.delayedCall(2000, () => {
+                        this.add.text(
                         this.SCREEN_WIDTH * 0.5,
                         this.SCREEN_HEIGHT * 0.2,
-                        "Great Job!")
+                        "Good shooting cadet, you've done Glorpulon 5 proud!", 
+                        {
+                            align: "center",
+                            wordWrap: { 
+                                width: this.SCREEN_WIDTH * .25
+                            }
+                        })
                         .setOrigin(0.5, 0.5);
 
-                    this.time.delayedCall (
-
-                        2000,
-                        () => this.add.image (
+                        this.time.delayedCall(2000, () => {
+                            this.add.image (
                             this.SCREEN_WIDTH * 0.5,
                             this.SCREEN_HEIGHT * 0.4,
                             "marvelous")
                             .setOrigin(0.5, 0.5)
-                            .setScale(0.15)
-
-                    );
+                            .setScale(0.15);
+                        })
+                    })
 
                 }
 
                 else {
+                    let friend = this.add.image(-100, -100, "friendly_alien")
+                        .setOrigin(.5, .5).setScale(4);
+                    this.tweens.add({
+                        targets: friend,
+                        x: this.SCREEN_WIDTH * .3,
+                        duration: 1000,
+                        ease: 'Sine.In'
+                    })
+                    this.tweens.add({
+                        targets: friend,
+                        y: this.SCREEN_HEIGHT * .2,
+                        duration: 1000,
+                        ease: 'Sine.Out'
+                    })
+                    this.time.delayedCall(2000, () => {
+                            this.add.text(
+                                this.SCREEN_WIDTH * 0.5,
+                                this.SCREEN_HEIGHT * 0.2,
+                                "I've seen better shooting from a Glorbo, and they don't even have eyes!", 
+                                {
+                                    align: "center",
+                                    wordWrap: { 
+                                        width: this.SCREEN_WIDTH * .25
+                                    }
+                                })
+                                .setOrigin(0.5, 0.5);
+                            this.time.delayedCall (2000, () => {
+                                this.add.image (
+                                    this.SCREEN_WIDTH * 0.5,
+                                    this.SCREEN_HEIGHT * 0.4,
+                                    "oops")
+                                    .setOrigin(0.5, 0.5)
+                                    .setScale(0.15)
+                            }
 
-                    this.add.text(
-                        this.SCREEN_WIDTH * 0.5,
-                        this.SCREEN_HEIGHT * 0.2,
-                        "Meh!")
-                        .setOrigin(0.5, 0.5);
+                    );
+                        }
+                    )
 
                     this.time.delayedCall (
 

@@ -145,7 +145,7 @@ class SettingsScene2 extends BaseScene {
             button.setInteractive();
 
         button.on('pointerover', () => {
-            this.sound.play("button_hover", { volume: BaseScene.masterVolume });
+            this.sound.play("button_hover", { volume: BaseScene.sfxVolume * BaseScene.masterVolume });
             button.setScale(1.2);
         });
 
