@@ -18,6 +18,7 @@ class LevelSelect extends BaseScene {
 
     onEnter() {
         this.cameras.main.setBackgroundColor(0xE0C6AD);
+        this.sound.volume = BaseScene.masterVolume;
 
         this.hoverSFX = this.sound.add('hover');
         this.selectionSFX = this.sound.add('selection');
