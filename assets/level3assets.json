@@ -19,33 +19,33 @@
             {
                 "type": "audio",
                 "key": "metronome",
-                "url": "../assets/audio/sfx/level3/metronome.mp3"
+                "url": "../assets/audio/SFX/level3/metronome.mp3"
             },
 
             {
                 "type": "audio",
                 "key": "perfectok",
-                "url": "../assets/audio/sfx/level3/perfectok.mp3"
+                "url": "../assets/audio/SFX/level3/perfectok.mp3"
             },
             {
                 "type": "audio",
                 "key": "miss",
-                "url": "../assets/audio/sfx/level3/miss.mp3"
+                "url": "../assets/audio/SFX/level3/miss.mp3"
             },
             {
                 "type": "audio",
                 "key": "cow",
-                "url": "../assets/audio/sfx/level3/cow.mp3"
+                "url": "../assets/audio/SFX/level3/cow.mp3"
             },
             {
                 "type": "audio",
                 "key": "ghost",
-                "url": "../assets/audio/sfx/level3/ghost.mp3"
+                "url": "../assets/audio/SFX/level3/ghost.mp3"
             },
             {
                 "type": "audio",
                 "key": "human",
-                "url": "../assets/audio/sfx/level3/miss.mp3"
+                "url": "../assets/audio/SFX/level3/miss.mp3"
             },
 
             {

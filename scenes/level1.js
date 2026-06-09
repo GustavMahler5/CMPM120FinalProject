@@ -26,28 +26,28 @@ class Level1 extends BaseScene {
         this.load.video("windowVideo", "../assets/images/level1/windowVideo.mp4");
         this.load.video("tutorial", "../assets/images/level1/tutorial.mp4");
 
-        this.load.audio("cat_tick", "../assets/audio/sfx/level1/tick.wav");
+        this.load.audio("cat_tick", "../assets/audio/SFX/level1/tick.wav");
 
         this.load.image("catDefault", "../assets/images/level1/catDefault.png");
         this.load.image("catMiss", "../assets/images/level1/catMiss.png");
-        this.load.audio("hitDrum", "../assets/audio/sfx/level1/winDrumPop.wav");
+        this.load.audio("hitDrum", "../assets/audio/SFX/level1/winDrumPop.wav");
 
         this.load.image("ball", "../assets/images/level1/ball.png");
         this.load.image("ballWin", "../assets/images/level1/ballWin.png");
-        this.load.audio("ballBeat", "../assets/audio/sfx/level1/ballBeat.wav");
-        this.load.audio("ballWinSound", "../assets/audio/sfx/level1/ballWinSound.wav");
+        this.load.audio("ballBeat", "../assets/audio/SFX/level1/ballBeat.wav");
+        this.load.audio("ballWinSound", "../assets/audio/SFX/level1/ballWinSound.wav");
 
         this.load.image("catTreat", "../assets/images/level1/catTreat.png");
         this.load.image("treatWin", "../assets/images/level1/treatWin.png");
         this.load.image("treatHand1", "../assets/images/level1/treatHand1.png");
         this.load.image("treatHand2", "../assets/images/level1/treatHand2.png");
-        this.load.audio("treatBeat", "../assets/audio/sfx/level1/treatBeat.wav");
-        this.load.audio("treatWinSound", "../assets/audio/sfx/level1/treatWinSound.wav");
+        this.load.audio("treatBeat", "../assets/audio/SFX/level1/treatBeat.wav");
+        this.load.audio("treatWinSound", "../assets/audio/SFX/level1/treatWinSound.wav");
 
         this.load.image("sprayBottle", "../assets/images/level1/sprayBottle.png");
         this.load.image("sprayBottleWin", "../assets/images/level1/sprayBottleWin.png");
-        this.load.audio("sprayBeat", "../assets/audio/sfx/level1/sprayBeat.wav");
-        this.load.audio("sprayWinSound", "../assets/audio/sfx/level1/sprayWinSound.wav");
+        this.load.audio("sprayBeat", "../assets/audio/SFX/level1/sprayBeat.wav");
+        this.load.audio("sprayWinSound", "../assets/audio/SFX/level1/sprayWinSound.wav");
 
         this.load.spritesheet("sprayBottleSheet", "../assets/images/level1/spray_sprite_sheet.png", {
             frameWidth: 1080,
