@@ -1,6 +1,7 @@
 "use strict";
 
 let scenes = {
+    level1: Level1,
     level2: Level2,
     level3: Level3,
     level2tutorial: Level2Tutorial,
