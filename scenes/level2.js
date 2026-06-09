@@ -462,7 +462,7 @@ class Level2 extends BaseScene {
         laser.lineStyle(3, 0xd02b14, 1);
         laser.beginPath();
 
-        this.sound.play('laser', { volume: 0.1 * BaseScene.sfxVolume });
+        this.sound.play('laser', { volume: BaseScene.sfxVolume });
         this.cameras.main.shake(200, .005);
 
         switch (judgement) {
@@ -673,10 +673,10 @@ class Level2 extends BaseScene {
         entity.enemy = type;
         // left spawn
         if (entity.enemy === 0) {
-            this.sound.play('enemySpawnSoundEffect', { volume: BaseScene.sfxVolume });
+            this.sound.play('enemySpawnSoundEffect', { volume: BaseScene.sfxVolume * 1.2 });
         }
         else {
-            this.sound.play('friendSpawnSoundEffect', { volume: BaseScene.sfxVolume });
+            this.sound.play('friendSpawnSoundEffect', { volume: BaseScene.sfxVolume * 1.2 });
         }
         if (spawn % 2 == 0) {
             entity.spawnedFromLeft = true;
@@ -740,7 +740,7 @@ class Level2 extends BaseScene {
 
     }
 
-    explode(entity) {
+    explode(entity, ok) {
         this.explosionEmitter.explode(1, entity.x, entity.y);
         if (entity.enemy === 1) {
             this.tweens.add({
@@ -753,7 +753,19 @@ class Level2 extends BaseScene {
             })
         }
         else {
-            entity.destroy();
+            if (ok) {
+                this.tweens.add({
+                    targets: entity,
+                    y: this.SCREEN_HEIGHT + 50,
+                    ease: 'Sine.In',
+                    onComplete: () => {
+                        entity.destroy();
+                    }
+                })
+            }
+            else {
+                entity.destroy();
+            }
         }
     }
 

@@ -213,7 +213,7 @@ class EvaluationScene extends BaseScene {
                 .setInteractive({useHandCursor: true})
                 .on('pointerdown', () => {
 
-                    this.changeScene('levelselectprototype');
+                    this.changeScene('levelselect');
 
                 }
             )

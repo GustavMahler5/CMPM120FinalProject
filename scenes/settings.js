@@ -10,6 +10,7 @@ class SettingsScene extends BaseScene {
     }
 
     onEnter() {        
+        this.sound.volume = BaseScene.masterVolume;
         this.graphics = this.add.graphics();
         
         this.graphics.fillStyle("0xf542dd");

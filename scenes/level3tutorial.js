@@ -36,7 +36,7 @@ class Level3Tutorial extends BaseScene {
                 cues: [
                     { leadBeats: 2, sfx: "human"},
                     { leadBeats: 1.5, sfx: "human"},
-                    { leadBeats: 1, sfx: "human"}
+                    { leadBeats: 1, sfx: "cow"}
                 ]
 
             },
@@ -47,7 +47,7 @@ class Level3Tutorial extends BaseScene {
                 cues: [
                     { leadBeats: 2.5, sfx: "human"},
                     { leadBeats: 1.5, sfx: "human"},
-                    { leadBeats: 1, sfx: "human"},
+                    { leadBeats: 1, sfx: "ghost"},
                 ]
 
             }
@@ -78,6 +78,7 @@ class Level3Tutorial extends BaseScene {
     onEnter() {
 
         this.sound.removeAll();
+        this.sound.volume = BaseScene.masterVolume;
 
         this.score = this.cache.json.get("score");
         this.songInfo = this.score.song;
@@ -199,7 +200,8 @@ class Level3Tutorial extends BaseScene {
 
             this.advanceDialogue();
             this.missSFX.play({
-                rate: 5
+                rate: 5,
+                volume: BaseScene.sfxVolume
             })
             return;
 
@@ -825,8 +827,8 @@ class Level3Tutorial extends BaseScene {
             evaluation = "perfect!";
             this.perfectOkSFX.play({
                 loop: false,
-                // volume: BaseScene.masterVolume,
-                volume: 1
+                volume: BaseScene.sfxVolume,
+                // volume: 1
             });
 
         } 
@@ -836,8 +838,8 @@ class Level3Tutorial extends BaseScene {
             evaluation = "ok";
             this.perfectOkSFX.play({
                 loop: false,
-                // volume: BaseScene.masterVolume,
-                volume: 1
+                volume: BaseScene.sfxVolume,
+                // volume: 1
             });
 
         } 
@@ -847,8 +849,8 @@ class Level3Tutorial extends BaseScene {
             evaluation = "miss";
             this.missSFX.play({
                 loop: false,
-                // volume: BaseScene.masterVolume,
-                volume: 1
+                volume: BaseScene.sfxVolume,
+                // volume: 1
             });
 
         }
@@ -976,7 +978,7 @@ class Level3Tutorial extends BaseScene {
 
             this.metronome.play({
                 loop: false,
-                volume: BaseScene.masterVolume,
+                volume: BaseScene.musicVolume,
                 rate: 1
             });
 
@@ -998,12 +1000,28 @@ class Level3Tutorial extends BaseScene {
 
             if (this.currentBeatContinuous >= cue.beat) {
 
-                this.entityCueSFX[cue.sfx].play({
+                if (cue.sfx == "ghost") {
+
+                    this.entityCueSFX[cue.sfx].play({
                     loop: false,
-                    // volume: BaseScene.masterVolume,
-                    volume: 0.35,
-                    rate: 2
+                    volume: BaseScene.sfxVolume * 0.5,
+                    // volume: 0.35,
+                    rate: 1
+
                 });
+
+                }
+
+                else {
+
+                    this.entityCueSFX[cue.sfx].play({
+                        loop: false,
+                        volume: BaseScene.sfxVolume,
+                        // volume: 0.35,
+                        rate: 2
+                    });
+
+                }
 
                 this.scheduledCueBeats.splice(i, 1);
 

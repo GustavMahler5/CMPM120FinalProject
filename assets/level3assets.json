@@ -40,7 +40,7 @@
             {
                 "type": "audio",
                 "key": "ghost",
-                "url": "../assets/audio/sfx/level2/laser.wav"
+                "url": "../assets/audio/sfx/level3/ghost.mp3"
             },
             {
                 "type": "audio",

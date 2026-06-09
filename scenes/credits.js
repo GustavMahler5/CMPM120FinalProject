@@ -10,6 +10,7 @@ class CreditsScene extends BaseScene {
     }
 
     onEnter() {
+        this.sound.volume = BaseScene.masterVolume;
         this.cameras.main.setBackgroundColor(0xC6ADE0);
         
         const buttonScale = 3;          // used for scaling buttons, can be modified if new assets need different scales
