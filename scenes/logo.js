@@ -6,14 +6,13 @@ class LogoScene extends BaseScene {
     }
 
     preload() {
-        this.load.setBaseURL('./');
-
-        this.load.image('toastPerspective','../assets/images/cinematic/toastPerspective.png');
-        this.load.image('J','../assets/images/cinematic/J.png');
-        this.load.image('jPan','../assets/images/cinematic/jPan.png');
-        this.load.image('egg','../assets/images/cinematic/egg.png');
-        this.load.image('crackedEgg','../assets/images/cinematic/crackedEgg.png');
-        this.load.image('eggOnToast','../assets/images/cinematic/eggOnToast.png');
+        super.preload();
+        this.load.image('toastPerspective','assets/images/cinematic/toastPerspective.png');
+        this.load.image('J','assets/images/cinematic/J.png');
+        this.load.image('jPan','assets/images/cinematic/jPan.png');
+        this.load.image('egg','assets/images/cinematic/egg.png');
+        this.load.image('crackedEgg','assets/images/cinematic/crackedEgg.png');
+        this.load.image('eggOnToast','assets/images/cinematic/eggOnToast.png');
 
 
 
@@ -52,6 +51,7 @@ class LogoScene extends BaseScene {
                     targets: crackedEgg,
                     x: w * 0.28,
                     y: h * 0.33,
+                    ease: 'Sine.InOut',
 
                     duration: 300,
                     onStart: () => {
@@ -65,6 +65,7 @@ class LogoScene extends BaseScene {
                     x: w * 0.29,
                     y: h * 0.69,
                     hold: 600,
+                    ease: 'Sine.InOut',
                     onStart: () => {
                         
                     eggOnToast.setVisible(true);
@@ -87,6 +88,7 @@ class LogoScene extends BaseScene {
                     scaleY: -0.5,
                     yoyo: true,
                     hold: 800,
+                    ease: 'Sine.InOut',
 
                     onStart: () => {
                         toastPerspective.setVisible(true);
@@ -95,13 +97,15 @@ class LogoScene extends BaseScene {
                             targets: eggOnToast,
                             x: w * 0.6,
                             y: h * -5.0,
-                            duration: 800
+                            duration: 800,
+                            ease: 'Sine.InOut'
                         });
 
                         this.tweens.add({
                             targets: toastPerspective,
                             y: h * 0.65,
-                            duration: 500
+                            duration: 500,
+                            ease: 'Sine.InOut'
                         });
                     
                     
@@ -115,7 +119,8 @@ class LogoScene extends BaseScene {
                             targets: eggOnToast,
                             x: w * 0.68,
                             y: h * 0.65,
-                            duration: 300
+                            duration: 300,
+                            ease: 'Sine.InOut'
                         });
 
                     }
@@ -128,6 +133,7 @@ class LogoScene extends BaseScene {
                     duration: 300,
                     x: w * 0.6,
                     y: h * 0.6,
+                    ease: 'Sine.InOut',
 
                     onStart: () => {
                     jPan.setTexture('J');
@@ -137,6 +143,7 @@ class LogoScene extends BaseScene {
                     targets: logoText,
                     alpha: 1,
                     duration: 1000,
+                    ease: 'Sine.InOut',
                     hold: 2000,
                     onComplete: () => {
                         this.changeScene("menu");

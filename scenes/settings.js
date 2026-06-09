@@ -5,8 +5,8 @@ class SettingsScene extends BaseScene {
     }
 
     preload() {
-        this.load.image('fullscreen', "../assets/images/menu/fullscreen.png");
-        this.load.setBaseURL('./');
+        super.preload();
+        this.load.image('fullscreen', "assets/images/menu/fullscreen.png");
     }
 
     onEnter() {        

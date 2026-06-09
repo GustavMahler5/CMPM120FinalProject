@@ -5,32 +5,42 @@ class MenuScene extends BaseScene {
     }
 
     preload() {
-        this.load.setBaseURL('./');
-        this.load.image("menu_button", "../assets/images/menu/menu_button.png");
-        this.load.image("menu_bg", "../assets/images/menu/menubackground1st.png");
-        this.load.audio("menu", "../assets/audio/songs/menu.wav");
-        this.load.audio("button_sfx", "../assets/audio/SFX/menu/selection.mp3");
-        this.load.audio("button_hover", "../assets/audio/SFX/menu/hoverSelection.mp3");
-        this.load.image('fullscreen', "../assets/images/menu/fullscreen.png");
-        this.load.image('title', "../assets/images/menu/title_icon.png");
-        this.load.image("menu_ufo", "../assets/images/menu/menuufo.png");
-        this.load.image("menu_cow", "../assets/images/menu/menucow.png");
-        this.load.image("menu_biglight", "../assets/images/menu/biglight.png");
-        this.load.image("menu_smalllights", "../assets/images/menu/smalllights.png");
-        this.load.image("flycow", "../assets/images/menu/flycow.png");
-        this.load.image('cow', '../assets/images/menu/cow.png');
+        super.preload();
+        this.load.image("menu_button", "assets/images/menu/menu_button.png");
+        this.load.image("menu_bg", "assets/images/menu/menubackground1st.png");
+        this.load.audio("menu", "assets/audio/songs/menu.wav");
+        this.load.audio("button_sfx", "assets/audio/SFX/menu/selection.mp3");
+        this.load.audio("button_hover", "assets/audio/SFX/menu/hoverSelection.mp3");
+        this.load.image('fullscreen', "assets/images/menu/fullscreen.png");
+        this.load.image('title', "assets/images/menu/title_icon.png");
+        this.load.image("menu_ufo", "assets/images/menu/menuufo.png");
+        this.load.image("menu_cow", "assets/images/menu/menucow.png");
+        this.load.image("menu_biglight", "assets/images/menu/biglight.png");
+        this.load.image("menu_smalllights", "assets/images/menu/smalllights.png");
+        this.load.image("flycow", "assets/images/menu/flycow.png");
+        this.load.image('cow', 'assets/images/menu/cow.png');
     }
 
     onEnter() {
         this.sound.volume = BaseScene.masterVolume;
 
-        // if (BaseScene.currentMusic) BaseScene.currentMusic.stop();
-        let menu_bgm = this.sound.add("menu", {
-            volume:  BaseScene.musicVolume,
-            loop: true
+        let menuMusicPlaying = false;
+        this.sound.getAllPlaying().forEach(sound => {
+            if (sound.key != "menu") {
+                sound.stop();
+            }
+            else {
+                menuMusicPlaying = true;
+            }
         });
-        menu_bgm.play();
-        BaseScene.currentMusic = menu_bgm;
+        if (!menuMusicPlaying) {
+            let menu_bgm = this.sound.add("menu", {
+                volume:  BaseScene.musicVolume,
+                loop: true
+            });
+            menu_bgm.play();
+            BaseScene.currentMusic = menu_bgm;
+        }
 
         let button_sfx = this.sound.add("button_sfx", {
             volume: BaseScene.sfxVolume,
@@ -74,7 +84,8 @@ class MenuScene extends BaseScene {
                     break;
     
                 case "Exit":
-                    this.changeScene("logo");
+                    this.game.destroy(true);
+                    window.close();
                     break;
             }
         }

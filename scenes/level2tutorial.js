@@ -69,22 +69,23 @@ class Level2Tutorial extends BaseScene {
 
     preload() {
 
-        this.load.audio("metronome", "../assets/audio/SFX/level3/metronome.mp3")
-        this.load.audio('suspicious', '../assets/audio/songs/suspicious.mp3');
+        super.preload();
+        this.load.audio("metronome", "assets/audio/SFX/level3/metronome.mp3")
+        this.load.audio('suspicious', 'assets/audio/songs/suspicious.mp3');
 
-        this.load.audio('enemySpawnSoundEffect', '../assets/audio/SFX/level2/enemySpawn.wav');
-        this.load.audio('friendSpawnSoundEffect', '../assets/audio/SFX/level2/friendSpawn.wav');
-        this.load.audio('laser', '../assets/audio/SFX/level2/laser.wav');
-        this.load.audio('interact', '../assets/audio/SFX/level3/miss.mp3');
+        this.load.audio('enemySpawnSoundEffect', 'assets/audio/SFX/level2/enemySpawn.wav');
+        this.load.audio('friendSpawnSoundEffect', 'assets/audio/SFX/level2/friendSpawn.wav');
+        this.load.audio('laser', 'assets/audio/SFX/level2/laser.wav');
+        this.load.audio('interact', 'assets/audio/SFX/level3/miss.mp3');
 
-        this.load.json('score_suspicious', '../assets/beatmaps/score_suspicious.json');
+        this.load.json('score_suspicious', 'assets/beatmaps/score_suspicious.json');
 
-        this.load.image('pause', '../assets/images/menu/pause_white.png');
-        this.load.spritesheet('explosion', "../assets/images/level2/explosion_particle.png", { frameWidth: 32, frameHeight: 32});
-        this.load.image('angry_alien', '../assets/images/level2/angry_alien.png');
-        this.load.image('friendly_alien', '../assets/images/level2/friendly_alien.png');
-        this.load.image('crosshair', '../assets/images/level2/crosshair.png');
-        this.load.image('fullscreen', "../assets/images/menu/fullscreen.png");
+        this.load.image('pause', 'assets/images/menu/pause.png');
+        this.load.spritesheet('explosion', "assets/images/level2/explosion_particle.png", { frameWidth: 32, frameHeight: 32});
+        this.load.image('angry_alien', 'assets/images/level2/angry_alien.png');
+        this.load.image('friendly_alien', 'assets/images/level2/friendly_alien.png');
+        this.load.image('crosshair', 'assets/images/level2/crosshair.png');
+        this.load.image('fullscreen', "assets/images/menu/fullscreen.png");
 
     }
 
@@ -140,7 +141,10 @@ class Level2Tutorial extends BaseScene {
                     "Huh? You don't know how you got here? Haha very funny, in that case I don't either!",
                     "But now is not the time for jokes,",
                     "We're at war!",
-                    "Shoot any UFO's with a red stripe on sight!",
+                    "Why you ask?",
+                    "They blew up Glorpulon 4, made us move to Glorpulon 5!",
+                    "And now they're trying to do the same here!",
+                    "So shoot any UFO's with a red stripe on sight!",
                     "But be careful, your allies are here too! They have a blue stripe like me, make sure not to shoot them!",
                     "Huh? You've never fired your laser cannon before? It's easy! Just click anywhere to fire!",
                     "Make sure the enemy is at that red line in the center of your crosshair for the best results!"

@@ -3,41 +3,32 @@
 ```mermaid
 classDiagram
 
-Phaser.Scene <|-- BaseScene
-
-BaseScene <|-- Scene1
-BaseScene <|-- SceneFlowPrototype
-BaseScene <|-- LevelSelect
-BaseScene <|-- GameplayPrototype2
-BaseScene <|-- EvaluationScene
+Phaser_Scene <|-- BaseScene
 
 BaseScene <|-- LogoScene
-BaseScene <|-- CinematicsMenuPrototype
-BaseScene <|-- SettingsPrototype
-BaseScene <|-- CreditsPrototype
-BaseScene <|-- CinematicsPrototype
+BaseScene <|-- MenuScene
+BaseScene <|-- LevelSelect
+
+BaseScene <|-- Level1
+
+BaseScene <|-- Level2
+BaseScene <|-- Level2Tutorial
+
+BaseScene <|-- Level3
+BaseScene <|-- Level3Tutorial
+
+BaseScene <|-- EvaluationScene
+
+BaseScene <|-- PauseScene
+BaseScene <|-- SettingsScene
+BaseScene <|-- SettingsScene2
+BaseScene <|-- CreditsScene
 
 class BaseScene {
-    +SCREEN_WIDTH
-    +SCREEN_HEIGHT
-    +FADE_DURATION
-    +MAXIMUM_SCORE
     +create()
     +fade()
     +changeScene()
     +expandToBorder()
-}
-
-class Scene1 {
-    +preload()
-    +onEnter()
-    +update()
-}
-
-class SceneFlowPrototype {
-    +preload()
-    +onEnter()
-    +update()
 }
 
 class LogoScene {
@@ -45,79 +36,114 @@ class LogoScene {
     +onEnter()
 }
 
-class CinematicsMenuPrototype {
+class MenuScene {
     +preload()
     +onEnter()
-    +handleButtonClick()
-}
-
-class SettingsPrototype {
-    +preload()
-    +onEnter()
-    +handleButtonClick()
-}
-
-class CreditsPrototype {
-    +preload()
-    +onEnter()
-    +handleButtonClick()
-}
-
-class CinematicsPrototype {
-    +preload()
-    +onEnter()
-    +update()
 }
 
 class LevelSelect {
     +preload()
-    +create()
+    +onEnter()
     +handleButtonClick()
+    +playAbductionAnimation()
+    +setupBackButton()
 }
 
-class GameplayPrototype2 {
+class Level1 {
     +preload()
     +onEnter()
     +update()
+}
 
-    +createMusic()
-    +createAnimations()
-    +createScene()
+class Level2 {
+    +preload()
+    +onEnter()
+    +update()
+}
 
-    +createText()
-    +createUfo()
-    +createBackground()
-    +createStars()
+class Level2Tutorial {
+    +preload()
+    +onEnter()
+    +update()
+}
 
-    +updateDebugText()
-
-    +playUfoAnimation()
-    +playAbductionAnimation()
-
-    +flashJudgement()
-    +getJudgement()
-    +applyScore()
-
+class Level3 {
+    +preload()
+    +onEnter()
+    +update()
     +handleInput()
+    +createMusic()
     +startMusic()
-
+    +createAnimations()
+    +createPauseButton()
+    +createScene()
+    +createBackground()
+    +createUfo()
+    +createStars()
     +spawnEntities()
     +spawnEntity()
     +getClosestEntity()
-
     +updateEntities()
     +updateTimestamps()
-
     +playBeatEvents()
-    +updateMoonShine()
-    +updateBounces()
-    +updateStarShine()
+    +playCueEvents()
+    +getJudgement()
+    +applyScore()
+    +playUfoAnimation()
+    +playAbductionAnimation()
+}
+
+class Level3Tutorial {
+    +preload()
+    +onEnter()
+    +update()
+    +handleInput()
+    +advanceDialogue()
+    +startPracticePhase()
+    +advancePracticePhase()
+    +finishTutorial()
+    +createMusic()
+    +startMusic()
+    +stopPracticeMusic()
+    +createScene()
+    +createTutorialText()
+    +createFocusBorder()
+    +expandFocusBorder()
+    +spawnEntities()
+    +spawnEntity()
+    +getClosestEntity()
+    +updateEntities()
+    +updateTimestamps()
+    +playBeatEvents()
+    +playCueEvents()
+    +getJudgement()
+    +applyScore()
 }
 
 class EvaluationScene {
     +init()
     +preload()
     +create()
-    +update()
+}
+
+class PauseScene {
+    +create()
+}
+
+class SettingsScene {
+    +preload()
+    +onEnter()
+}
+
+class SettingsScene2 {
+    +preload()
+    +onEnter()
+    +createSlider()
+    +createBackButton()
+}
+
+class CreditsScene {
+    +preload()
+    +onEnter()
 }
 ```

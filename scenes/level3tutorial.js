@@ -68,8 +68,9 @@ class Level3Tutorial extends BaseScene {
 
     preload() {
 
-        this.load.json("score", "../assets/beatmaps/level3score.json");
-        this.load.pack("main", "../assets/level3assets.json");
+        super.preload();
+        this.load.json("score", "assets/beatmaps/level3score.json");
+        this.load.pack("main", "assets/level3assets.json", "/CMPM120FinalProject/");
 
     }
 
@@ -118,7 +119,7 @@ class Level3Tutorial extends BaseScene {
 
             {
                 type: "human",
-                hitsNeeded: 1,
+                hitsNeeded: 3,
                 dialogue: [
                     "Oh look! Here comes a potential subject!"
                 ]
@@ -126,16 +127,18 @@ class Level3Tutorial extends BaseScene {
 
             {
                 type: "cow",
-                hitsNeeded: 1,
+                hitsNeeded: 3,
                 dialogue: [
                     "Nice! That's the way.",
-                    "Oh! It looks like something else is approaching!"
+                    "Oh! It looks like something else is approaching!",
+                    "Each note has a distinct anticipation beat.",
+                    "Listen closely to each one to determine your timing!"
                 ]
             },
 
             {
                 type: "ghost",
-                hitsNeeded: 1,
+                hitsNeeded: 3,
                 dialogue: [
                     "Excellent work!",
                     "Now let's try this one"
@@ -146,7 +149,7 @@ class Level3Tutorial extends BaseScene {
                 type: null,
                 hitsNeeded: 0,
                 dialogue: [
-                    "All right.",
+                    "All right!",
                     "Let's do it for real now!"
                 ],
                 final: true

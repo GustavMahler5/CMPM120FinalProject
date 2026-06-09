@@ -45,7 +45,7 @@ class GameplayPrototype1 extends BaseScene {
     preload() {
 
         this.load.pack('main', '../assets/level3assets.json');
-        this.load.json('score', '../assets/score.json');
+        this.load.json('score', '../assets/beatmaps/score.json');
 
     }
 

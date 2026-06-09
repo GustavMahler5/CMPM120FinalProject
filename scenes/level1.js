@@ -10,8 +10,8 @@ class Level1 extends BaseScene {
         this.BEAT_DURATION = 60 / this.BPM;
         this.TIME_SIGNATURE = 4;
 
-        this.ERROR_MARGIN = 0.3;
-        this.OK_ERROR = 0.2;
+        this.ERROR_MARGIN = 0.75;
+        this.OK_ERROR = 0.25;
         this.PERFECT_ERROR = 0.1;
 
         this.spawnChance = 0.2;
@@ -21,41 +21,42 @@ class Level1 extends BaseScene {
 
     preload() {
 
-        this.load.audio("beefInstaller", "../assets/audio/songs/beef_installer.wav");
-        this.load.image("roomBackground", "../assets/images/level1/roomBackground.png");
-        this.load.video("windowVideo", "../assets/images/level1/windowVideo.mp4");
-        this.load.video("tutorial", "../assets/images/level1/tutorial.mp4");
+        super.preload();
+        this.load.audio("beefInstaller", "assets/audio/songs/beef_installer.wav");
+        this.load.image("roomBackground", "assets/images/level1/roomBackground.png");
+        this.load.video("windowVideo", "assets/images/level1/windowVideo.mp4");
+        this.load.video("tutorial", "assets/images/level1/tutorial.mp4");
 
-        this.load.audio("cat_tick", "../assets/audio/sfx/level1/tick.wav");
+        this.load.audio("cat_tick", "assets/audio/SFX/level1/tick.wav");
 
-        this.load.image("catDefault", "../assets/images/level1/catDefault.png");
-        this.load.image("catMiss", "../assets/images/level1/catMiss.png");
-        this.load.audio("hitDrum", "../assets/audio/sfx/level1/winDrumPop.wav");
+        this.load.image("catDefault", "assets/images/level1/catDefault.png");
+        this.load.image("catMiss", "assets/images/level1/catMiss.png");
+        this.load.audio("hitDrum", "assets/audio/SFX/level1/winDrumPop.wav");
 
-        this.load.image("ball", "../assets/images/level1/ball.png");
-        this.load.image("ballWin", "../assets/images/level1/ballWin.png");
-        this.load.audio("ballBeat", "../assets/audio/sfx/level1/ballBeat.wav");
-        this.load.audio("ballWinSound", "../assets/audio/sfx/level1/ballWinSound.wav");
+        this.load.image("ball", "assets/images/level1/ball.png");
+        this.load.image("ballWin", "assets/images/level1/ballWin.png");
+        this.load.audio("ballBeat", "assets/audio/SFX/level1/ballBeat.wav");
+        this.load.audio("ballWinSound", "assets/audio/SFX/level1/ballWinSound.wav");
 
-        this.load.image("catTreat", "../assets/images/level1/catTreat.png");
-        this.load.image("treatWin", "../assets/images/level1/treatWin.png");
-        this.load.image("treatHand1", "../assets/images/level1/treatHand1.png");
-        this.load.image("treatHand2", "../assets/images/level1/treatHand2.png");
-        this.load.audio("treatBeat", "../assets/audio/sfx/level1/treatBeat.wav");
-        this.load.audio("treatWinSound", "../assets/audio/sfx/level1/treatWinSound.wav");
+        this.load.image("catTreat", "assets/images/level1/catTreat.png");
+        this.load.image("treatWin", "assets/images/level1/treatWin.png");
+        this.load.image("treatHand1", "assets/images/level1/treatHand1.png");
+        this.load.image("treatHand2", "assets/images/level1/treatHand2.png");
+        this.load.audio("treatBeat", "assets/audio/SFX/level1/treatBeat.wav");
+        this.load.audio("treatWinSound", "assets/audio/SFX/level1/treatWinSound.wav");
 
-        this.load.image("sprayBottle", "../assets/images/level1/sprayBottle.png");
-        this.load.image("sprayBottleWin", "../assets/images/level1/sprayBottleWin.png");
-        this.load.audio("sprayBeat", "../assets/audio/sfx/level1/sprayBeat.wav");
-        this.load.audio("sprayWinSound", "../assets/audio/sfx/level1/sprayWinSound.wav");
+        this.load.image("sprayBottle", "assets/images/level1/sprayBottle.png");
+        this.load.image("sprayBottleWin", "assets/images/level1/sprayBottleWin.png");
+        this.load.audio("sprayBeat", "assets/audio/SFX/level1/sprayBeat.wav");
+        this.load.audio("sprayWinSound", "assets/audio/SFX/level1/sprayWinSound.wav");
 
-        this.load.spritesheet("sprayBottleSheet", "../assets/images/level1/spray_sprite_sheet.png", {
+        this.load.spritesheet("sprayBottleSheet", "assets/images/level1/spray_sprite_sheet.png", {
             frameWidth: 1080,
             frameHeight: 720
         });
 
-        this.load.image('fullscreen', "../assets/images/menu/fullscreen.png");
-        this.load.image('pause', '../assets/images/menu/pause_white.png');
+        this.load.image('fullscreen', "assets/images/menu/fullscreen.png");
+        this.load.image('pause', 'assets/images/menu/pause.png');
 
     }
 
@@ -708,6 +709,18 @@ class Level1 extends BaseScene {
 
         this.song.play({
             volume: BaseScene.musicVolume * 0.8
+        });
+
+        this.song.once('complete', () => {
+
+            this.fade(true, this.FADE_DURATION);
+            this.time.delayedCall(this.FADE_DURATION, () => {
+
+                this.scene.start('evaluationscene', { score: this.totalScore, level: 1 });
+
+            });
+            
+
         });
 
         this.startTime = this.time.now + 100;
