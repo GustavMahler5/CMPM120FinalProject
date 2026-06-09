@@ -484,7 +484,7 @@ class Level2 extends BaseScene {
                     laser.moveTo(this.laserSpawnRight.x, this.laserSpawnRight.y);
                     laser.lineTo(entity.x, entity.y);
                 }
-                this.explode(entity);
+                this.explode(entity, true);
                 break;
             case 2:
                 if (entity.spawnedFromLeft) {
@@ -673,10 +673,10 @@ class Level2 extends BaseScene {
         entity.enemy = type;
         // left spawn
         if (entity.enemy === 0) {
-            this.sound.play('enemySpawnSoundEffect', { volume: BaseScene.sfxVolume * 1.2 });
+            this.sound.play('enemySpawnSoundEffect', { volume: BaseScene.sfxVolume * 3 });
         }
         else {
-            this.sound.play('friendSpawnSoundEffect', { volume: BaseScene.sfxVolume * 1.2 });
+            this.sound.play('friendSpawnSoundEffect', { volume: BaseScene.sfxVolume * 3 });
         }
         if (spawn % 2 == 0) {
             entity.spawnedFromLeft = true;

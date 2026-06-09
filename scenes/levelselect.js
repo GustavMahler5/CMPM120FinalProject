@@ -28,13 +28,23 @@ class LevelSelect extends BaseScene {
         this.hoverSFX = this.sound.add('hover');
         this.selectionSFX = this.sound.add('selection');
 
-        if (BaseScene.currentMusic) BaseScene.currentMusic.stop();
-        let music = this.sound.add("menu", {
-            volume: BaseScene.musicVolume,
-            loop: true
+        let menuMusicPlaying = false;
+        this.sound.getAllPlaying().forEach(sound => {
+            if (sound.key != "menu") {
+                sound.stop();
+            }
+            else {
+                menuMusicPlaying = true;
+            }
         });
-        music.play();
-        BaseScene.currentMusic = music;
+        if (!menuMusicPlaying) {
+            let menu_bgm = this.sound.add("menu", {
+                volume:  BaseScene.musicVolume,
+                loop: true
+            });
+            menu_bgm.play();
+            BaseScene.currentMusic = menu_bgm;
+        }
 
 
         this.add.image(0, 0, "menu_background")
