@@ -46,6 +46,7 @@ class Level2 extends BaseScene {
     }
 
     preload() {
+        super.preload();
         this.load.audio('suspicious', 'assets/audio/songs/suspicious.mp3');
         this.load.audio('enemySpawnSoundEffect', 'assets/audio/SFX/level2/enemySpawn.wav');
         this.load.audio('friendSpawnSoundEffect', 'assets/audio/SFX/level2/friendSpawn.wav');

@@ -4,6 +4,7 @@ class CreditsScene extends BaseScene {
     }
 
     preload() {
+        super.preload();
         this.load.image("menu_button", "assets/images/menu/menu_button.png");
         this.load.image('fullscreen', "assets/images/menu/fullscreen.png");
     }

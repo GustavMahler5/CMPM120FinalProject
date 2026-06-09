@@ -4,6 +4,7 @@ class SettingsScene2 extends BaseScene {
     }
 
     preload() {
+        super.preload();
         this.load.image("menu_button", "assets/images/menu/menu_button.png");
         this.load.audio("button_sfx", "assets/audio/SFX/menu/selection.mp3");
         this.load.audio("button_hover", "assets/audio/SFX/menu/hoverSelection.mp3");

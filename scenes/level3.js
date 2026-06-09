@@ -69,6 +69,7 @@ class Level3 extends BaseScene {
 
     preload() {
 
+        super.preload();
         this.load.json('score', 'assets/beatmaps/level3score.json');
         this.load.pack("main", "assets/level3assets.json");
     

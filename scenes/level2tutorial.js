@@ -69,6 +69,7 @@ class Level2Tutorial extends BaseScene {
 
     preload() {
 
+        super.preload();
         this.load.audio("metronome", "assets/audio/SFX/level3/metronome.mp3")
         this.load.audio('suspicious', 'assets/audio/songs/suspicious.mp3');
 

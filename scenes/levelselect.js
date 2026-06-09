@@ -4,6 +4,7 @@ class LevelSelect extends BaseScene {
     }
 
     preload() {
+        super.preload();
         this.load.image("menu_button", "assets/images/menu/menu_button.png");
         this.load.image("lvl1img", "assets/images/menu/level1jacket.png");
         this.load.image("lvl2img", "assets/images/menu/level2jacket.png");

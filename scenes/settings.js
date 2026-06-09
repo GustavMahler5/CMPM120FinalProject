@@ -5,6 +5,7 @@ class SettingsScene extends BaseScene {
     }
 
     preload() {
+        super.preload();
         this.load.image('fullscreen', "assets/images/menu/fullscreen.png");
     }
 

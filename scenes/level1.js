@@ -21,6 +21,7 @@ class Level1 extends BaseScene {
 
     preload() {
 
+        super.preload();
         this.load.audio("beefInstaller", "assets/audio/songs/beef_installer.wav");
         this.load.image("roomBackground", "assets/images/level1/roomBackground.png");
         this.load.video("windowVideo", "assets/images/level1/windowVideo.mp4");
