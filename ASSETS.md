@@ -1,7 +1,5 @@
 VIEW AS CODE (NOT PREVIEW) TO VISUALIZE PATHS
-
 ---------------------------------------------
-
 /assets
     /audio
         /SFX
@@ -14,23 +12,19 @@ VIEW AS CODE (NOT PREVIEW) TO VISUALIZE PATHS
                 /treatBeat.wav
                 /treatWinSound.wav
                 /winDrumPop.wav
-
             /level2
                 /enemySpawn.wav -- Beck Grah; BFXR
                 /friendSpawn.wav
                 /laser.wav -- Beck Grah; BFXR
-
             /level3
                 /cow.mp3 -- Orbweaver
                 /ghost.mp3 -- Jason Holtman
                 /metronome.mp3 -- Orbweaver
                 /miss.mp3 -- Orbweaver
                 /perfectOk.mp3 -- Orbweaver
-
             /menu
                 /hoverSelection.mp3 -- Orbweaver
                 /selection.mp3 -- Orbweaver
-
         /songs
             /beef_installer.wav -- Adam Top, Bonnie Montgomery
             /bossa.mp3 -- Jason Holtman, Orbweaver
@@ -39,14 +33,12 @@ VIEW AS CODE (NOT PREVIEW) TO VISUALIZE PATHS
             /paranoia.mp3 -- NAOKI
             /songSlowVer.mp3
             /suspicious.mp3 -- Jason Holtman, Orbweaver
-
     /beatmaps
         /level3score.json -- Jason Holtman
         /score_old.json -- Jason Holtman
         /score_suspicious.json -- Beck Grah
         /score.json -- Jason Holtman
         /score2.json -- Jason Holtman
-
     /images
         /cinematic
             /crackedEgg.png
@@ -57,14 +49,12 @@ VIEW AS CODE (NOT PREVIEW) TO VISUALIZE PATHS
             /J.png
             /jPan.png
             /toastPerspective.png
-
         /gameplay
             /meteor.png
             /phaser.png
             /space.png
             /spaceman_ss.json -- Adam Top; Pixilart
             /spaceman_ss.png -- Adam Top; Pixilart
-
         /level1
             /ball.png
             /ballWin.png
@@ -80,7 +70,6 @@ VIEW AS CODE (NOT PREVIEW) TO VISUALIZE PATHS
             /treatWin.png
             /tutorial.mp4
             /windowVideo.mp4
-
         /level2
             /angry_alien.png -- Beck Grah; Pixelorama
             /crosshair.png
@@ -91,7 +80,6 @@ VIEW AS CODE (NOT PREVIEW) TO VISUALIZE PATHS
             /planet3.png -- Beck Grah; Pixelorama
             /sun.png -- Beck Grah; Pixelorama
             /twinkling_star.png -- Beck Grah; Pixelorama
-
         /level3
             /background.png -- Jason Holtman
             /backgroundold.png -- Jason Holtman
@@ -111,7 +99,6 @@ VIEW AS CODE (NOT PREVIEW) TO VISUALIZE PATHS
             /star.png -- Jason Holtman
             /ufo.png -- Jason Holtman
             /walkingss.png -- Jason Holtman
-
         /menu
             /background.png
             /backgroundold.png
@@ -138,5 +125,4 @@ VIEW AS CODE (NOT PREVIEW) TO VISUALIZE PATHS
             /thumbnail.png
             /title_bg.png -- Adam Top; Pixilart
             /title_icon.png -- Adam Top; Pixilart
-
     /level3assets.json
