@@ -68,7 +68,7 @@ class EvaluationScene extends BaseScene {
                             this.SCREEN_HEIGHT * 0.4,
                             "catMarvelous")
                             .setOrigin(0.5, 0.5)
-                            .setScale(0.1)
+                            .setScale(0.5)
 
                         });
 
@@ -97,7 +97,7 @@ class EvaluationScene extends BaseScene {
                             this.SCREEN_HEIGHT * 0.4,
                             "catOops")
                             .setOrigin(0.5, 0.5)
-                            .setScale(0.1)
+                            .setScale(0.5)
 
                         });
 
