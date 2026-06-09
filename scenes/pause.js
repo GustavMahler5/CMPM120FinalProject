@@ -36,5 +36,14 @@ class PauseScene extends BaseScene {
         this.settingsButton.on('pointerdown', () => {
             this.scene.start('settings2');
         });
+
+        this.quitButton = this.add.text(this.SCREEN_WIDTH * 0.5, this.SCREEN_HEIGHT * 0.8, 'Quit', {
+            fontSize: '24px',
+            fill: '#00ff00'
+        }).setOrigin(0.5).setDepth(1000).setInteractive();
+
+        this.quitButton.on('pointerdown', () => {
+            this.scene.start('levelselect');
+        });
     }
 }
