@@ -8,7 +8,7 @@ class LevelSelect extends BaseScene {
         this.load.image("menu_button", "assets/images/menu/menu_button.png");
         this.load.image("lvl1img", "assets/images/menu/level1jacket.png");
         this.load.image("lvl2img", "assets/images/menu/level2jacket.png");
-        this.load.image("lvl3img", "assets/images/menu/level3Jacket.png"); // Github is being annoying by keeping the J capital
+        this.load.image("lvl3img", "assets/images/menu/level3jacketNEW.png"); // Github is being annoying
         this.load.image("menu_background", "assets/images/menu/background.png");
         this.load.image("lights", "assets/images/menu/lights.png");
         this.load.image("abduct_alien", "assets/images/level2/angry_alien.png");
