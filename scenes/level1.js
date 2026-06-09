@@ -683,7 +683,6 @@ this.tickSound = this.sound.add("cat_tick");
         return "miss";
 
     }
-
     startGameplay() {
 
         this.song = this.sound.add("beefInstaller");
@@ -693,6 +692,11 @@ this.tickSound = this.sound.add("cat_tick");
         });
 
         this.startTime = this.time.now + 100;
+
+        this.input.removeAllListeners("pointerdown");
+        this.input.on("pointerdown", () => {
+            this.handleInput();
+        });
     }
 
     updateEntities() {
