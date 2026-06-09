@@ -11,6 +11,8 @@ class LevelSelect extends BaseScene {
         this.load.image("menu_background", "../assets/images/menu/background.png");
         this.load.image("lights", "../assets/images/menu/lights.png");
         this.load.image("abduct_alien", "../assets/images/level2/angry_alien.png");
+        this.load.image("marvelous", "../assets/images/level3/marvelous.png");
+        this.load.image("oops", "../assets/images/level3/oops.png");
 
         this.load.audio('menu', '../assets/audio/songs/menu.wav');
         this.load.audio('hover', '../assets/audio/sfx/menu/hoverSelection.mp3');
@@ -18,6 +20,7 @@ class LevelSelect extends BaseScene {
     }
 
     onEnter() {
+
         this.animating = false;
         this.cameras.main.setBackgroundColor(0xE0C6AD);
         this.sound.volume = BaseScene.masterVolume;
@@ -45,10 +48,10 @@ class LevelSelect extends BaseScene {
                 align: 'center'
         }).setOrigin(.5, .5);
 
-        const levels = [
-            { key: "level1", texture: "lvl1img" },
-            { key: "level2tutorial", texture: "lvl2img" },
-            { key: "level3tutorial", texture: "lvl3img" }
+        let levels = [
+            { key: "level1", texture: "lvl1img", grade: BaseScene.level1BestScore },
+            { key: "level2tutorial", texture: "lvl2img", grade: BaseScene.level2BestScore },
+            { key: "level3tutorial", texture: "lvl3img", grade: BaseScene.level3BestScore }
         ];
 
         const scale = 0.055;
@@ -61,7 +64,7 @@ class LevelSelect extends BaseScene {
         const borderThick = 8;
         const borderRadius = 10;
 
-        levels.forEach((level, i) => {
+        levels.forEach((level, i, grade) => {
             const x = startX + i * spacing;
 
             const icon = this.add.image(0, 0, level.texture)
@@ -71,6 +74,30 @@ class LevelSelect extends BaseScene {
             const w = icon.displayWidth;
             const h = icon.displayHeight;
             const half = borderThick / 2;
+
+            let levelGrade;
+
+            if (level.grade <= 0) {}
+            else if (level.grade < this.CUTOFF_SCORE) {
+                levelGrade = this.add.image (
+                            icon.x,
+                            icon.y - (icon.displayHeight * 0.5),
+                            "oops")
+                            .setOrigin(1, 1)
+                            .setScale(0.07)
+                            .setAngle(-45)
+                            .setInteractive()
+            }
+            else {
+                levelGrade = this.add.image (
+                            icon.x,
+                            icon.y - (icon.displayHeight * 0.5),
+                            "marvelous")
+                            .setOrigin(1, 1)
+                            .setScale(0.07)
+                            .setAngle(-45)
+                            .setInteractive()
+            }
 
             const border = this.add.graphics();
             const glowSteps = [
@@ -92,7 +119,8 @@ class LevelSelect extends BaseScene {
                 );
             }
 
-            const container = this.add.container(x, -200, [border, icon]);
+            let container = this.add.container(x, -200, [border, icon]);
+            if (levelGrade) container.add(levelGrade);
 
             icon.on("pointerover", () => {
                 this.add.tween({

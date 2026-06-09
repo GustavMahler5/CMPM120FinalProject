@@ -22,6 +22,8 @@ class EvaluationScene extends BaseScene {
     preload() {
 
         this.load.pack("main", "../assets/level3assets.json");
+        this.load.image("marvelous", "../assets/images/level3/marvelous.png");
+        this.load.image("oops", "../assets/images/level3/oops.png");
     }
 
 
@@ -50,11 +52,12 @@ class EvaluationScene extends BaseScene {
                     this.time.delayedCall (
 
                         2000,
-                        () => this.add.text (
-                            this.SCREEN_WIDTH * 0.5, 
+                        () => this.add.image (
+                            this.SCREEN_WIDTH * 0.5,
                             this.SCREEN_HEIGHT * 0.4,
-                            `Your score was ${this.score.toFixed(0)}`)
+                            "marvelous")
                             .setOrigin(0.5, 0.5)
+                            .setScale(0.15)
 
                     );
 
@@ -71,11 +74,12 @@ class EvaluationScene extends BaseScene {
                     this.time.delayedCall (
 
                         2000,
-                        () => this.add.text (
-                            this.SCREEN_WIDTH * 0.5, 
+                        () => this.add.image (
+                            this.SCREEN_WIDTH * 0.5,
                             this.SCREEN_HEIGHT * 0.4,
-                            `Your score was ${this.score.toFixed(0)}`)
+                            "oops")
                             .setOrigin(0.5, 0.5)
+                            .setScale(0.15)
 
                     );
 
@@ -99,11 +103,12 @@ class EvaluationScene extends BaseScene {
                     this.time.delayedCall (
 
                         2000,
-                        () => this.add.text (
-                            this.SCREEN_WIDTH * 0.5, 
+                        () => this.add.image (
+                            this.SCREEN_WIDTH * 0.5,
                             this.SCREEN_HEIGHT * 0.4,
-                            `Your score was ${this.score.toFixed(0)}`)
+                            "marvelous")
                             .setOrigin(0.5, 0.5)
+                            .setScale(0.15)
 
                     );
 
@@ -120,11 +125,12 @@ class EvaluationScene extends BaseScene {
                     this.time.delayedCall (
 
                         2000,
-                        () => this.add.text (
-                            this.SCREEN_WIDTH * 0.5, 
+                        () => this.add.image (
+                            this.SCREEN_WIDTH * 0.5,
                             this.SCREEN_HEIGHT * 0.4,
-                            `Your score was ${this.score.toFixed(0)}`)
+                            "oops")
                             .setOrigin(0.5, 0.5)
+                            .setScale(0.15)
 
                     );
 
@@ -143,17 +149,18 @@ class EvaluationScene extends BaseScene {
                     this.add.text(
                         this.SCREEN_WIDTH * 0.5,
                         this.SCREEN_HEIGHT * 0.2,
-                        "Great Job!")
+                        "You handled those offbeat abduc- I mean collections really well!")
                         .setOrigin(0.5, 0.5);
 
                     this.time.delayedCall (
 
                         2000,
-                        () =>  { this.add.text (
-                            this.SCREEN_WIDTH * 0.5, 
+                        () =>  { this.add.image (
+                            this.SCREEN_WIDTH * 0.5,
                             this.SCREEN_HEIGHT * 0.4,
-                            `Your score was ${this.score.toFixed(0)}`)
-                            .setOrigin(0.5, 0.5),
+                            "marvelous")
+                            .setOrigin(0.5, 0.5)
+                            .setScale(0.15)
 
                             this.add.image (
                             this.SCREEN_WIDTH * 0.7,
@@ -171,17 +178,18 @@ class EvaluationScene extends BaseScene {
                     this.add.text(
                         this.SCREEN_WIDTH * 0.5,
                         this.SCREEN_HEIGHT * 0.2,
-                        "Meh!")
+                        "Well, I think we could be partners after you grow your skillset a bit more...")
                         .setOrigin(0.5, 0.5);
 
                     this.time.delayedCall (
 
                         2000,
-                        () =>  { this.add.text (
-                            this.SCREEN_WIDTH * 0.5, 
+                        () =>  { this.add.image (
+                            this.SCREEN_WIDTH * 0.5,
                             this.SCREEN_HEIGHT * 0.4,
-                            `Your score was ${this.score.toFixed(0)}`)
-                            .setOrigin(0.5, 0.5),
+                            "oops")
+                            .setOrigin(0.5, 0.5)
+                            .setScale(0.15)
 
                             this.add.image (
                             this.SCREEN_WIDTH * 0.7,
@@ -204,11 +212,11 @@ class EvaluationScene extends BaseScene {
 
         this.time.delayedCall (
 
-            3000,
+            4000,
             () => playAgain = this.add.text (
                 this.SCREEN_WIDTH * 0.5, 
                 this.SCREEN_HEIGHT * 0.7,
-                "Return")
+                "Back to level select")
                 .setOrigin(0.5, 0.5)
                 .setInteractive({useHandCursor: true})
                 .on('pointerdown', () => {
