@@ -151,14 +151,15 @@ class LogoScene extends BaseScene {
                     ease: 'Sine.InOut',
                     hold: 2000,
                     onComplete: () => {
-                        let continueText = this.add.text(this.SCREEN_WIDTH / 2, eggOnToast, "Click to Continue", {
+                        let continueText = this.add.text(this.SCREEN_WIDTH / 2, this.SCREEN_HEIGHT - 50, "Click to Continue", {
                             fontSize: '20px',
-                            fontFamily: 'arial',
+                            //fontFamily: 'arial',
                             color: 0xffffff,
                         });
+                        continueText.setOrigin(0.5);
                         this.tweens.add({
                             targets: continueText,
-                            alpha: 0.5,
+                            alpha: 0,
                             loop: -1,
                             yoyo: true,
                         });
