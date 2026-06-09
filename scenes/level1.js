@@ -702,7 +702,6 @@ class Level1 extends BaseScene {
         return "miss";
 
     }
-
     startGameplay() {
 
         this.song = this.sound.add("beefInstaller");
@@ -712,6 +711,11 @@ class Level1 extends BaseScene {
         });
 
         this.startTime = this.time.now + 100;
+
+        this.input.removeAllListeners("pointerdown");
+        this.input.on("pointerdown", () => {
+            this.handleInput();
+        });
     }
 
     updateEntities() {
