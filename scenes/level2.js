@@ -51,7 +51,7 @@ class Level2 extends BaseScene {
         this.load.audio('enemySpawnSoundEffect', 'assets/audio/SFX/level2/enemySpawn.wav');
         this.load.audio('friendSpawnSoundEffect', 'assets/audio/SFX/level2/friendSpawn.wav');
         this.load.audio('laser', 'assets/audio/SFX/level2/laser.wav');
-        this.load.json('score_suspicious', 'assets/audio/beatmaps/score_suspicious.json');
+        this.load.json('score_suspicious', 'assets/beatmaps/score_suspicious.json');
 
         this.load.image('planet1', 'assets/images/level2/planet1.png');
         this.load.image('pause', 'assets/images/menu/pause_white.png');
