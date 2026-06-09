@@ -75,6 +75,7 @@ class Level2 extends BaseScene {
         this.initialized = false;
 
         this.sound.removeAll();
+        this.sound.volume = BaseScene.masterVolume;
         
         this.planets = this.add.group();
         this.stars = this.add.group();
@@ -109,7 +110,9 @@ class Level2 extends BaseScene {
 
         // Add Music
         if (BaseScene.currentMusic) BaseScene.currentMusic.stop();
-        this.music = this.sound.add(`${this.songInfo[this.SONG].name}`);
+        this.music = this.sound.add(`${this.songInfo[this.SONG].name}`, {
+            volume: BaseScene.musicVolume,
+        });
         BaseScene.currentMusic = this.music;
 
         this.pauseButton = this.add.image(
@@ -334,8 +337,7 @@ class Level2 extends BaseScene {
             this.music.play({ 
                 loop: false, 
                 volume: 0.05,
-                rate: 1,
-                seek: 180
+                rate: 1
             });
 
             this.musicStarted = true;

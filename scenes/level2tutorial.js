@@ -92,6 +92,7 @@ class Level2Tutorial extends BaseScene {
     onEnter() {
 
         this.sound.removeAll();
+        this.sound.volume = BaseScene.masterVolume;
 
         this.judgement = Object.freeze({
             PERFECT: 0,
@@ -290,8 +291,8 @@ class Level2Tutorial extends BaseScene {
 
         if (BaseScene.currentMusic) BaseScene.currentMusic.stop();
         this.music = this.sound.add(`${this.songInfo[this.SONG].name}`);
-        BaseScene.currentMusic = this.music;
         this.metronome = this.sound.add("metronome");
+        BaseScene.currentMusic = this.metronome;
         this.laser = this.sound.add('laser');
 
         this.entityCueSFX = {
@@ -465,15 +466,6 @@ class Level2Tutorial extends BaseScene {
 
     createText() {
         
-
-        this.lastInput = this.add.text(
-            this.SCREEN_WIDTH * 0.5,
-            this.SCREEN_HEIGHT * 0.9,
-            ""
-        )
-        .setStyle({ fontSize: "32px", color: "#FFFFFF" })
-        .setOrigin(0.5, 0.5);
-
         this.judgementText= this.add.text(
             this.SCREEN_WIDTH * 0.5,
             this.SCREEN_HEIGHT * 0.5,
@@ -485,31 +477,6 @@ class Level2Tutorial extends BaseScene {
             fontStyle: "bold"
         })
         .setOrigin(0.5, 0.5);
-
-        this.perfectScore = this.add.text(
-            this.SCREEN_WIDTH * 0.9,
-            this.SCREEN_HEIGHT * 0.04,
-            `Hits: ${this.perfectCount}`
-        )
-        .setStyle({ fontSize: "16px", color: "#FFD700" })
-        .setOrigin(0.5, 0.5);
-
-        this.okScore = this.add.text(
-            this.SCREEN_WIDTH * 0.9,
-            this.SCREEN_HEIGHT * 0.07,
-            `Ok: ${this.okCount}`
-        )
-        .setStyle({ fontSize: "16px", color: "#228B22" })
-        .setOrigin(0.5, 0.5);
-
-        this.missScore = this.add.text(
-            this.SCREEN_WIDTH * 0.9,
-            this.SCREEN_HEIGHT * 0.1,
-            `Miss: ${this.missCount}`
-        )
-        .setStyle({ fontSize: "16px", color: "#D3D3D3" })
-        .setOrigin(0.5, 0.5);
-
     }
 
     updateTimestamps() {
