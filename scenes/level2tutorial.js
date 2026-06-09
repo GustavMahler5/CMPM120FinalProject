@@ -140,7 +140,10 @@ class Level2Tutorial extends BaseScene {
                     "Huh? You don't know how you got here? Haha very funny, in that case I don't either!",
                     "But now is not the time for jokes,",
                     "We're at war!",
-                    "Shoot any UFO's with a red stripe on sight!",
+                    "Why you ask?",
+                    "They blew up Glorpulon 4, made us move to Glorpulon 5!",
+                    "And now they're trying to do the same here!",
+                    "So shoot any UFO's with a red stripe on sight!",
                     "But be careful, your allies are here too! They have a blue stripe like me, make sure not to shoot them!",
                     "Huh? You've never fired your laser cannon before? It's easy! Just click anywhere to fire!",
                     "Make sure the enemy is at that red line in the center of your crosshair for the best results!"
