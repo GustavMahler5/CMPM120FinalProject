@@ -26,6 +26,8 @@ class EvaluationScene extends BaseScene {
         this.load.image("marvelous", "assets/images/level3/marvelous.png");
         this.load.image("oops", "assets/images/level3/oops.png");
         this.load.image('friendly_alien', 'assets/images/level2/friendly_alien.png');
+        this.load.image('catMarvelous', "assets/images/level1/ballWin.png");
+        this.load.image('catOops', "assets/images/level1/catMiss.png");
     }
 
 
@@ -48,20 +50,27 @@ class EvaluationScene extends BaseScene {
                     this.add.text(
                         this.SCREEN_WIDTH * 0.5,
                         this.SCREEN_HEIGHT * 0.2,
-                        "Great Job!")
+                        "You caught those treats like a real pro!")
                         .setOrigin(0.5, 0.5);
 
                     this.time.delayedCall (
 
                         2000,
-                        () => this.add.image (
+                        () => { this.add.image (
                             this.SCREEN_WIDTH * 0.5,
                             this.SCREEN_HEIGHT * 0.4,
                             "marvelous")
                             .setOrigin(0.5, 0.5)
                             .setScale(0.15)
 
-                    );
+                            this.add.image (
+                            this.SCREEN_WIDTH * 0.7,
+                            this.SCREEN_HEIGHT * 0.4,
+                            "catMarvelous")
+                            .setOrigin(0.5, 0.5)
+                            .setScale(0.1)
+
+                        });
 
                 }
 
@@ -70,20 +79,27 @@ class EvaluationScene extends BaseScene {
                     this.add.text(
                         this.SCREEN_WIDTH * 0.5,
                         this.SCREEN_HEIGHT * 0.2,
-                        "Meh!")
+                        "I guess shipcats do eventually lose their instincts")
                         .setOrigin(0.5, 0.5);
 
                     this.time.delayedCall (
 
                         2000,
-                        () => this.add.image (
+                        () => { this.add.image (
                             this.SCREEN_WIDTH * 0.5,
                             this.SCREEN_HEIGHT * 0.4,
                             "oops")
                             .setOrigin(0.5, 0.5)
                             .setScale(0.15)
 
-                    );
+                            this.add.image (
+                            this.SCREEN_WIDTH * 0.7,
+                            this.SCREEN_HEIGHT * 0.4,
+                            "catOops")
+                            .setOrigin(0.5, 0.5)
+                            .setScale(0.1)
+
+                        });
 
                 }
                 
