@@ -7,7 +7,7 @@ class CreditsScene extends BaseScene{
         super.preload();
         this.load.image("menu_button", "assets/images/menu/menu_button.png");
         this.load.audio('menu', 'assets/audio/songs/menu.wav');
-        this.load.audio('hover', 'assets/audio/sfx/menu/hoverSelection.mp3');
+        this.load.audio('hover', 'assets/audio/SFX/menu/hoverSelection.mp3');
         this.load.audio('selection', 'assets/audio/SFX/menu/selection.mp3');
         this.load.image('fullscreen', "assets/images/menu/fullscreen.png");
     }
