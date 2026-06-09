@@ -42,7 +42,7 @@ class LogoScene extends BaseScene {
         let crackedEgg = this.add.image(w * 0.28, h * 0.35, 'crackedEgg').setScale(0.3).setVisible(false);
         let eggOnToast = this.add.image(w * 0.29, h * 0.65, 'eggOnToast').setScale(0.3).setVisible(false).setAngle(24);
         
-        this.input.on('pointerdown', (pointer) => {
+        this.input.on('pointerdown', () => {
             this.changeScene('menu');
         });
         
@@ -151,8 +151,9 @@ class LogoScene extends BaseScene {
                     ease: 'Sine.InOut',
                     hold: 2000,
                     onComplete: () => {
-                        let continueText = this.add.text(this.SCREEN_WIDTH / 2, eggOnToast + 100, "Click to Continue", {
+                        let continueText = this.add.text(this.SCREEN_WIDTH / 2, eggOnToast, "Click to Continue", {
                             fontSize: '20px',
+                            fontFamily: 'arial',
                             color: 0xffffff,
                         });
                         this.tweens.add({
