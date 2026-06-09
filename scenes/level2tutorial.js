@@ -80,7 +80,7 @@ class Level2Tutorial extends BaseScene {
 
         this.load.json('score_suspicious', 'assets/beatmaps/score_suspicious.json');
 
-        this.load.image('pause', 'assets/images/menu/pause_white.png');
+        this.load.image('pause', 'assets/images/menu/pause.png');
         this.load.spritesheet('explosion', "assets/images/level2/explosion_particle.png", { frameWidth: 32, frameHeight: 32});
         this.load.image('angry_alien', 'assets/images/level2/angry_alien.png');
         this.load.image('friendly_alien', 'assets/images/level2/friendly_alien.png');

@@ -56,7 +56,7 @@ class Level1 extends BaseScene {
         });
 
         this.load.image('fullscreen', "assets/images/menu/fullscreen.png");
-        this.load.image('pause', 'assets/images/menu/pause_white.png');
+        this.load.image('pause', 'assets/images/menu/pause.png');
 
     }
 

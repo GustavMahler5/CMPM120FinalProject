@@ -54,7 +54,7 @@ class Level2 extends BaseScene {
         this.load.json('score_suspicious', 'assets/beatmaps/score_suspicious.json');
 
         this.load.image('planet1', 'assets/images/level2/planet1.png');
-        this.load.image('pause', 'assets/images/menu/pause_white.png');
+        this.load.image('pause', 'assets/images/menu/pause.png');
         this.load.image('planet2', 'assets/images/level2/planet2.png');
         this.load.image('planet3', 'assets/images/level2/planet3.png');
         this.load.image('sun', 'assets/images/level2/sun.png');
