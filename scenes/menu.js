@@ -12,6 +12,7 @@ class MenuScene extends BaseScene {
         this.load.audio("button_sfx", "../assets/audio/SFX/menu/selection.mp3");
         this.load.audio("button_hover", "../assets/audio/SFX/menu/hoverSelection.mp3");
         this.load.image('fullscreen', "../assets/images/menu/fullscreen.png");
+        this.load.image('title', "../assets/images/menu/title_icon.png");
     }
 
     onEnter() {
@@ -35,11 +36,8 @@ class MenuScene extends BaseScene {
 
         this.background = this.add.image(540, 340, "background").setScale(1.1);
 
-        const title = this.add.text(400, 100, "Game Name",  {
-            fontSize: '64px',
-            fontStyle: 'bold',
-            fill: '#A3B2A4',
-        });
+        this.title = this.add.image(this.SCREEN_WIDTH / 2, this.SCREEN_HEIGHT + 100, "title");
+
 
         const buttonLabels = ["Levels", "Settings", "Credits", "Exit"];  
         const buttonStart = 500
@@ -108,10 +106,16 @@ class MenuScene extends BaseScene {
             });        
 
             this.tweens.add({
+                targets: this.title,
+                y: this.SCREEN_HEIGHT / 4,
+                duration: 2000
+            })
+
+            this.tweens.add({
                 targets: container,
-                y: this.SCREEN_HEIGHT / 3 + i * this.SCREEN_HEIGHT / 8,
-                delay: i * 600,
-                duration: 3000,
+                y: this.SCREEN_HEIGHT / 2.2 + i * this.SCREEN_HEIGHT / 8,
+                delay: 600 + i * 600,
+                duration: 2000,
                 ease: 'linear'
             })
         });
