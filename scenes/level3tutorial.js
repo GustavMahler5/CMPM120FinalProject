@@ -68,8 +68,9 @@ class Level3Tutorial extends BaseScene {
 
     preload() {
 
-        this.load.json("score", "../assets/beatmaps/level3score.json");
-        this.load.pack("main", "../assets/level3assets.json");
+        super.preload();
+        this.load.json("score", "assets/beatmaps/level3score.json");
+        this.load.pack("main", "assets/level3assets.json");
 
     }
 

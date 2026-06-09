@@ -6,8 +6,7 @@ class LogoScene extends BaseScene {
     }
 
     preload() {
-        // this.load.setBaseURL('./');
-
+        super.preload();
         this.load.image('toastPerspective','assets/images/cinematic/toastPerspective.png');
         this.load.image('J','assets/images/cinematic/J.png');
         this.load.image('jPan','assets/images/cinematic/jPan.png');
