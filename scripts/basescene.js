@@ -32,7 +32,7 @@ class BaseScene extends Phaser.Scene {
     static pausedLevel = null;
 
     preload() {
-        //this.load.setBaseURL('/CMPM120FinalProject/');
+        this.load.setBaseURL('/CMPM120FinalProject/');
     }
 
     create() {
