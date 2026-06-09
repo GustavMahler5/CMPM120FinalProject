@@ -6,14 +6,14 @@ class LogoScene extends BaseScene {
     }
 
     preload() {
-        this.load.setBaseURL('./');
+        // this.load.setBaseURL('./');
 
-        this.load.image('toastPerspective','../assets/images/cinematic/toastPerspective.png');
-        this.load.image('J','../assets/images/cinematic/J.png');
-        this.load.image('jPan','../assets/images/cinematic/jPan.png');
-        this.load.image('egg','../assets/images/cinematic/egg.png');
-        this.load.image('crackedEgg','../assets/images/cinematic/crackedEgg.png');
-        this.load.image('eggOnToast','../assets/images/cinematic/eggOnToast.png');
+        this.load.image('toastPerspective','assets/images/cinematic/toastPerspective.png');
+        this.load.image('J','assets/images/cinematic/J.png');
+        this.load.image('jPan','assets/images/cinematic/jPan.png');
+        this.load.image('egg','assets/images/cinematic/egg.png');
+        this.load.image('crackedEgg','assets/images/cinematic/crackedEgg.png');
+        this.load.image('eggOnToast','assets/images/cinematic/eggOnToast.png');
 
 
 
