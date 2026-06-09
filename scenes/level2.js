@@ -30,9 +30,9 @@ class Level2 extends BaseScene {
         }
 
         // Error margins
-        this.ERROR_MARGIN = 0.6;
-        this.OK_ERROR = 0.3;
-        this.PERFECT_ERROR = 0.15;
+        this.ERROR_MARGIN = 0.75;
+        this.OK_ERROR = 0.25;
+        this.PERFECT_ERROR = 0.1;
 
         this.sunHues = [
             { min: 0,   max: 0   },  // natural orange (no shift)

@@ -84,7 +84,8 @@ class MenuScene extends BaseScene {
                     break;
     
                 case "Exit":
-                    this.changeScene("logo");
+                    this.game.destroy(true);
+                    window.close();
                     break;
             }
         }
