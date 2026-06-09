@@ -15,6 +15,8 @@ class MenuScene extends BaseScene {
     }
 
     onEnter() {
+        this.sound.volume = BaseScene.masterVolume;
+
         let menu_bgm = this.sound.add("menu", {
             volume: BaseScene.musicVolume,
             loop: true
@@ -77,7 +79,7 @@ class MenuScene extends BaseScene {
 
             // hover + click events
             button.on("pointerover", () => {
-                this.sound.play("button_hover");
+                button_hover.play();
                 this.add.tween({
                     targets: container,
                     scale: this.SCREEN_HEIGHT / 300,
@@ -94,7 +96,7 @@ class MenuScene extends BaseScene {
                 });
             });
             button.on("pointerdown", () => {
-                this.sound.play("button_sfx");
+                button_sfx.play();
                 button.setTint(0xdddddd);
                 handleButtonClick(label);
             });

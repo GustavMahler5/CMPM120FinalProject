@@ -11,6 +11,8 @@ class SettingsScene2 extends BaseScene {
     }
 
     onEnter() {
+        this.sound.volume = BaseScene.masterVolume;
+
         this.add.text(this.SCREEN_WIDTH / 2, 60, "Settings", {
             fontSize: "64px",
             fontStyle: "bold",
@@ -77,7 +79,7 @@ class SettingsScene2 extends BaseScene {
                 this.input.on('dragend', (pointer, gameObject) => {
             if (gameObject !== handle) return;
             localStorage.setItem(setting.key, BaseScene[setting.key]);
-            this.sound.play("button_sfx", { volume: BaseScene.masterVolume });
+            this.sound.play("button_sfx", { volume: BaseScene.sfxVolume * BaseScene.masterVolume });
         });
 
         handle.on('pointerover', () => {
