@@ -78,7 +78,7 @@ class Level2Tutorial extends BaseScene {
 
         this.load.json('score_suspicious', '../assets/beatmaps/score_suspicious.json');
 
-        this.load.image('pause', '../assets/images/menu/pause.png');
+        this.load.image('pause', '../assets/images/menu/pause_white.png');
         this.load.spritesheet('explosion', "../assets/images/level2/explosion_particle.png", { frameWidth: 32, frameHeight: 32});
         this.load.image('angry_alien', '../assets/images/level2/angry_alien.png');
         this.load.image('friendly_alien', '../assets/images/level2/friendly_alien.png');
@@ -215,6 +215,22 @@ class Level2Tutorial extends BaseScene {
             repeat: -1
         });
 
+        this.pauseButton = this.add.image(
+            this.SCREEN_WIDTH * 0.01,
+            this.SCREEN_HEIGHT * 0.01,
+            "pause")
+            .setOrigin(0, 0)
+            .setScale(0.05)
+            .setDepth(10000)
+            .setAlpha(0.5)
+            .setInteractive({useHandCursor: true})
+            .on('pointerdown', () => {
+                this.game.sound.pauseAll();
+                this.scene.pause();
+                this.scene.launch('pausescene', { level: this.scene.key }); 
+            }
+        );
+
 
         this.spawnPoints = this.add.group();
         this.spawnPoints.add(this.add.container(-20, this.SCREEN_HEIGHT * .3));
@@ -225,19 +241,6 @@ class Level2Tutorial extends BaseScene {
         this.spawnPoints.add(this.add.container(this.SCREEN_WIDTH + 20, this.SCREEN_HEIGHT * .7));
         this.laserSpawnLeft = this.add.container(this.SCREEN_WIDTH * .25, this.SCREEN_HEIGHT);
         this.laserSpawnRight = this.add.container(this.SCREEN_WIDTH * .75, this.SCREEN_HEIGHT);
-
-        this.backButton = this.add.text(
-            this.SCREEN_WIDTH * 0.05,
-            this.SCREEN_HEIGHT * 0.05,
-            "<- Back"
-        )
-        .setStyle({ fontSize: "32px", color: "#FFFFFF" })
-        .setOrigin(0, 0)
-        .setInteractive({ useHandCursor: true })
-        .on("pointerdown", () => {
-            this.game.sound.stopAll();
-            this.changeScene("levelselect");
-        });
 
         this.input.removeAllListeners("pointerdown");
         this.input.on("pointerdown", () => {
@@ -565,10 +568,10 @@ class Level2Tutorial extends BaseScene {
         entity.enemy = type;
         // left spawn
         if (entity.enemy === 0) {
-            this.sound.play('enemySpawnSoundEffect');
+            this.sound.play('enemySpawnSoundEffect', { volume: BaseScene.sfxVolume });
         }
         else {
-            this.sound.play('friendSpawnSoundEffect');
+            this.sound.play('friendSpawnSoundEffect', { volume: BaseScene.sfxVolume });
         }
         if (spawn % 2 == 0) {
             entity.spawnedFromLeft = true;
@@ -726,7 +729,7 @@ class Level2Tutorial extends BaseScene {
         laser.lineStyle(3, 0xd02b14, 1);
         laser.beginPath();
 
-        this.sound.play('laser', { volume: 0.1 });
+        this.sound.play('laser', { volume: .1 * BaseScene.sfxVolume });
         this.cameras.main.shake(200, .005);
 
         switch (judgement) {
@@ -910,7 +913,7 @@ class Level2Tutorial extends BaseScene {
 
             this.metronome.play({
                 loop: false,
-                volume: BaseScene.masterVolume,
+                volume: BaseScene.musicVolume,
                 rate: 1
             });
 
@@ -948,7 +951,7 @@ class Level2Tutorial extends BaseScene {
 
                 this.entityCueSFX[cue.sfx].play({
                     loop: false,
-                    // volume: BaseScene.masterVolume,
+                    volume: BaseScene.musicVolume,
                     volume: 0.35,
                     rate: 2
                 });

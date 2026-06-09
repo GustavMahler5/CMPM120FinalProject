@@ -18,6 +18,7 @@ class LevelSelect extends BaseScene {
 
     onEnter() {
         this.cameras.main.setBackgroundColor(0xE0C6AD);
+        this.sound.volume = BaseScene.masterVolume;
 
         this.hoverSFX = this.sound.add('hover');
         this.selectionSFX = this.sound.add('selection');
@@ -66,7 +67,7 @@ class LevelSelect extends BaseScene {
 
                 this.hoverSFX.play({
                     loop: false,
-                    volume: BaseScene.masterVolume * 1.5
+                    volume: BaseScene.sfxVolume * 1.5
                 });
             });
 
@@ -88,7 +89,7 @@ class LevelSelect extends BaseScene {
 
                 this.selectionSFX.play({
                     loop: false,
-                    volume: BaseScene.masterVolume * 1.5
+                    volume: BaseScene.sfxVolume * 1.5
                 });
 
                 this.handleButtonClick(icon.levelKey);
@@ -138,7 +139,7 @@ class LevelSelect extends BaseScene {
 
             this.hoverSFX.play({
                 loop: false,
-                volume: BaseScene.masterVolume * 1.5
+                volume: BaseScene.sfxVolume * 1.5
             });
         });
 
@@ -160,7 +161,7 @@ class LevelSelect extends BaseScene {
 
             this.selectionSFX.play({
                 loop: false,
-                volume: BaseScene.masterVolume * 1.5
+                volume: BaseScene.sfxVolume * 1.5
             });
 
             this.handleButtonClick("menu");

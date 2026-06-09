@@ -90,5 +90,6 @@ VIEW AS CODE (NOT PREVIEW) TO VISUALIZE PATHS
             /pause.png
             /thumbnail.png
             /title_bg.png -- Adam Top; Pixilart
+            /title_icon.png -- Adam Top; Pixilart
     /level3assets.json
 
