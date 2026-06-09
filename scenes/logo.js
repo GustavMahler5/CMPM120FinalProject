@@ -41,10 +41,11 @@ class LogoScene extends BaseScene {
         let jPan = this.add.image(w * 0.38, h * 0.5, 'jPan').setScale(0.5);
         let crackedEgg = this.add.image(w * 0.28, h * 0.35, 'crackedEgg').setScale(0.3).setVisible(false);
         let eggOnToast = this.add.image(w * 0.29, h * 0.65, 'eggOnToast').setScale(0.3).setVisible(false).setAngle(24);
-
-        if (this.input.activePointer.isDown) {
-            this.changeScene("menu");
-        }
+        
+        this.input.on('pointerdown', (pointer) => {
+            this.changeScene('menu');
+        });
+        
 
         this.tweens.chain({
             tweens: [
