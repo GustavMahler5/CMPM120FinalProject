@@ -21,10 +21,10 @@ class EvaluationScene extends BaseScene {
 
     preload() {
 
-        this.load.pack("main", "../assets/level3assets.json");
-        this.load.image("marvelous", "../assets/images/level3/marvelous.png");
-        this.load.image("oops", "../assets/images/level3/oops.png");
-        this.load.image('friendly_alien', '../assets/images/level2/friendly_alien.png');
+        this.load.pack("main", "assets/level3assets.json");
+        this.load.image("marvelous", "assets/images/level3/marvelous.png");
+        this.load.image("oops", "assets/images/level3/oops.png");
+        this.load.image('friendly_alien', 'assets/images/level2/friendly_alien.png');
     }
 
 

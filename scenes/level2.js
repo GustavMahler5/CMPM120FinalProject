@@ -46,23 +46,23 @@ class Level2 extends BaseScene {
     }
 
     preload() {
-        this.load.audio('suspicious', '../assets/audio/songs/suspicious.mp3');
-        this.load.audio('enemySpawnSoundEffect', '../assets/audio/SFX/level2/enemySpawn.wav');
-        this.load.audio('friendSpawnSoundEffect', '../assets/audio/SFX/level2/friendSpawn.wav');
-        this.load.audio('laser', '../assets/audio/SFX/level2/laser.wav');
-        this.load.json('score_suspicious', '../assets/audio/beatmaps/score_suspicious.json');
+        this.load.audio('suspicious', 'assets/audio/songs/suspicious.mp3');
+        this.load.audio('enemySpawnSoundEffect', 'assets/audio/SFX/level2/enemySpawn.wav');
+        this.load.audio('friendSpawnSoundEffect', 'assets/audio/SFX/level2/friendSpawn.wav');
+        this.load.audio('laser', 'assets/audio/SFX/level2/laser.wav');
+        this.load.json('score_suspicious', 'assets/audio/beatmaps/score_suspicious.json');
 
-        this.load.image('planet1', '../assets/images/level2/planet1.png');
-        this.load.image('pause', '../assets/images/menu/pause_white.png');
-        this.load.image('planet2', '../assets/images/level2/planet2.png');
-        this.load.image('planet3', '../assets/images/level2/planet3.png');
-        this.load.image('sun', '../assets/images/level2/sun.png');
-        this.load.spritesheet('star', '../assets/images/level2/twinkling_star.png', { frameWidth: 9, frameHeight: 9 });
-        this.load.spritesheet('explosion', "../assets/images/level2/explosion_particle.png", { frameWidth: 32, frameHeight: 32});
-        this.load.image('angry_alien', '../assets/images/level2/angry_alien.png');
-        this.load.image('friendly_alien', '../assets/images/level2/friendly_alien.png');
-        this.load.image('crosshair', '../assets/images/level2/crosshair.png');
-        this.load.image('fullscreen', "../assets/images/menu/fullscreen.png");
+        this.load.image('planet1', 'assets/images/level2/planet1.png');
+        this.load.image('pause', 'assets/images/menu/pause_white.png');
+        this.load.image('planet2', 'assets/images/level2/planet2.png');
+        this.load.image('planet3', 'assets/images/level2/planet3.png');
+        this.load.image('sun', 'assets/images/level2/sun.png');
+        this.load.spritesheet('star', 'assets/images/level2/twinkling_star.png', { frameWidth: 9, frameHeight: 9 });
+        this.load.spritesheet('explosion', "assets/images/level2/explosion_particle.png", { frameWidth: 32, frameHeight: 32});
+        this.load.image('angry_alien', 'assets/images/level2/angry_alien.png');
+        this.load.image('friendly_alien', 'assets/images/level2/friendly_alien.png');
+        this.load.image('crosshair', 'assets/images/level2/crosshair.png');
+        this.load.image('fullscreen', "assets/images/menu/fullscreen.png");
     }
 
     onEnter() {

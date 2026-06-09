@@ -4,19 +4,19 @@ class LevelSelect extends BaseScene {
     }
 
     preload() {
-        this.load.image("menu_button", "../assets/images/menu/menu_button.png");
-        this.load.image("lvl1img", "../assets/images/menu/level1jacket.png");
-        this.load.image("lvl2img", "../assets/images/menu/level2jacket.png");
-        this.load.image("lvl3img", "../assets/images/menu/level3jacket.png");
-        this.load.image("menu_background", "../assets/images/menu/background.png");
-        this.load.image("lights", "../assets/images/menu/lights.png");
-        this.load.image("abduct_alien", "../assets/images/level2/angry_alien.png");
-        this.load.image("marvelous", "../assets/images/level3/marvelous.png");
-        this.load.image("oops", "../assets/images/level3/oops.png");
+        this.load.image("menu_button", "assets/images/menu/menu_button.png");
+        this.load.image("lvl1img", "assets/images/menu/level1jacket.png");
+        this.load.image("lvl2img", "assets/images/menu/level2jacket.png");
+        this.load.image("lvl3img", "assets/images/menu/level3jacket.png");
+        this.load.image("menu_background", "assets/images/menu/background.png");
+        this.load.image("lights", "assets/images/menu/lights.png");
+        this.load.image("abduct_alien", "assets/images/level2/angry_alien.png");
+        this.load.image("marvelous", "assets/images/level3/marvelous.png");
+        this.load.image("oops", "assets/images/level3/oops.png");
 
-        this.load.audio('menu', '../assets/audio/songs/menu.wav');
-        this.load.audio('hover', '../assets/audio/SFX/menu/hoverSelection.mp3');
-        this.load.audio('selection', '../assets/audio/SFX/menu/selection.mp3');
+        this.load.audio('menu', 'assets/audio/songs/menu.wav');
+        this.load.audio('hover', 'assets/audio/SFX/menu/hoverSelection.mp3');
+        this.load.audio('selection', 'assets/audio/SFX/menu/selection.mp3');
     }
 
     onEnter() {
