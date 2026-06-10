@@ -184,7 +184,7 @@ class Level2Tutorial extends BaseScene {
                 hitsNeeded: 1,
                 dialogue: [
                     "All right.",
-                    "Good luck solder! Do Glorpulon 5 proud!"
+                    "Good luck soldier! Do Glorpulon 5 proud!"
                 ],
                 final: true
             }
