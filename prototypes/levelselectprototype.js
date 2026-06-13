@@ -26,10 +26,10 @@ class LevelSelectPrototype extends BaseScene{
         // add scene here to create button
         const scenes = [
             { key: "gameplayprototype",  label: "Prototype\n0" },
-            { key: "gameplayprototype1", label: "Prototype\n1" },
-            { key: "tutorial", label: "Prototype\n2" },
-            { key: "gameplayprototype3", label: "Prototype\n3" },
-            { key: "gameplayprototype4", label: "Prototype\n4" },
+            { key: "gameplayprototype1", label: "Prototype 1\n(Broken)" },
+            { key: "tutorial", label: "Prototype 2\n(Broken)" },
+            { key: "gameplayprototype3", label: "Prototype 3\n(Broken)" },
+            { key: "gameplayprototype4", label: "Prototype 4\n(Broken)" },
             { key: "tutorial2", label: "Prototype\n5" },
             { key: "cinematicsmenuprototype1", label: "Back" }
         ]
