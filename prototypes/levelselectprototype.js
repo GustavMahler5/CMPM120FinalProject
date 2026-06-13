@@ -6,16 +6,16 @@ class LevelSelectPrototype extends BaseScene{
     preload() {
         this.load.image("menu_button_prototype", "../assets/images/menu/menu_button_prototype.png");
         this.load.audio('menu', '../assets/audio/songs/menu.wav');
-        this.load.audio('hover', '../assets/audio/SFX/menu/hoverSelection.mp3');
-        this.load.audio('selection', '../assets/audio/SFX/menu/selection.mp3');
+//        this.load.audio('hover', '../assets/audio/SFX/menu/hoverSelection.mp3');
+  //      this.load.audio('selection', '../assets/audio/SFX/menu/selection.mp3');
         this.load.image('fullscreen', "../assets/images/menu/fullscreen.png");
     }
 
     onEnter() {
         this.cameras.main.setBackgroundColor(0xE0C6AD);
 
-        this.hoverSFX = this.sound.add('hover');
-        this.selectionSFX = this.sound.add('selection');
+    //    this.hoverSFX = this.sound.add('hover');
+      //  this.selectionSFX = this.sound.add('selection');
         //bgm
         let music = this.sound.add("menu", {
             volume: BaseScene.masterVolume,
@@ -94,10 +94,10 @@ class LevelSelectPrototype extends BaseScene{
                     duration: 200,
                     ease: 'Sine.InOut'
                 });
-                this.hoverSFX.play({
-                    loop: false,
-                    volume: BaseScene.masterVolume * 1.5,
-                });
+  //              this.hoverSFX.play({
+    //                loop: false,
+      //              volume: BaseScene.masterVolume * 1.5,
+        //        });
             });
             button.on("pointerout",  () => {
                 this.add.tween({
@@ -113,10 +113,10 @@ class LevelSelectPrototype extends BaseScene{
             button.on("pointerup", () => {
                 button.clearTint();
                 // removed, as scenes haven't been made yet
-                this.selectionSFX.play({
-                    loop: false,
-                    volume: BaseScene.masterVolume * 1.5,
-                });
+//                this.selectionSFX.play({
+  //                  loop: false,
+    //                volume: BaseScene.masterVolume * 1.5,
+      //          });
                 this.handleButtonClick(container.scene.key);
             });
 
